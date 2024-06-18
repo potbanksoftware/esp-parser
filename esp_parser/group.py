@@ -60,6 +60,9 @@ class GroupTypeEnum(IntEnum):
 	CellTemporaryChildren = 9  # Group label is a CELL record form ID. Group contains REFR, ACRE, PGRE, PMIS or ACHR records that are children of the given CELL record.
 	CellVisibleDistantChildren = 10  # Group label is a CELL record form ID. Group contains REFR records that are children of the given CELL record.
 
+	def __repr__(self) -> str:
+		return str(int(self))
+
 
 @attrs.define
 class Group:

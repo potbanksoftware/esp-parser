@@ -276,6 +276,9 @@ class DialType(IntEnum):
 	Miscellaneous = 6
 	Radio = 7
 
+	def __repr__(self) -> str:
+		return str(int(self))
+
 
 class InfoNextSpeaker(IntEnum):
 	"""
@@ -285,6 +288,9 @@ class InfoNextSpeaker(IntEnum):
 	Target = 0
 	Self = 1
 	Either = 2
+
+	def __repr__(self) -> str:
+		return str(int(self))
 
 
 class TRDTEmotionType(IntEnum):
@@ -300,6 +306,9 @@ class TRDTEmotionType(IntEnum):
 	Happy = 5
 	Surprise = 6
 	Pained = 7
+
+	def __repr__(self) -> str:
+		return str(int(self))
 
 
 @attrs.define
