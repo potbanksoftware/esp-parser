@@ -1,5 +1,0 @@
-include LICENSE
-include requirements.txt
-prune **/__pycache__
-recursive-include esp_parser *.pyi
-include esp_parser/py.typed

@@ -12,3 +12,5 @@ short_desc: 'Parser and unparser for Bethesda ESP files.'
 enable_conda: false
 on_pypi: false
 enable_tests: false
+mypy_version: "1.10.0"
+use_whey: true
