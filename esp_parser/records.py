@@ -837,7 +837,7 @@ class SOUN(Record):
 		max_attenuation_distance: int = 0
 		frequency_adjustment_percentage: int = 0
 		unused: bytes = b"\x00"
-		flags: int = 65536
+		flags: int = 256
 		#: Static Attenuation cdB
 		static_attenuation: int = 0
 		stop_time: int = 0
