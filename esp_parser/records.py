@@ -114,6 +114,13 @@ class TES4(Record):
 		Max 512 bytes.
 		"""
 
+	class SNAM(CStringRecord):
+		"""
+		The plugin's description.
+
+		Max 512 bytes.
+		"""
+
 	class MAST(CStringRecord):
 		"""
 		Name of a master plugin.
@@ -153,7 +160,7 @@ class TES4(Record):
 			if not record_type:
 				break
 
-			if record_type in {b"HEDR", b"CNAM", b"MAST", b"DATA"}:
+			if record_type in {b"HEDR", b"CNAM", b"SNAM", b"MAST", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
