@@ -27,11 +27,12 @@ General utilities.
 #
 
 # stdlib
-from typing import TYPE_CHECKING, Optional, Sequence
+from typing import TYPE_CHECKING, List, Optional, Sequence
 
 if TYPE_CHECKING:
 	# this package
 	from esp_parser.records import TES4
+	from esp_parser.types import RecordType
 
 __all__ = ["create_tes4", "NULL", "TES4_0_94"]
 
@@ -62,7 +63,10 @@ def create_tes4(
 	# this package
 	from esp_parser.records import TES4
 
-	data = [TES4.HEDR(version, num_records, next_object_id), TES4.CNAM(author)]
+	data: List["RecordType"] = [
+			TES4.HEDR(version, num_records, next_object_id),
+			TES4.CNAM(author),
+			]
 
 	if description is not None:
 		data.append(TES4.SNAM(description))

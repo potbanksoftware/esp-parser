@@ -72,7 +72,7 @@ class TES4(Record):
 	Record for Plugin info.
 	"""
 
-	class HEDR(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class HEDR(NamedTuple):
 		"""
 		Header.
 
@@ -104,6 +104,8 @@ class TES4(Record):
 			"""
 
 			return b"HEDR\x0c\x00" + struct.pack("<fI4s", *self)
+
+	RecordType.register(HEDR)
 
 	class CNAM(CStringRecord):
 		"""
@@ -174,7 +176,7 @@ class CELL(Record):
 		See https://tes5edit.github.io/fopdoc/Fallout3/Records/CELL.html
 		"""
 
-	class XCLC(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class XCLC(NamedTuple):
 		"""
 		Grid reference of the cell.
 		"""
@@ -200,6 +202,8 @@ class CELL(Record):
 			"""
 
 			return b"XCLC\x0c\x00" + struct.pack("<iiI", *self)
+
+	RecordType.register(XCLC)
 
 	class LTMP(FormIDRecord):
 		"""
@@ -342,7 +346,7 @@ class DIAL(Record):
 		Priority.
 		"""
 
-	class DATA(RecordType, NamedTuple):  # type: ignore[misc]  # false positive  # noqa: D106  # TODO
+	class DATA(NamedTuple):  # noqa: D106  # TODO
 		#: Dialog type
 		type: DialType
 		# see https://tes5edit.github.io/fopdoc/Fallout3/Records/DIAL.html
@@ -366,6 +370,8 @@ class DIAL(Record):
 			"""
 
 			return b"DATA" + struct.pack("<HBB", 2, *self)
+
+	RecordType.register(DATA)
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -391,7 +397,7 @@ class DIAL(Record):
 			elif record_type == b"PNAM":
 				yield cls.PNAM.parse(raw_bytes)
 			elif record_type == b"DATA":
-				yield cls.DATA.parse(raw_bytes)  # type: ignore[misc]  # false positive
+				yield cls.DATA.parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
 
@@ -628,7 +634,7 @@ class QUST(Record):
 		Small Icon FIlename.
 		"""
 
-	class DATA(RecordType, NamedTuple):  # type: ignore[misc]  # false positive  # noqa: D106  # TODO
+	class DATA(NamedTuple):  # noqa: D106  # TODO
 		flags: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/QUST.html
 		priority: int
 		unused: bytes
@@ -651,6 +657,8 @@ class QUST(Record):
 			"""
 
 			return b"DATA\x08\x00" + struct.pack("<BB2sf", *self)
+
+	RecordType.register(DATA)
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -696,7 +704,7 @@ class REFR(Record):
 		:class:`~.SCOL`, :class:`~.TACT`, :class:`~.TERM` or :class:`~.TXST` record.
 		"""
 
-	class XRDO(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class XRDO(NamedTuple):
 		"""
 		Radio Data.
 		"""
@@ -722,7 +730,7 @@ class REFR(Record):
 			"""
 			return b"XRDO\x10\x00" + struct.pack("<fIf4s", *self)
 
-	class DATA(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class DATA(NamedTuple):
 		"""
 		Position / Rotation.
 		"""
@@ -751,6 +759,9 @@ class REFR(Record):
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"DATA\x18\x00" + struct.pack("<ffffff", *self)
+
+	RecordType.register(XRDO)
+	RecordType.register(DATA)
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -903,7 +914,7 @@ class SOUN(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
-				yield OBND.parse(raw_bytes)  # type: ignore[misc]  # false positive
+				yield OBND.parse(raw_bytes)
 			elif record_type == b"FNAM":
 				yield cls.FNAM.parse(raw_bytes)
 			elif record_type == b"SNDD":
@@ -938,7 +949,7 @@ class TACT(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
-				yield OBND.parse(raw_bytes)  # type: ignore[misc]  # false positive
+				yield OBND.parse(raw_bytes)
 			elif record_type in {b"FULL"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in {b"MODL", b"MODB"}:
@@ -971,7 +982,7 @@ class WRLD(Record):
 		Form ID of a :class:`~.WRLD` record.
 		"""
 
-	class PNAM(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class PNAM(NamedTuple):
 		"""
 		Parent worldspace flags.
 		"""
@@ -995,6 +1006,8 @@ class WRLD(Record):
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"PNAM\x02\x00" + struct.pack("<B", self.flags) + self.unknown
+
+	RecordType.register(PNAM)
 
 	class CNAM(FormIDRecord):
 		"""
@@ -1022,7 +1035,7 @@ class WRLD(Record):
 		LOD water height.
 		"""
 
-	class DNAM(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class DNAM(NamedTuple):
 		"""
 		Land Data.
 		"""
@@ -1046,7 +1059,7 @@ class WRLD(Record):
 			"""
 			return b"DNAM\x08\x00" + struct.pack(">ff", *self)
 
-	class ONAM(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class ONAM(NamedTuple):
 		"""
 		World Map Offset Data.
 		"""
@@ -1071,6 +1084,9 @@ class WRLD(Record):
 			"""
 			return b"ONAM\x0c\x00" + struct.pack(">fff", *self)
 
+	RecordType.register(DNAM)
+	RecordType.register(ONAM)
+
 	class INAM(FormIDRecord):
 		"""
 		Image space.
@@ -1085,7 +1101,7 @@ class WRLD(Record):
 		See https://tes5edit.github.io/fopdoc/Fallout3/Records/WRLD.html
 		"""
 
-	class NAM0(RecordType, NamedTuple):  # type: ignore[misc]  # false positive
+	class NAM0(NamedTuple):
 		"""
 		Min Object Bounds.
 		"""
@@ -1119,6 +1135,9 @@ class WRLD(Record):
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"NAM9\x08\x00" + struct.pack("<ff", *self)
+
+	RecordType.register(NAM0)
+	RecordType.register(NAM9)
 
 	class ZNAM(FormIDRecord):
 		"""

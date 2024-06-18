@@ -28,19 +28,20 @@ Shared base types.
 
 # stdlib
 import struct
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from io import BytesIO
+from typing import Iterator, List, Protocol, Type, Union
 
 # 3rd party
 import attrs
-from typing_extensions import Iterator, List, Self, Type, Union
+from typing_extensions import Self
 
 __all__ = [
 		"BytesRecordType", "CStringRecord", "Float32Record", "FormIDRecord", "Record", "RecordType", "Uint8Record"
 		]
 
 
-class RecordType:
+class RecordType(Protocol):
 	"""
 	Base class for records in ESP files.
 	"""

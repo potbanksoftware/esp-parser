@@ -287,7 +287,7 @@ class Script:
 		"""
 
 
-class OBND(RecordType, NamedTuple):  # type: ignore[misc]  # false positive  # noqa: D106  # TODO
+class OBND(NamedTuple):  # noqa: D106  # TODO
 	"""
 	Object Bounds.
 	"""
@@ -318,3 +318,6 @@ class OBND(RecordType, NamedTuple):  # type: ignore[misc]  # false positive  # n
 		"""
 
 		return b"OBND\x0c\x00" + struct.pack("<hhhhhh", *self)
+
+
+RecordType.register(OBND)
