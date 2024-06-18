@@ -37,6 +37,14 @@ license-key = "MIT"
 package = "esp_parser"
 
 [tool.importcheck]
+always = [
+    "esp_parser",
+    "esp_parser.group",
+    "esp_parser.records",
+    "esp_parser.subrecords",
+    "esp_parser.types",
+    "esp_parser.utils",
+]
 
 [tool.sphinx-pyproject]
 github_username = "domdfcoding"
