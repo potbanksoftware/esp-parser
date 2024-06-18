@@ -26,4 +26,58 @@ General utilities.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# stdlib
+from typing import TYPE_CHECKING, Optional, Sequence
+
+if TYPE_CHECKING:
+	# this package
+	from esp_parser.records import TES4
+
+__all__ = ["create_tes4", "NULL", "TES4_0_94"]
+
 NULL: bytes = b'\x00\x00\x00\x00'
+
+#: Helper for 0.94 (as a float) for TES4 headers' version attributes.
+TES4_0_94 = 0.9399999976158142
+
+
+def create_tes4(
+		version: float,
+		num_records: int,
+		next_object_id: bytes,
+		author: str = "DEFAULT",
+		description: Optional[str] = None,
+		masters: Sequence[str] = ("Fallout3.esm", ),
+		) -> "TES4":
+	"""
+	Helper to create a :class:`~.TES4` record.
+
+	:param version: 0.94 in most files; 1.7 in recent versions of ``Update.esm``.
+	:param num_records: Number of records and groups (not including the TES4 record itself).
+	:param next_object_id: Next available object ID, as a 4-byte sequence.
+	:param author: Optional author's name.
+	:param masters: List the plugin's master files, listed in the order they were present in when the plugin was created.
+	"""
+
+	# this package
+	from esp_parser.records import TES4
+
+	data = [TES4.HEDR(version, num_records, next_object_id), TES4.CNAM(author)]
+
+	if description is not None:
+		data.append(TES4.SNAM(description))
+
+	for master in masters:
+		data.append(TES4.MAST(master))
+
+	data.append(TES4.DATA(b'\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00'))
+
+	return TES4(
+			type=b"TES4",
+			flags=0,
+			id=b'\x00\x00\x00\x00',
+			revision=0,
+			version=15,
+			unknown=b'\x00\x00',
+			data=data,
+			)
