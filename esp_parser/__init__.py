@@ -71,6 +71,8 @@ def parse_esp(raw_bytes: BytesIO) -> Iterator[Union[RecordType, "Group"]]:
 				b"CELL",
 				b"REFR",
 				b"QUST",
+				b"NPC_",
+				b"ACHR",
 				}:
 			yield getattr(records, record_type.decode()).parse(record_type, raw_bytes)
 		else:

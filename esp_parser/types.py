@@ -28,7 +28,8 @@ Shared base types.
 
 # stdlib
 import struct
-from abc import ABC, abstractmethod
+import zlib
+from abc import abstractmethod
 from io import BytesIO
 from typing import Iterator, List, Protocol, Type, Union
 
@@ -37,7 +38,18 @@ import attrs
 from typing_extensions import Self
 
 __all__ = [
-		"BytesRecordType", "CStringRecord", "Float32Record", "FormIDRecord", "Record", "RecordType", "Uint8Record"
+		"BytesRecordType",
+		"CStringRecord",
+		"FaceGenRecord",
+		"Float32Record",
+		"FormIDRecord",
+		"Int16Record",
+		"Int32Record",
+		"RawBytesRecord",
+		"Record",
+		"RecordType",
+		"Uint16Record",
+		"Uint8Record"
 		]
 
 
@@ -108,9 +120,20 @@ class Record(RecordType):
 		:param raw_bytes: Raw bytes for this record
 		"""
 
-		unpacked = struct.unpack("<II4sIH2s", raw_bytes.read(20))
+		buf = raw_bytes.read(20)
+		unpacked = struct.unpack("<II4sIH2s", buf)
 		data_size, flags, form_id, revision, version, unknown = unpacked
-		data = list(cls.parse_subrecords(BytesIO(raw_bytes.read(data_size))))
+
+		raw_data = BytesIO(raw_bytes.read(data_size))
+		if flags & 0x00040000:
+			# Compressed data
+			decompressed_size = struct.unpack("<I", raw_data.read(4))[0]
+			compressed_data = raw_data.read(data_size - 4)
+			decompressed_data = zlib.decompress(compressed_data)
+			assert len(decompressed_data) == decompressed_size
+			raw_data = BytesIO(decompressed_data)
+
+		data = list(cls.parse_subrecords(raw_data))
 
 		return cls(
 				type=record_type,
@@ -129,6 +152,13 @@ class Record(RecordType):
 
 		body = b"".join(subrecord.unparse() for subrecord in self.data)
 		data_size = len(body)
+
+		if self.flags & 0x00040000:
+			# Compressed data
+			compressed_data = zlib.compress(body)
+			body = struct.pack("<I", data_size) + compressed_data
+			data_size = len(body)
+
 		packed = struct.pack(
 				"<II4sIH2s",
 				data_size,
@@ -232,7 +262,7 @@ class Uint8Record(RecordType, int):
 		"""
 
 		assert raw_bytes.read(2) == b"\x01\x00"  # size field
-		return cls(*struct.unpack(">B", raw_bytes.read(1)))
+		return cls(*struct.unpack("<B", raw_bytes.read(1)))
 
 	def unparse(self) -> bytes:
 		"""
@@ -240,8 +270,62 @@ class Uint8Record(RecordType, int):
 		"""
 
 		name = self.__class__.__name__.encode()
-		body = struct.pack(">B", self)
+		body = struct.pack("<B", self)
 		size = struct.pack("<H", len(body))
+		return name + size + body
+
+
+class Uint16Record(RecordType, int):
+	"""
+	Base class for uint16 subrecords.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x02\x00"  # size field
+		return cls(*struct.unpack("<H", raw_bytes.read(2)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		body = struct.pack("<H", self)
+		size = struct.pack("<H", len(body))
+		return name + size + body
+
+
+class Int16Record(RecordType, int):
+	"""
+	Base class for int16 subrecords.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x02\x00"  # size field
+		return cls(*struct.unpack("<h", raw_bytes.read(2)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		body = struct.pack("<H", self)
+		size = struct.pack("<h", len(body))
 		return name + size + body
 
 
@@ -270,3 +354,89 @@ class Float32Record(RecordType, float):
 		body = struct.pack("<f", self)
 		size = struct.pack("<H", len(body))
 		return name + size + body
+
+
+class Int32Record(RecordType, int):
+	"""
+	Base class for int32 subrecords.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x04\x00"  # size field
+		return cls(*struct.unpack("<i", raw_bytes.read(4)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		body = struct.pack("<i", self)
+		size = struct.pack("<H", len(body))
+		return name + size + body
+
+
+class FaceGenRecord(List):
+	"""
+	Sequence of uint8 for FaceGen.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{self.__class__.__name__}({super().__repr__()})"
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		size = struct.unpack("<H", raw_bytes.read(2))[0]
+		return cls(struct.unpack(f"<{size}B", raw_bytes.read(size)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		size = len(self)
+		packed = struct.pack(f"<H{size}B", size, *self)
+		return name + packed
+
+
+RecordType.register(FaceGenRecord)
+
+
+class RawBytesRecord(BytesRecordType):
+	"""
+	Used for unknown structures.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		size = struct.unpack("<H", raw_bytes.read(2))[0]
+		return cls(raw_bytes.read(size))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		size = struct.pack("<H", len(self))
+		return name + size + self
