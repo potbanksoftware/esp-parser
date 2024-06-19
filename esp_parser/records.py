@@ -28,7 +28,6 @@ Models for different record types.
 
 # stdlib
 import struct
-from enum import IntEnum
 from io import BytesIO
 from typing import Iterator, List, NamedTuple, Tuple, Type
 
@@ -46,13 +45,14 @@ from esp_parser.types import (
 		FormIDRecord,
 		Int16Record,
 		Int32Record,
+		IntEnumField,
 		RawBytesRecord,
 		Record,
 		RecordType,
 		Uint8Record,
 		Uint16Record
 		)
-from esp_parser.utils import NULL
+from esp_parser.utils import NULL, namedtuple_qualname_repr
 
 __all__ = [
 		"ACHR",
@@ -111,6 +111,9 @@ class TES4(Record):
 			"""
 
 			return b"HEDR\x0c\x00" + struct.pack("<fI4s", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	RecordType.register(HEDR)
 
@@ -348,6 +351,9 @@ class CELL(Record):
 
 			return b"XCLC\x0c\x00" + struct.pack("<iiI", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	RecordType.register(XCLC)
 
 	class LTMP(FormIDRecord):
@@ -469,7 +475,7 @@ class CELL(Record):
 				raise NotImplementedError(record_type)
 
 
-class DialType(IntEnum):
+class DialType(IntEnumField):
 	"""
 	Enum for ``DIAL.DATA.type`` and ``INFO.DATA.type``.
 	"""
@@ -483,11 +489,8 @@ class DialType(IntEnum):
 	Miscellaneous = 6
 	Radio = 7
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class InfoNextSpeaker(IntEnum):
+class InfoNextSpeaker(IntEnumField):
 	"""
 	Enum for ``INFO.DATA.next_speaker``.
 	"""
@@ -496,11 +499,8 @@ class InfoNextSpeaker(IntEnum):
 	Self = 1
 	Either = 2
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class TRDTEmotionType(IntEnum):
+class TRDTEmotionType(IntEnumField):
 	"""
 	Enum for ``INFO.TRDT.emotion_type``.
 	"""
@@ -513,9 +513,6 @@ class TRDTEmotionType(IntEnum):
 	Happy = 5
 	Surprise = 6
 	Pained = 7
-
-	def __repr__(self) -> str:
-		return str(int(self))
 
 
 @attrs.define
@@ -573,6 +570,9 @@ class DIAL(Record):
 			"""
 
 			return b"DATA" + struct.pack("<HBB", 2, *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	RecordType.register(DATA)
 
@@ -748,7 +748,7 @@ class INFO(Record):
 		"""
 
 		def __repr__(self) -> str:
-			return "NEXT()"
+			return "INFO.NEXT()"
 
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
@@ -868,6 +868,9 @@ class QUST(Record):
 
 			return b"DATA\x08\x00" + struct.pack("<BB2sf", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	RecordType.register(DATA)
 
 	class INDX(Int16Record):
@@ -930,6 +933,9 @@ class QUST(Record):
 			"""
 
 			return b"QSTA\x08\x00" + struct.pack("<4sB3s", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	RecordType.register(QSTA)
 
@@ -1032,6 +1038,9 @@ class REFR(Record):
 			"""
 			return b"XRDO\x10\x00" + struct.pack("<fIf4s", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	RecordType.register(XRDO)
 
 	@classmethod
@@ -1108,7 +1117,7 @@ class NPC_(Record):
 		Form ID of an :class:`~.ENCH` or :class:`~.SPEL`.
 		"""
 
-	class EAMT(IntEnum):
+	class EAMT(IntEnumField):
 		"""
 		Unarmed Attack Animation.
 		"""
@@ -1230,9 +1239,6 @@ class NPC_(Record):
 		PipBoyChild = 178
 		ANY = 255
 
-		def __repr__(self) -> str:
-			return f"EAMT({int(self)})"
-
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
@@ -1300,6 +1306,9 @@ class NPC_(Record):
 
 			return b"DATA\x0b\x00" + struct.pack("<iBBBBBBB", *self)
 			return b"DATA\x0c\x00" + struct.pack("<iBBBBBBBB", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	@attrs.define
 	class DNAM(RecordType):
@@ -1443,7 +1452,7 @@ class NPC_(Record):
 		Form ID of a :class:`~.CSTY` record.
 		"""
 
-	class NAM4(IntEnum):
+	class NAM4(IntEnumField):
 		"""
 		Impact Material Type.
 		"""
@@ -1460,9 +1469,6 @@ class NPC_(Record):
 		hollow_metal = 9
 		organic_bug = 10
 		organic_glow = 11
-
-		def __repr__(self) -> str:
-			return f"NAM4({int(self)})"
 
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
@@ -1790,6 +1796,9 @@ class WRLD(Record):
 			"""
 			return b"PNAM\x02\x00" + struct.pack("<B", self.flags) + self.unknown
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	class CNAM(FormIDRecord):
 		"""
 		Climate.
@@ -1840,6 +1849,9 @@ class WRLD(Record):
 			"""
 			return b"DNAM\x08\x00" + struct.pack(">ff", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	class ICON(CStringRecord):
 		"""
 		Large icon filename.
@@ -1880,6 +1892,9 @@ class WRLD(Record):
 
 			return b"MNAM\x10\x00" + struct.pack(">iihhhh", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	class ONAM(NamedTuple):
 		"""
 		World Map Offset Data.
@@ -1904,6 +1919,9 @@ class WRLD(Record):
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"ONAM\x0c\x00" + struct.pack(">fff", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	class INAM(FormIDRecord):
 		"""
@@ -1942,6 +1960,9 @@ class WRLD(Record):
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"NAM0\x08\x00" + struct.pack("<ff", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	class NAM9(NAM0):
 		"""

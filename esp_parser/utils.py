@@ -27,14 +27,14 @@ General utilities.
 #
 
 # stdlib
-from typing import TYPE_CHECKING, List, Optional, Sequence
+from typing import TYPE_CHECKING, List, NamedTuple, Optional, Sequence
 
 if TYPE_CHECKING:
 	# this package
 	from esp_parser.records import TES4
 	from esp_parser.types import RecordType
 
-__all__ = ["create_tes4", "NULL", "TES4_0_94"]
+__all__ = ["create_tes4", "NULL", "TES4_0_94", "namedtuple_qualname_repr"]
 
 NULL: bytes = b'\x00\x00\x00\x00'
 
@@ -85,3 +85,15 @@ def create_tes4(
 			unknown=b'\x00\x00',
 			data=data,
 			)
+
+
+def namedtuple_qualname_repr(namedtuple: NamedTuple) -> str:
+	"""
+	Produce a ``repr()`` of a :class:`~typing.NamedTuple` showing the ``__qualname__``.
+
+	:param namedtuple:
+	"""
+
+	fields = namedtuple._fields
+	repr_fmt = '(' + ", ".join(f'{name}=%r' for name in fields) + ')'
+	return namedtuple.__class__.__qualname__ + repr_fmt % namedtuple

@@ -28,7 +28,6 @@ Subrecord types used by multiple records.
 
 # stdlib
 import struct
-from enum import IntEnum
 from io import BytesIO
 from typing import NamedTuple, Type
 
@@ -37,8 +36,8 @@ import attrs
 from typing_extensions import Self
 
 # this package
-from esp_parser.types import BytesRecordType, CStringRecord, FormIDRecord, RecordType
-from esp_parser.utils import NULL
+from esp_parser.types import BytesRecordType, CStringRecord, FormIDRecord, IntEnumField, RecordType
+from esp_parser.utils import NULL, namedtuple_qualname_repr
 
 __all__ = [
 		"ACBS",
@@ -399,7 +398,7 @@ class ACBS(RecordType):
 		return b"ACBS\x18\x00" + packed
 
 
-class AidtAggroEnum(IntEnum):
+class AidtAggroEnum(IntEnumField):
 	"""
 	Enum for ``AIDT.aggression``.
 	"""
@@ -409,11 +408,8 @@ class AidtAggroEnum(IntEnum):
 	VeryAggressive = 2
 	Frenzied = 3
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class AidtConfidenceEnum(IntEnum):
+class AidtConfidenceEnum(IntEnumField):
 	"""
 	Enum for ``AIDT.confidence``.
 	"""
@@ -424,11 +420,8 @@ class AidtConfidenceEnum(IntEnum):
 	Brave = 3
 	Foolhardy = 4
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class AidtMoodEnum(IntEnum):
+class AidtMoodEnum(IntEnumField):
 	"""
 	Enum for ``AIDT.mood``.
 	"""
@@ -442,11 +435,8 @@ class AidtMoodEnum(IntEnum):
 	Angry = 6
 	Sad = 7
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class AidtAssistanceEnum(IntEnum):
+class AidtAssistanceEnum(IntEnumField):
 	"""
 	Enum for ``AIDT.assistance``.
 	"""
@@ -455,11 +445,8 @@ class AidtAssistanceEnum(IntEnum):
 	Allies = 1
 	FriendsAllies = 2
 
-	def __repr__(self) -> str:
-		return str(int(self))
 
-
-class SkillEnum(IntEnum):
+class SkillEnum(IntEnumField):
 	"""
 	Enum for Skills (e.g. AI teaching, skill book).
 
@@ -481,9 +468,6 @@ class SkillEnum(IntEnum):
 	Speech = 11
 	Throwing = 12  # unused
 	Unarmed = 13
-
-	def __repr__(self) -> str:
-		return str(int(self))
 
 
 @attrs.define
@@ -602,6 +586,9 @@ class Item:
 
 			return b"CNTO\x08\x00" + struct.pack("<4si", *self)
 
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
 	class COED(NamedTuple):
 		"""
 		Extra item data.
@@ -640,6 +627,9 @@ class Item:
 			"""
 
 			return b"COED\x0c\x00" + struct.pack("<4s4sf", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	RecordType.register(CNTO)
 	RecordType.register(COED)
@@ -681,5 +671,8 @@ class PositionRotation:
 			Turn this subrecord back into raw bytes for an ESP file.
 			"""
 			return b"DATA\x18\x00" + struct.pack("<ffffff", *self)
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
 
 	RecordType.register(DATA)

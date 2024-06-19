@@ -30,6 +30,7 @@ Shared base types.
 import struct
 import zlib
 from abc import abstractmethod
+from enum import IntEnum
 from io import BytesIO
 from typing import Iterator, List, Protocol, Type, Union
 
@@ -45,6 +46,7 @@ __all__ = [
 		"FormIDRecord",
 		"Int16Record",
 		"Int32Record",
+		"IntEnumField",
 		"RawBytesRecord",
 		"Record",
 		"RecordType",
@@ -59,7 +61,7 @@ class RecordType(Protocol):
 	"""
 
 	def __repr__(self) -> str:
-		return f"{self.__class__.__name__}({super().__repr__()})"
+		return f"{self.__class__.__qualname__}({super().__repr__()})"
 
 	@abstractmethod
 	def unparse(self) -> bytes:
@@ -389,7 +391,7 @@ class FaceGenRecord(List):
 	"""
 
 	def __repr__(self) -> str:
-		return f"{self.__class__.__name__}({super().__repr__()})"
+		return f"{self.__class__.__qualname__}({super().__repr__()})"
 
 	@classmethod
 	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
@@ -440,3 +442,15 @@ class RawBytesRecord(BytesRecordType):
 		name = self.__class__.__name__.encode()
 		size = struct.pack("<H", len(self))
 		return name + size + self
+
+
+class IntEnumField(IntEnum):
+	"""
+	Base class for int enum fields.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{self.__class__.__qualname__}({int(self)})"
+
+
+RecordType.register(IntEnumField)
