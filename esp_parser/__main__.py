@@ -37,9 +37,9 @@ from consolekit.options import flag_option
 __all__ = ["main"]
 
 
-@click.argument("ESP_FILE")
-@click.argument("OUTPUT_FILE", required=False, default=None)
 @flag_option("-p", "--python", help="Output as a Python function.")
+@click.argument("OUTPUT_FILE", required=False, default=None)
+@click.argument("ESP_FILE")
 @click_command()
 def main(esp_file: str, output_file: Optional[str] = None, python: bool = False) -> None:
 	"""
