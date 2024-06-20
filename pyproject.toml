@@ -23,6 +23,9 @@ Homepage = "https://github.com/domdfcoding/esp-parser"
 "Source Code" = "https://github.com/domdfcoding/esp-parser"
 Documentation = "https://esp-parser.readthedocs.io/en/latest"
 
+[project.scripts]
+dump-esp = "esp_parser.__main__:main"
+
 [tool.setuptools]
 zip-safe = false
 include-package-data = true

@@ -9,6 +9,9 @@ version: '0.0.0'
 license: 'MIT'
 short_desc: 'Parser and unparser for Bethesda ESP files.'
 
+console_scripts:
+  - "dump-esp = esp_parser.__main__:main"
+
 enable_conda: false
 on_pypi: false
 enable_tests: false
