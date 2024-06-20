@@ -39,7 +39,9 @@ package = "esp_parser"
 [tool.importcheck]
 always = [
     "esp_parser",
+    "esp_parser.__main__",
     "esp_parser.group",
+    "esp_parser.output",
     "esp_parser.records",
     "esp_parser.subrecords",
     "esp_parser.types",

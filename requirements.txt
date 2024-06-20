@@ -1,2 +1,6 @@
 attrs>=23.2.0
+click>=8.1.7
+consolekit>=1.7.0
+domdf-python-tools>=3.8.1
+formate>=0.7.0
 typing-extensions>=4.12.2
