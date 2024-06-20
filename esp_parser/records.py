@@ -396,12 +396,15 @@ class CELL(Record):
 		Water noise texture name.
 		"""
 
-	class XCLR(RecordType, List):
+	class XCLR(List, RecordType):
 		"""
 		Regions.
 
 		Sequence of form IDs (as bytes) for :class:`~.REGN` records.
 		"""
+
+		def __repr__(self) -> str:
+			return f"{self.__class__.__qualname__}({super().__repr__()})"
 
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
