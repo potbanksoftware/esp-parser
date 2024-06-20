@@ -94,6 +94,5 @@ def namedtuple_qualname_repr(namedtuple: NamedTuple) -> str:
 	:param namedtuple:
 	"""
 
-	fields = namedtuple._fields
-	repr_fmt = '(' + ", ".join(f'{name}=%r' for name in fields) + ')'
+	repr_fmt = '(' + ", ".join(f'{name}=%r' for name in namedtuple._fields) + ')'
 	return namedtuple.__class__.__qualname__ + repr_fmt % namedtuple
