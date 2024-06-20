@@ -73,8 +73,7 @@ def create_tes4(
 
 	for master in masters:
 		data.append(TES4.MAST(master))
-
-	data.append(TES4.DATA(b'\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00'))
+		data.append(TES4.DATA(b'\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00'))
 
 	return TES4(
 			type=b"TES4",
