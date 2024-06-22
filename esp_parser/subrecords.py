@@ -29,14 +29,23 @@ Subrecord types used by multiple records.
 # stdlib
 import struct
 from io import BytesIO
-from typing import NamedTuple, Type
+from typing import List, NamedTuple, Type
 
 # 3rd party
 import attrs
 from typing_extensions import Self
 
 # this package
-from esp_parser.types import BytesRecordType, CStringRecord, FormIDRecord, IntEnumField, RecordType
+from esp_parser.types import (
+		BytesRecordType,
+		Collection,
+		CStringRecord,
+		FormIDRecord,
+		Int32Record,
+		IntEnum,
+		MarkerRecord,
+		RecordType
+		)
 from esp_parser.utils import NULL, namedtuple_qualname_repr
 
 __all__ = [
@@ -47,13 +56,19 @@ __all__ = [
 		"AidtConfidenceEnum",
 		"AidtMoodEnum",
 		"CTDA",
+		"Destruction",
+		"DialType",
 		"EDID",
+		"Effect",
+		"InfoNextSpeaker",
 		"Item",
 		"Model",
 		"OBND",
 		"PositionRotation",
 		"Script",
-		"SkillEnum"
+		"SkillEnum",
+		"XNAM",
+		"XnamCombatReactionEnum"
 		]
 
 
@@ -131,10 +146,12 @@ class CTDA(RecordType):
 				])
 
 
-class Model:
+class Model(Collection):
 	"""
 	Subrecords for models.
 	"""
+
+	members = {b"MODL", b"MODB", b"MODS"}
 
 	class MODL(CStringRecord):
 		"""
@@ -143,6 +160,80 @@ class Model:
 
 	class MODB(FormIDRecord):  # noqa: D106  # TODO
 		pass
+
+	@attrs.define
+	class AlternateTexture:
+		"""
+		A texture in a :class:`~Model.MODS`.
+		"""
+
+		#: 3D Name
+		name: bytes
+		#: New Texture. Form ID of a :class:`~.TXST` record.
+		texture: bytes
+		index: int
+
+		@classmethod
+		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Unpack bytes for the :class:`~.Model.AlternateTexture`.
+			"""
+
+			alt_texture_name_length = struct.unpack("<I", raw_bytes.read(4))[0]
+			alt_texture_3d_name = raw_bytes.read(alt_texture_name_length)
+			alt_texture_new_texture, alt_texture_3d_index = struct.unpack("<4si", raw_bytes.read(8))
+			return cls(
+					alt_texture_3d_name,
+					alt_texture_new_texture,
+					alt_texture_3d_index,
+					)
+
+		def pack(self) -> bytes:
+			"""
+			Pack the :class:`~.Model.AlternateTexture` to bytes.
+			"""
+
+			name_length = len(self.name)
+			return struct.pack(f"<I{name_length}s4si", name_length, self.name, self.texture, self.index)
+
+	class MODS(List[AlternateTexture], RecordType):
+		"""
+		List of alternate textures.
+		"""
+
+		def __repr__(self) -> str:
+			return f"{self.__class__.__qualname__}({super().__repr__()})"
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			size, count = struct.unpack("<HI", raw_bytes.read(6))
+
+			buf = BytesIO(raw_bytes.read(size - 4))  # -4 for the count field already read
+
+			alt_textures = cls()
+			for _ in range(count):
+				alt_textures.append(Model.AlternateTexture.unpack(buf))
+
+			assert not buf.read()
+			assert len(alt_textures) == count
+			return alt_textures
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			alt_textures = b"".join(at.pack() for at in self)
+			alt_textures_size = len(alt_textures)
+			size = alt_textures_size + 4  # +4 for count field
+			count = len(self)
+			return b"MODS" + struct.pack("<HI", size, count) + alt_textures
 
 
 class Script:
@@ -282,6 +373,12 @@ class Script:
 		Local Variable Name.
 		"""
 
+	class SCRV(Int32Record):
+		"""
+		Referenced Variable.
+		"""
+		# Maybe?
+
 	class SCRO(FormIDRecord):
 		"""
 		Reference.
@@ -398,7 +495,7 @@ class ACBS(RecordType):
 		return b"ACBS\x18\x00" + packed
 
 
-class AidtAggroEnum(IntEnumField):
+class AidtAggroEnum(IntEnum):
 	"""
 	Enum for ``AIDT.aggression``.
 	"""
@@ -409,7 +506,7 @@ class AidtAggroEnum(IntEnumField):
 	Frenzied = 3
 
 
-class AidtConfidenceEnum(IntEnumField):
+class AidtConfidenceEnum(IntEnum):
 	"""
 	Enum for ``AIDT.confidence``.
 	"""
@@ -421,7 +518,7 @@ class AidtConfidenceEnum(IntEnumField):
 	Foolhardy = 4
 
 
-class AidtMoodEnum(IntEnumField):
+class AidtMoodEnum(IntEnum):
 	"""
 	Enum for ``AIDT.mood``.
 	"""
@@ -436,7 +533,7 @@ class AidtMoodEnum(IntEnumField):
 	Sad = 7
 
 
-class AidtAssistanceEnum(IntEnumField):
+class AidtAssistanceEnum(IntEnum):
 	"""
 	Enum for ``AIDT.assistance``.
 	"""
@@ -446,7 +543,7 @@ class AidtAssistanceEnum(IntEnumField):
 	FriendsAllies = 2
 
 
-class SkillEnum(IntEnumField):
+class SkillEnum(IntEnum):
 	"""
 	Enum for Skills (e.g. AI teaching, skill book).
 
@@ -547,10 +644,12 @@ class AIDT(RecordType):
 		return b"AIDT\x14\x00" + packed
 
 
-class Item:
+class Item(Collection):
 	"""
 	Subrecords for items.
 	"""
+
+	members = {b"CNTO", b"COED"}
 
 	class CNTO(NamedTuple):
 		"""
@@ -676,3 +775,236 @@ class PositionRotation:
 			return namedtuple_qualname_repr(self)
 
 	RecordType.register(DATA)
+
+
+class XnamCombatReactionEnum(IntEnum):
+	"""
+	Group Combat Reaction.
+	"""
+
+	Neutral = 0
+	Enemy = 1
+	Ally = 2
+	Friend = 3
+
+
+@attrs.define
+class XNAM(RecordType):
+	"""
+	Relation used for :class:`~.FACT` and :class:`~.RACE` records.
+	"""
+
+	#: FormID of a :class:`~.FACT` or :class:`~.RACE` record.
+	faction: bytes
+
+	modifier: int
+
+	group_combat_reaction: XnamCombatReactionEnum
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x0c\x00"  # size field
+		return cls(*struct.unpack("<4siI", raw_bytes.read(12)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		return b"XNAM\x0c\x00" + struct.pack("<4siI", self.faction, self.modifier, self.group_combat_reaction)
+
+
+class DialType(IntEnum):
+	"""
+	Enum for ``DIAL.DATA.type`` and ``INFO.DATA.type``.
+	"""
+
+	Topic = 0
+	Conversation = 1
+	Combat = 2
+	Persuasion = 3
+	Detection = 4
+	Service = 5
+	Miscellaneous = 6
+	Radio = 7
+
+
+class InfoNextSpeaker(IntEnum):
+	"""
+	Enum for ``INFO.DATA.next_speaker``.
+	"""
+
+	Target = 0
+	Self = 1
+	Either = 2
+
+
+class Destruction(Collection):
+	"""
+	Destruction subrecord collection.
+	"""
+
+	members = {
+			b"DEST",
+			b"DSTD",
+			b"DSTF",
+			}
+
+	@attrs.define
+	class DEST(RecordType):
+		"""
+		Destruction data header.
+		"""
+
+		health: int
+		count: int
+		flags: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Destruction.html
+		unknown: bytes
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			assert raw_bytes.read(2) == b"\x08\x00"  # size field
+			return cls(*struct.unpack("<iBB2s", raw_bytes.read(8)))
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			return b"DEST" + struct.pack(
+					"<HiBB2s",
+					8,
+					self.health,
+					self.count,
+					self.flags,
+					self.unknown,
+					)
+
+	@attrs.define
+	class DSTD(RecordType):
+		"""
+		Destruction Stage Data.
+		"""
+
+		health_percentage: int
+		index: int
+		damage_stage: int
+		flags: int  # See https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Destruction.html
+		self_dps: int
+
+		#: Form ID of an :class:`~.EXPL` record or null.
+		explosion: bytes
+
+		#: Form ID of an :class:`~.DEBR` record or null.
+		debris: bytes
+
+		debris_count: int
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			assert raw_bytes.read(2) == b"\x14\x00"  # size field
+			return cls(*struct.unpack("<BBBBi4s4si", raw_bytes.read(20)))
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			return b"DSTD" + struct.pack(
+					"<HBBBBi4s4si",
+					20,
+					self.health_percentage,
+					self.index,
+					self.damage_stage,
+					self.flags,
+					self.self_dps,
+					self.explosion,
+					self.debris,
+					self.debris_count,
+					)
+
+	class DSTF(MarkerRecord):
+		"""
+		Stage End Marker.
+		"""
+
+		# def __repr__(self) -> str:
+		# 	return "Destruction.DSTF()"
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
+		# 	return cls()
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"DSTF\x00\x00"
+
+
+class Effect(Collection):
+
+	members = {b"EFIT", b"EFID"}
+
+	class EFID(FormIDRecord):
+		"""
+		Base effect.
+
+		Form ID of a :class:`~.MGEF` record.
+		"""
+
+	class EFIT(NamedTuple):
+		magnitude: int
+		area: int
+		duration: int
+		type: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
+		actor_value: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
+
+		def __repr__(self) -> str:
+			return namedtuple_qualname_repr(self)
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			assert raw_bytes.read(2) == b"\x14\x00"  # size field
+			return cls(*struct.unpack("<IIIIi", raw_bytes.read(20)))
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			return b"EFIT" + struct.pack("<HIIIIi", 20, *self)
+
+	RecordType.register(EFIT)

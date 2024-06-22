@@ -37,6 +37,7 @@ from io import BytesIO
 from typing import TYPE_CHECKING, Iterator, Union
 
 # this package
+from esp_parser import records
 from esp_parser.types import RecordType
 
 if TYPE_CHECKING:
@@ -52,7 +53,7 @@ def parse_esp(raw_bytes: BytesIO) -> Iterator[Union[RecordType, "Group"]]:
 	"""
 
 	# this package
-	from esp_parser import group, records
+	from esp_parser import group
 	while True:
 		record_type = raw_bytes.read(4)
 		if not record_type:
@@ -62,17 +63,50 @@ def parse_esp(raw_bytes: BytesIO) -> Iterator[Union[RecordType, "Group"]]:
 			yield group.Group.parse(raw_bytes)
 		elif record_type in {
 				b"TES4",
-				b"SOUN",
-				b"DIAL",
-				b"INFO",
-				b"SCPT",
-				b"TACT",
-				b"WRLD",
-				b"CELL",
-				b"REFR",
-				b"QUST",
-				b"NPC_",
 				b"ACHR",
+				b"ACRE",
+				b"ACTI",
+				b"ALCH",
+				b"ALOC",
+				b"CELL",
+				b"CHAL",
+				b"CONT",
+				b"CREA",
+				b"DIAL",
+				b"DOOR",
+				b"EXPL",
+				b"FACT",
+				b"FLST",
+				b"IMAD",
+				b"INFO",
+				b"KEYM",
+				b"LIGH",
+				b"MESG",
+				b"MGEF",
+				b"MISC",
+				b"MSET",
+				b"MUSC",
+				b"NAVI",
+				b"NAVM",
+				b"NOTE",
+				b"NPC_",
+				b"PACK",
+				b"PERK",
+				b"QUST",
+				b"RCCT",
+				b"RCPE",
+				b"REFR",
+				b"REPU",
+				b"SCOL",
+				b"SCPT",
+				b"SOUN",
+				b"SPEL",
+				b"STAT",
+				b"TACT",
+				b"TXST",
+				b"VTYP",
+				b"WEAP",
+				b"WRLD",
 				}:
 			yield getattr(records, record_type.decode()).parse(record_type, raw_bytes)
 		else:

@@ -28,7 +28,6 @@ Group (``GRUP``) of records.
 
 # stdlib
 import struct
-from enum import IntEnum
 from io import BytesIO
 from typing import List, Type, Union
 
@@ -38,7 +37,7 @@ from typing_extensions import Self
 
 # this package
 from esp_parser import parse_esp
-from esp_parser.types import RecordType
+from esp_parser.types import IntEnum, RecordType
 
 __all__ = ["Group"]
 
@@ -59,9 +58,6 @@ class GroupTypeEnum(IntEnum):
 	CellPersistentChildren = 8  # Group label is a CELL record form ID. Group contains REFR, ACRE, PGRE, PMIS or ACHR records that are children of the given CELL record.
 	CellTemporaryChildren = 9  # Group label is a CELL record form ID. Group contains REFR, ACRE, PGRE, PMIS or ACHR records that are children of the given CELL record.
 	CellVisibleDistantChildren = 10  # Group label is a CELL record form ID. Group contains REFR records that are children of the given CELL record.
-
-	def __repr__(self) -> str:
-		return str(int(self))
 
 
 @attrs.define

@@ -27,30 +27,37 @@ Shared base types.
 #
 
 # stdlib
+import enum
 import struct
 import zlib
 from abc import abstractmethod
-from enum import IntEnum
 from io import BytesIO
-from typing import Iterator, List, Protocol, Type, Union
+from typing import Iterator, List, Protocol, Set, Tuple, Type, Union
 
 # 3rd party
 import attrs
 from typing_extensions import Self
 
 __all__ = [
+		"AttrsStructRecord",
 		"BytesRecordType",
 		"CStringRecord",
+		"Collection",
 		"FaceGenRecord",
 		"Float32Record",
 		"FormIDRecord",
 		"Int16Record",
 		"Int32Record",
+		"Int8Record",
+		"IntEnum",
 		"IntEnumField",
+		"MarkerRecord",
 		"RawBytesRecord",
 		"Record",
 		"RecordType",
+		"StructRecord",
 		"Uint16Record",
+		"Uint32Record",
 		"Uint8Record"
 		]
 
@@ -70,6 +77,65 @@ class RecordType(Protocol):
 		"""
 
 		raise NotImplementedError
+
+
+class StructRecord(RecordType):
+	"""
+	Base class for records in ESP files.
+	"""
+
+	@staticmethod
+	@abstractmethod
+	def get_struct_and_size() -> Tuple[str, int]:
+		"""
+		Returns the pack/unpack struct string and the corresponding size.
+		"""
+
+		raise NotImplementedError
+
+	@staticmethod
+	@abstractmethod
+	def get_field_names() -> Tuple[str, ...]:
+		"""
+		Returns a list of attributes on this class in the order they should be packed.
+		"""
+
+		raise NotImplementedError
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		unpack_struct, expected_size = cls.get_struct_and_size()
+		size = struct.unpack("<H", raw_bytes.read(2))[0]
+		if size != expected_size:
+			raise ValueError(f"Size mismatch for {cls}: Expected {expected_size}, got {size}")
+		return cls(*struct.unpack(unpack_struct, raw_bytes.read(size)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this record back into raw bytes for an ESP file.
+		"""
+
+		pack_struct, size = self.get_struct_and_size()
+		size_field = struct.pack("<H", size)
+		pack_items = [getattr(self, field_name) for field_name in self.get_field_names()]
+		body = struct.pack(pack_struct, *pack_items)
+		return self.__class__.__name__.encode() + size_field + body
+
+
+@attrs.define
+class AttrsStructRecord(StructRecord):
+	"""
+	Intermediate type for attrs-decorated record types, to give a better repr.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{self.__class__.__qualname__}({super().__repr__()})"
 
 
 @attrs.define
@@ -277,6 +343,33 @@ class Uint8Record(RecordType, int):
 		return name + size + body
 
 
+class Int8Record(RecordType, int):
+	"""
+	Base class for int8 subrecords.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x01\x00"  # size field
+		return cls(*struct.unpack("<b", raw_bytes.read(1)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		body = struct.pack("<b", self)
+		size = struct.pack("<H", len(body))
+		return name + size + body
+
+
 class Uint16Record(RecordType, int):
 	"""
 	Base class for uint16 subrecords.
@@ -385,6 +478,33 @@ class Int32Record(RecordType, int):
 		return name + size + body
 
 
+class Uint32Record(RecordType, int):
+	"""
+	Base class for uint32 subrecords.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x04\x00"  # size field
+		return cls(*struct.unpack("<I", raw_bytes.read(4)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		body = struct.pack("<I", self)
+		size = struct.pack("<H", len(body))
+		return name + size + body
+
+
 class FaceGenRecord(List):
 	"""
 	Sequence of uint8 for FaceGen.
@@ -444,7 +564,7 @@ class RawBytesRecord(BytesRecordType):
 		return name + size + self
 
 
-class IntEnumField(IntEnum):
+class IntEnumField(enum.IntEnum):
 	"""
 	Base class for int enum fields.
 	"""
@@ -453,4 +573,61 @@ class IntEnumField(IntEnum):
 		return f"{self.__class__.__qualname__}({int(self)})"
 
 
+class IntEnum(enum.IntEnum):
+	"""
+	Base class for integer enums.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{self.__class__.__qualname__}.{self._name_}"
+
+
 RecordType.register(IntEnumField)
+
+
+class Collection:
+	"""
+	Base class for collections of subrecords.
+	"""
+
+	#: Names of subrecords in this collection.
+	members: Set[bytes]
+
+	@classmethod
+	def parse_member(cls, record_type: bytes, raw_bytes: BytesIO) -> RecordType:
+		"""
+		Parse subrecords in this collection.
+
+		:param raw_bytes: Raw bytes for this record's subrecords
+		"""
+
+		assert record_type in cls.members
+		return getattr(cls, record_type.decode()).parse(raw_bytes)
+
+
+class MarkerRecord(RecordType):
+	"""
+	Zero byte long marker.
+	"""
+
+	def __repr__(self) -> str:
+		return self.__class__.__qualname__ + "()"
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		assert raw_bytes.read(2) == b"\x00\x00"  # size field
+		return cls()
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		name = self.__class__.__name__.encode()
+		return name + b"\x00\x00"

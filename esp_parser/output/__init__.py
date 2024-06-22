@@ -37,7 +37,7 @@ from formate import call_hooks
 from formate.config import load_toml, parse_hooks
 
 # this package
-from esp_parser import records, subrecords
+from esp_parser import group, records, subrecords
 from esp_parser.output._formate_toml import formate_toml_content
 from esp_parser.output._style_yapf import style_yapf_content
 
@@ -68,8 +68,22 @@ class FunctionCallFinder(ast.NodeVisitor):
 				self.imports.append(f"from esp_parser.records import {function_name}")
 			elif function_name in subrecords.__dict__:
 				self.imports.append(f"from esp_parser.subrecords import {function_name}")
-			elif function_name == "Group":
-				self.imports.append(f"from esp_parser.group import Group")
+			elif function_name in group.__dict__:
+				self.imports.append(f"from esp_parser.group import {function_name}")
+
+			self.generic_visit(node)
+
+	def visit_Attribute(self, node: ast.Attribute) -> None:  # noqa: D102
+		func = node.value
+
+		if isinstance(func, ast.Name):
+			function_name = func.id
+			if function_name in records.__dict__:
+				self.imports.append(f"from esp_parser.records import {function_name}")
+			elif function_name in subrecords.__dict__:
+				self.imports.append(f"from esp_parser.subrecords import {function_name}")
+			elif function_name in group.__dict__:
+				self.imports.append(f"from esp_parser.group import {function_name}")
 
 			self.generic_visit(node)
 
