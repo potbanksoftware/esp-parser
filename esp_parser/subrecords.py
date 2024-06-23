@@ -104,9 +104,11 @@ class CTDA(RecordType):
 
 	reference: bytes
 	"""
-	A form ID of a :class:`~.PLYR`, :class:`~.ACHR`, :class:`~.ACRE`, :class:`~.REFR`,
+	A form ID of a :class:`~.ACHR`, :class:`~.ACRE`, :class:`~.REFR`,
 	:class:`~.PMIS` or :class:`~.PGRE` reference on which to apply the function, or null.
 	"""
+
+	# Also refers to :class:`~.PLYR` which doesn't exist.
 
 	@classmethod
 	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
@@ -387,7 +389,7 @@ class Script:
 		:class:`~.STAT`, :class:`~.FURN`, :class:`~.CREA`, :class:`~.SPEL`, :class:`~.NPC_`,
 		:class:`~.CONT`, :class:`~.ARMO`, :class:`~.AMMO`, :class:`~.MISC`, :class:`~.WEAP`,
 		:class:`~.IMAD`, :class:`~.BOOK`, :class:`~.KEYM`, :class:`~.ALCH`, :class:`~.LIGH`,
-		:class:`~.QUST`, :class:`~.PLYR`, :class:`~.PACK`, :class:`~.LVLI`, :class:`~.ECZN`,
+		:class:`~.QUST`, :class:`~.PACK`, :class:`~.LVLI`, :class:`~.ECZN`,
 		:class:`~.EXPL`, :class:`~.FLST`, :class:`~.IDLM`, :class:`~.PMIS`, :class:`~.FACT`,
 		:class:`~.ACHR`, :class:`~.REFR`, :class:`~.ACRE`, :class:`~.GLOB`, :class:`~.DIAL`,
 		:class:`~.CELL`, :class:`~.SOUN`, :class:`~.MGEF`, :class:`~.WTHR`, :class:`~.CLAS`,
@@ -395,8 +397,10 @@ class Script:
 		:class:`~.SCPT`, :class:`~.IMGS`, :class:`~.MESG`, :class:`~.MSTT`, :class:`~.MUSC`,
 		:class:`~.NOTE`, :class:`~.PERK`, :class:`~.PGRE`, :class:`~.PROJ`, :class:`~.LVLN`,
 		:class:`~.WATR`, :class:`~.ENCH`, :class:`~.TREE`, :class:`~.TERM`, :class:`~.HAIR`,
-		:class:`~.EYES`, :class:`~.ADDN` or :class:`~.NULL` record.
+		:class:`~.EYES`, :class:`~.ADDN` record, or null.
 		"""
+
+		# Also refers to :class:`~.PLYR` which doesn't exist.
 
 
 class OBND(NamedTuple):
@@ -697,7 +701,7 @@ class Item(Collection):
 		"""
 		Form ID of the owner.
 
-		Form ID of an :class:`~NPC_` or :class:`~FSCT` record, or null.
+		Form ID of an :class:`~.NPC_` or :class:`~.FACT` record, or null.
 		"""
 
 		glob_var_req_rank: bytes
@@ -794,7 +798,7 @@ class XNAM(RecordType):
 	Relation used for :class:`~.FACT` and :class:`~.RACE` records.
 	"""
 
-	#: FormID of a :class:`~.FACT` or :class:`~.RACE` record.
+	#: Form ID of a :class:`~.FACT` or :class:`~.RACE` record.
 	faction: bytes
 
 	modifier: int

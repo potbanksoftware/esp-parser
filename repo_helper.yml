@@ -17,3 +17,12 @@ on_pypi: false
 enable_tests: false
 mypy_version: "1.10.0"
 use_whey: true
+standalone_contrib_guide: true
+
+sphinx_conf_epilogue:
+ - nitpicky = True
+ - copyright = "2024 Dominic Davis-Foster. Docstrings from fopdoc."
+
+extra_sphinx_extensions:
+ - attr_utils.autoattrs
+ - ignore_missing_xref

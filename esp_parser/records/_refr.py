@@ -184,7 +184,7 @@ class REFR(Record):
 		Teleport Destination.
 		"""
 
-		#: Form ID of a :class:`~.REFR`` record.
+		#: Form ID of a :class:`~.REFR` record.
 		door: bytes
 		xp: float
 		yp: float
@@ -548,7 +548,7 @@ class REFR(Record):
 		Navigation Door Link.
 		"""
 
-		#: Form ID of a :class:`~.NAVM`` record.
+		#: Form ID of a :class:`~.NAVM` record.
 		navmesh: bytes
 		unknown: bytes
 

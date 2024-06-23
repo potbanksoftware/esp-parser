@@ -3,3 +3,4 @@
 =============================
 
 .. automodule:: esp_parser.subrecords
+	:no-special-members:

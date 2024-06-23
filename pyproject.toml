@@ -79,6 +79,8 @@ extensions = [
     "sphinx_licenseinfo",
     "seed_intersphinx_mapping",
     "html_section",
+    "attr_utils.autoattrs",
+    "ignore_missing_xref",
 ]
 gitstamp_fmt = "%d %b %Y"
 templates_path = [ "_templates",]

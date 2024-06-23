@@ -59,7 +59,7 @@ class NAVM(Record):
 		Data.
 		"""
 
-		#: Form ID of a :class:`~.CELL`` record.
+		#: Form ID of a :class:`~.CELL` record.
 		cell: bytes
 		vertex_count: int
 		triangle_count: int
@@ -256,7 +256,7 @@ class NAVM(Record):
 		Individual element in :class:`~.NAVM.NVDP`.
 		"""
 
-		#: Form ID of a :class:`~.REFR`` record.
+		#: Form ID of a :class:`~.REFR` record.
 		reference: bytes
 		unknown: int
 		unused: bytes

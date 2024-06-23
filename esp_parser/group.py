@@ -39,7 +39,7 @@ from typing_extensions import Self
 from esp_parser import parse_esp
 from esp_parser.types import IntEnum, RecordType
 
-__all__ = ["Group"]
+__all__ = ["Group", "GroupTypeEnum"]
 
 
 class GroupTypeEnum(IntEnum):

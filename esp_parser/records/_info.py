@@ -216,7 +216,7 @@ class INFO(Record):
 		"""
 		Speaker.
 
-		Form ID of a :class:`~.CERA` or :class:`~.NPC_` record.
+		Form ID of a :class:`~.CREA` or :class:`~.NPC_` record.
 		"""
 
 	class KNAM(FormIDRecord):

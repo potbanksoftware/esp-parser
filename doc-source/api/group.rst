@@ -3,3 +3,4 @@
 =============================
 
 .. automodule:: esp_parser.group
+	:no-special-members:
