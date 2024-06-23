@@ -106,34 +106,6 @@ class LIGH(Record):
 					"weight",
 					)
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x20\x00"
-		# 	return cls(*struct.unpack("<iI4sIffIf", raw_bytes.read(32)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-		# 	packed = struct.pack(
-		# 			"<iI4sIffIf",
-		# 			self.time,
-		# 			self.radius,
-		# 			self.color,
-		# 			self.flags,
-		# 			self.falloff_exponent,
-		# 			self.fov,
-		# 			self.value,
-		# 			self.weight,
-		# 			)
-		# 	return b"DATA" + b"\x20\x00" + packed
-
 	class FNAM(Float32Record):
 		"""
 		Fade value.

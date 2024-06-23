@@ -97,14 +97,7 @@ class DOOR(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"SCRI",
-					b"SNAM",
-					b"ANAM",
-					b"BNAM",
-					b"FNAM",
-					}:
+			elif record_type in {b"ANAM", b"BNAM", b"FNAM", b"FULL", b"SCRI", b"SNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

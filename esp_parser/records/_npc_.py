@@ -378,54 +378,6 @@ class NPC_(Record):
 					"unarmed_offset",
 					)
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x1c\x00"  # size field
-		# 	return cls(*struct.unpack("<BBBBBBBBBBBBBBBBBBBBBBBBBBBB", raw_bytes.read(28)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"DNAM\x1c\x00" + struct.pack(
-		# 			"<BBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-		# 			self.barter,
-		# 			self.big_guns,
-		# 			self.energy_weapons,
-		# 			self.explosives,
-		# 			self.lockpick,
-		# 			self.medicine,
-		# 			self.melee_weapons,
-		# 			self.repair,
-		# 			self.science,
-		# 			self.small_guns,
-		# 			self.sneak,
-		# 			self.speech,
-		# 			self.survival,
-		# 			self.unarmed,
-		# 			self.barter_offset,
-		# 			self.big_guns_offset,
-		# 			self.energy_weapons_offset,
-		# 			self.explosives_offset,
-		# 			self.lockpick_offset,
-		# 			self.medicine_offset,
-		# 			self.melee_weapons_offset,
-		# 			self.repair_offset,
-		# 			self.science_offset,
-		# 			self.small_guns_offset,
-		# 			self.sneak_offset,
-		# 			self.speech_offset,
-		# 			self.survival_offset,
-		# 			self.unarmed_offset,
-		# 			)
-
 	class PNAM(FormIDRecord):
 		"""
 		Head Part.
@@ -576,30 +528,30 @@ class NPC_(Record):
 			elif record_type == b"AIDT":
 				yield AIDT.parse(raw_bytes)
 			elif record_type in {
-					b"FULL",
-					b"INAM",
-					b"VTCK",
-					b"TPLT",
-					b"RNAM",
-					b"EITM",
-					b"EAMT",
-					b"SCRI",
 					b"CNAM",
-					b"PNAM",
-					b"HNAM",
-					b"ENAM",
-					b"ZNAM",
 					b"DATA",
 					b"DNAM",
-					b"HCLR",
-					b"NAM4",
-					b"FGGS",
+					b"EAMT",
+					b"EITM",
+					b"ENAM",
 					b"FGGA",
+					b"FGGS",
 					b"FGTS",
+					b"FULL",
+					b"HCLR",
+					b"HNAM",
+					b"INAM",
+					b"LNAM",
+					b"NAM4",
 					b"NAM5",
 					b"NAM6",
 					b"NAM7",
-					b"LNAM",
+					b"PNAM",
+					b"RNAM",
+					b"SCRI",
+					b"TPLT",
+					b"VTCK",
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:

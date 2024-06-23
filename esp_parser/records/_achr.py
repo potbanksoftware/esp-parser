@@ -147,19 +147,19 @@ class ACHR(Record):
 			elif record_type == b"DATA":
 				yield PositionRotation.DATA.parse(raw_bytes)
 			elif record_type in {
-					b"NAME",
-					b"XEZN",
-					b"XPRD",
 					b"INAM",
+					b"NAME",
 					b"TNAM",
-					b"XMRC",
-					b"XRDS",
+					b"XEMI",
+					b"XEZN",
 					b"XHLP",
 					b"XLKR",
-					b"XEMI",
 					b"XMBR",
-					b"XRGD",
+					b"XMRC",
+					b"XPRD",
+					b"XRDS",
 					b"XRGB",
+					b"XRGD",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in {b"SCHR", b"SCDA", b"SCTX", b"SCRO", b"SLSD", b"SCVR"}:

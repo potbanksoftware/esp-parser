@@ -123,38 +123,6 @@ class TXST(Record):
 					"color",
 					)
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x24\x00"  # size field
-		# 	return cls(*struct.unpack("<fffffffBB2s4s", raw_bytes.read(36)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	packed = struct.pack(
-		# 			"<fffffffBB2s4s",
-		# 			self.min_width,
-		# 			self.max_width,
-		# 			self.min_height,
-		# 			self.max_height,
-		# 			self.depth,
-		# 			self.shininess,
-		# 			self.parallax_scale,
-		# 			self.parallax_passes,
-		# 			self.flags,
-		# 			self.color,
-		# 			)
-
-		# 	return b"DODT\x24\x00" + packed
-
 	class DNAM(Uint16Record):
 		"""
 		Flags.

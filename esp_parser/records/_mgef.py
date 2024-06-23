@@ -149,45 +149,6 @@ class MGEF(Record):
 					"actor_value",
 					)
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x48\x00"
-		# 	return cls(*struct.unpack("<If4siiH2s4sf4s4s4s4s4s4sffIi", raw_bytes.read(72)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-		# 	packed = struct.pack(
-		# 			"<If4siiH2s4sf4s4s4s4s4s4sffIi",
-		# 			self.flags,
-		# 			self.base_cost,
-		# 			self.associated_item,
-		# 			self.magic_school,
-		# 			self.resistance_type,
-		# 			self.unknown,
-		# 			self.unused,
-		# 			self.light,
-		# 			self.projectile_speed,
-		# 			self.effect_shader,
-		# 			self.object_display_shader,
-		# 			self.effect_sound,
-		# 			self.bold_sound,
-		# 			self.hit_sound,
-		# 			self.area_sound,
-		# 			self.constant_effect_enchantment_factor,
-		# 			self.constant_effect_barter_factor,
-		# 			self.archtype,
-		# 			self.actor_value,
-		# 			)
-		# 	return b"DATA" + b"\x48\x00" + packed
-
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""

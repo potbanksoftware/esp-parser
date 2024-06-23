@@ -946,27 +946,6 @@ class Destruction(Collection):
 		Stage End Marker.
 		"""
 
-		# def __repr__(self) -> str:
-		# 	return "Destruction.DSTF()"
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
-		# 	return cls()
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"DSTF\x00\x00"
-
 
 class Effect(Collection):
 	"""

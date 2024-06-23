@@ -159,11 +159,7 @@ class NAVI(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"NVER",
-					b"NVMI",
-					b"NVCI",
-					}:
+			elif record_type in {b"NVCI", b"NVER", b"NVMI"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

@@ -161,7 +161,16 @@ class NOTE(Record):
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
 			elif record_type in {
-					b"FULL", b"ICON", b"MICO", b"YNAM", b"ZNAM", b"DATA", b"ONAM", b"XNAM", b"TNAM", b"SNAM"
+					b"DATA",
+					b"FULL",
+					b"ICON",
+					b"MICO",
+					b"ONAM",
+					b"SNAM",
+					b"TNAM",
+					b"XNAM",
+					b"YNAM",
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:

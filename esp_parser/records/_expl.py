@@ -144,13 +144,7 @@ class EXPL(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"EITM",
-					b"MNAM",
-					b"DATA",
-					b"INAM",
-					}:
+			elif record_type in {b"DATA", b"EITM", b"FULL", b"INAM", b"MNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

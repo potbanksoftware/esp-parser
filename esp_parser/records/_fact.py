@@ -77,24 +77,6 @@ class FACT(Record):
 
 			return ("flags1", "flags2", "unused")
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x04\x00"  # size field
-		# 	return cls(*struct.unpack("<BB2s", raw_bytes.read(4)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"DATA\x04\x00" + struct.pack("<BB2s", self.flags1, self.flags2, self.unused)
-
 	class CNAM(Float32Record):
 		"""
 		Unused.
@@ -137,15 +119,7 @@ class FACT(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"XNAM":
 				yield XNAM.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"DATA",
-					b"CNAM",
-					b"RNAM",
-					b"MNAM",
-					b"FNAM",
-					b"INAM",
-					}:
+			elif record_type in {b"CNAM", b"DATA", b"FNAM", b"FULL", b"INAM", b"MNAM", b"RNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

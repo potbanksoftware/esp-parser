@@ -137,16 +137,7 @@ class CHAL(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"SCRI",
-					b"DESC",
-					b"DATA",
-					b"SNAM",
-					b"XNAM",
-					}:
+			elif record_type in {b"DATA", b"DESC", b"FULL", b"ICON", b"MICO", b"SCRI", b"SNAM", b"XNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

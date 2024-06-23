@@ -178,17 +178,17 @@ class QUST(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type in {
-					b"SCRI",
+					b"CNAM",
+					b"DATA",
 					b"FULL",
 					b"ICON",
-					b"MICO",
-					b"DATA",
 					b"INDX",
-					b"QSDT",
-					b"CNAM",
-					b"QOBJ",
+					b"MICO",
 					b"NNAM",
+					b"QOBJ",
+					b"QSDT",
 					b"QSTA",
+					b"SCRI",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in {b"SCHR", b"SCDA", b"SCTX", b"SCRO", b"SLSD", b"SCVR"}:

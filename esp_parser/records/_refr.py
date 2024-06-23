@@ -212,27 +212,6 @@ class REFR(Record):
 		Map Marker Marker.
 		"""
 
-		# def __repr__(self) -> str:
-		# 	return "REFR.XMRK()"
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
-		# 	return cls()
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"XMRK\x00\x00"
-
 	class FNAM(Uint8Record):
 		"""
 		Map Marker Flags.
@@ -288,27 +267,6 @@ class REFR(Record):
 		"""
 		Audio marker (New Vegas only).
 		"""
-
-		# def __repr__(self) -> str:
-		# 	return "REFR.MMRK()"
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
-		# 	return cls()
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"MMRK\x00\x00"
 
 	class XTRG(FormIDRecord):
 		"""
@@ -645,66 +603,66 @@ class REFR(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type in {
-					b"RCLR",
-					b"RCLR",
-					b"NAME",
-					b"XEZN",
-					b"XRGD",
-					b"XRGB",
-					b"XPRM",
-					b"XTRI",
-					b"XMBP",
-					b"XMBO",
-					b"XTEL",
-					b"XMRK",
+					b"BNAM",
+					b"CNAM",
 					b"FNAM",
 					b"FULL",
-					b"TNAM",
-					b"XTRG",
-					b"XLCM",
-					b"XPRD",
-					b"XPPA",
 					b"INAM",
+					b"MMRK",
+					b"MNAM",
+					b"NAME",
+					b"NNAM",
+					b"ONAM",
+					b"RCLR",
+					b"RCLR",
 					b"TNAM",
-					b"XRDO",
-					b"XOWN",
-					b"XRNK",
-					b"XLOC",
-					b"XCNT",
-					b"XRDS",
-					b"XHLP",
-					b"XRAD",
-					b"XCHG",
-					b"XAMT",
+					b"TNAM",
+					b"XACT",
 					b"XAMC",
-					b"XPWR",
-					b"XLTW",
-					b"XDCR",
-					b"XLKR",
-					b"XCLP",
+					b"XAMT",
 					b"XAPD",
 					b"XAPR",
-					b"XESP",
+					b"XCHG",
+					b"XCLP",
+					b"XCNT",
+					b"XDCR",
 					b"XEMI",
-					b"XMBR",
-					b"XACT",
-					b"ONAM",
+					b"XESP",
+					b"XEZN",
+					b"XHLP",
 					b"XIBS",
-					b"XNDP",
-					b"XPOD",
-					b"XPLT",
-					b"XSED",
-					b"XRMR",
+					b"XLCM",
+					b"XLKR",
+					b"XLOC",
+					b"XLOD",
 					b"XLRM",
+					b"XLTW",
+					b"XMBO",
+					b"XMBP",
+					b"XMBR",
+					b"XMRK",
+					b"XNDP",
 					b"XOCP",
 					b"XORD",
-					b"XLOD",
+					b"XOWN",
+					b"XPLT",
+					b"XPOD",
+					b"XPPA",
+					b"XPRD",
+					b"XPRM",
+					b"XPWR",
+					b"XRAD",
+					b"XRDO",
+					b"XRDS",
+					b"XRGB",
+					b"XRGD",
+					b"XRMR",
+					b"XRNK",
 					b"XSCL",
-					b"MMRK",
-					b"CNAM",
-					b"BNAM",
-					b"NNAM",
-					b"MNAM",
+					b"XSED",
+					b"XTEL",
+					b"XTRG",
+					b"XTRI",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type == b"DATA":

@@ -160,7 +160,11 @@ class ALOC(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type in {
+					b"FNAM",
 					b"FULL",
+					b"GNAM",
+					b"HNAM",
+					b"LNAM",
 					b"NAM1",
 					b"NAM2",
 					b"NAM3",
@@ -168,14 +172,10 @@ class ALOC(Record):
 					b"NAM5",
 					b"NAM6",
 					b"NAM7",
-					b"HNAM",
-					b"ZNAM",
+					b"RNAM",
 					b"XNAM",
 					b"YNAM",
-					b"LNAM",
-					b"GNAM",
-					b"RNAM",
-					b"FNAM",
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

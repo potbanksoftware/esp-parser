@@ -94,29 +94,6 @@ class CELL(Record):
 
 			return ('x', 'y', "force_hide_land")
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x0c\x00"  # size field
-		# 	return cls(*struct.unpack("<iiI", raw_bytes.read(12)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"XCLC\x0c\x00" + struct.pack("<iiI", *self)
-
-		# def __repr__(self) -> str:
-		# 	return namedtuple_qualname_repr(self)
-
-	# RecordType.register(XCLC)
-
 	@attrs.define
 	class XCLL(StructRecord):
 		"""
@@ -327,26 +304,26 @@ class CELL(Record):
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type in {
-					b"FULL",
 					b"DATA",
+					b"FULL",
+					b"IMPF",
+					b"LNAM",
+					b"LTMP",
+					b"XCAS",
+					b"XCCM",
+					b"XCET",
+					b"XCIM",
 					b"XCLC",
 					b"XCLL",
-					b"IMPF",
-					b"XCLW",
-					b"XNAM",
 					b"XCLR",
-					b"XCIM",
-					b"XCET",
-					b"XEZN",
-					b"XCCM",
+					b"XCLW",
+					b"XCMO",
+					b"XCMT",
 					b"XCWT",
+					b"XEZN",
+					b"XNAM",
 					b"XOWN",
 					b"XRNK",
-					b"XCAS",
-					b"XCMT",
-					b"XCMO",
-					b"LTMP",
-					b"LNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

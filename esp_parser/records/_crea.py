@@ -176,24 +176,6 @@ class CREA(Record):
 
 			return ("faction", "rank", "unused")
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x08\x00"  # size field
-		# 	return cls(*struct.unpack("<4sB3s", raw_bytes.read(8)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"SNAM" + struct.pack("<H4sB3s", 8, self.faction, self.rank, self.unused)
-
 	class INAM(FormIDRecord):
 		"""
 		Death Item.
@@ -322,40 +304,6 @@ class CREA(Record):
 					"agility",
 					"luck",
 					)
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x11\x00"  # size field
-		# 	return cls(*struct.unpack("<BBBBh2shBBBBBBB", raw_bytes.read(17)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"DATA\x11\x00" + struct.pack(
-		# 			"<BBBBh2shBBBBBBB",
-		# 			self.type,
-		# 			self.combat_skill,
-		# 			self.magic_skill,
-		# 			self.stealth_skill,
-		# 			self.health,
-		# 			self.unused,
-		# 			self.damage,
-		# 			self.strength,
-		# 			self.perception,
-		# 			self.endurance,
-		# 			self.charisma,
-		# 			self.intelligence,
-		# 			self.agility,
-		# 			self.luck,
-		# 			)
 
 	class RNAM(Uint8Record):
 		"""
@@ -504,34 +452,34 @@ class CREA(Record):
 			elif record_type == b"AIDT":
 				yield AIDT.parse(raw_bytes)
 			elif record_type in {
-					b"FULL",
-					b"SPLO",
-					b"EITM",
-					b"EAMT",
-					b"NIFZ",
-					b"NIFT",
-					b"SNAM",
-					b"INAM",
-					b"VTCK",
-					b"TPLT",
-					b"SCRI",
-					b"PKID",
-					b"KFFZ",
-					b"DATA",
-					b"RNAM",
-					b"ZNAM",
-					b"PNAM",
-					b"TNAM",
 					b"BNAM",
-					b"WNAM",
+					b"CNAM",
+					b"CSCR",
+					b"CSDC",
+					b"CSDI",
+					b"CSDT",
+					b"DATA",
+					b"EAMT",
+					b"EITM",
+					b"FULL",
+					b"INAM",
+					b"KFFZ",
+					b"LNAM",
 					b"NAM4",
 					b"NAM5",
-					b"CSCR",
-					b"CNAM",
-					b"LNAM",
-					b"CSDT",
-					b"CSDI",
-					b"CSDC",
+					b"NIFT",
+					b"NIFZ",
+					b"PKID",
+					b"PNAM",
+					b"RNAM",
+					b"SCRI",
+					b"SNAM",
+					b"SPLO",
+					b"TNAM",
+					b"TPLT",
+					b"VTCK",
+					b"WNAM",
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:

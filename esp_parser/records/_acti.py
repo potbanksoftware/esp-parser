@@ -102,12 +102,12 @@ class ACTI(Record):
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
 			elif record_type in {
-					b"FULL",
-					b"SCRI",
 					b"DEST",
+					b"FULL",
+					b"RNAM",
+					b"SCRI",
 					b"SNAM",
 					b"VNAM",
-					b"RNAM",
 					b"WNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)

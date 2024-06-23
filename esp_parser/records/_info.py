@@ -80,25 +80,6 @@ class INFO(Record):
 
 			return ("type", "next_speaker", "flags")
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x04\x00"  # size field
-		# 	type_, next_speaker = struct.unpack("<BB", raw_bytes.read(2))
-		# 	return cls(DialType(type_), next_speaker, raw_bytes.read(2))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"DATA\x04\x00" + struct.pack("<BB", self.type, self.next_speaker) + self.flags
-
 	class QSTI(FormIDRecord):
 		"""
 		The associates quest.
@@ -183,37 +164,6 @@ class INFO(Record):
 					"unused__",
 					)
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x18\x00"  # size field
-		# 	unpacked = struct.unpack("<Ii4sB3s4sB3s", raw_bytes.read(24))
-		# 	return cls(INFO.TRDTEmotionType(unpacked[0]), *unpacked[1:])
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	packed = struct.pack(
-		# 			"<Ii4sB3s4sB3s",
-		# 			self.emotion_type,
-		# 			self.emotion_value,
-		# 			self.unused,
-		# 			self.response_number,
-		# 			self.unused_,
-		# 			self.sound,
-		# 			self.flags,
-		# 			self.unused__,
-		# 			)
-
-		# 	return b"TRDT\x18\x00" + packed
-
 	class NAM1(CStringRecord):
 		"""
 		Response Text.
@@ -251,31 +201,6 @@ class INFO(Record):
 		"""
 		Marker between scripts.
 		"""
-
-		# def __repr__(self) -> str:
-		# 	return "INFO.NEXT()"
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
-		# 	return cls()
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"NEXT\x00\x00"
-
-	# Embedded Script (End). collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
 
 	class SNDD(FormIDRecord):
 		"""
@@ -331,24 +256,24 @@ class INFO(Record):
 				break
 
 			if record_type in {
-					b"DATA",
-					b"QSTI",
-					b"TPIC",
-					b"PNAM",
-					b"NAME",
-					b"TCLT",
-					b"TCLF",
-					b"NEXT",
-					b"SNDD",
-					b"RNAM",
 					b"ANAM",
-					b"KNAM",
+					b"DATA",
 					b"DNAM",
-					b"TRDT",
+					b"KNAM",
 					b"NAM1",
 					b"NAM2",
 					b"NAM3",
+					b"NAME",
+					b"NEXT",
+					b"PNAM",
+					b"QSTI",
+					b"RNAM",
+					b"SNDD",
 					b"TCFU",
+					b"TCLF",
+					b"TCLT",
+					b"TPIC",
+					b"TRDT",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type == b"CTDA":

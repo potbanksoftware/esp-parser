@@ -132,41 +132,7 @@ class ALCH(Record):
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return (
-					"value",
-					"flags",
-					"unused",
-					"withdrawal_effect",
-					"addiction_chance",
-					"sound_consume",
-					)
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x14\x00"  # size field
-		# 	return cls(*struct.unpack("<iB3s4sf4s", raw_bytes.read(20)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"ENIT" + struct.pack(
-		# 			"<HiB3s4sf4s",
-		# 			20,
-		# 			self.value,
-		# 			self.flags,
-		# 			self.unused,
-		# 			self.withdrawal_effect,
-		# 			self.addiction_chance,
-		# 			self.sound_consume,
-		# 			)
+			return ("value", "flags", "unused", "withdrawal_effect", "addiction_chance", "sound_consume")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -187,17 +153,7 @@ class ALCH(Record):
 				yield OBND.parse(raw_bytes)
 			elif record_type == b"CTDA":
 				yield CTDA.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"SCRI",
-					b"YNAM",
-					b"ZNAM",
-					b"ETYP",
-					b"DATA",
-					b"ENIT",
-					}:
+			elif record_type in {b"DATA", b"ENIT", b"ETYP", b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

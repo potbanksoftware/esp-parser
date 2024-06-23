@@ -140,8 +140,10 @@ class MESG(Record):
 				yield CTDA.parse(raw_bytes)
 			elif record_type in {
 					b"DESC",
+					b"DNAM",
 					b"FULL",
 					b"INAM",
+					b"ITXT",
 					b"NAM1",
 					b"NAM2",
 					b"NAM3",
@@ -151,9 +153,7 @@ class MESG(Record):
 					b"NAM7",
 					b"NAM8",
 					b"NAM9",
-					b"DNAM",
 					b"TNAM",
-					b"ITXT",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

@@ -88,24 +88,6 @@ class SPEL(Record):
 
 			return ("type", "cost", "level", "flags", "unused")
 
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x10\x00"
-		# 	return cls(*struct.unpack("<IIIB3s", raw_bytes.read(16)))
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"SPIT" + struct.pack("<HIIIB3s", 16, self.type, self.cost, self.level, self.flags, self.unused)
-
 	class EFID(FormIDRecord):
 		"""
 		Base effect.
