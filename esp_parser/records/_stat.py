@@ -45,6 +45,8 @@ class STAT(Record):
 	class BRUS(Int8Record):
 		"""
 		Passthrough sound.
+
+		Enum - see https://tes5edit.github.io/fopdoc/FalloutNV/Records/STAT.html
 		"""
 
 	class RNAM(FormIDRecord):

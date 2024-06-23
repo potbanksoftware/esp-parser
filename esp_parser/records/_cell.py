@@ -226,7 +226,7 @@ class CELL(Record):
 		"""
 		Image Space.
 
-		FormID of an IMGS record.
+		Form ID of an :class:`~.IMGS` record.
 		"""
 
 	# class XCET(RecordType):
@@ -238,21 +238,21 @@ class CELL(Record):
 		"""
 		Encounter Zone.
 
-		FormID of an ECZN record.
+		Form ID of an :class:`~.ECZN` record.
 		"""
 
 	class XCCM(FormIDRecord):
 		"""
 		Climate.
 
-		FormID of a CLMT record.
+		Form ID of a :class:`~.CLMT` record.
 		"""
 
 	class XCWT(FormIDRecord):
 		"""
 		Water.
 
-		FormID of a WATR record.
+		Form ID of a :class:`~.WATR` record.
 		"""
 
 	class XOWN(FormIDRecord):

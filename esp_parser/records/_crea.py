@@ -68,14 +68,14 @@ class CREA(Record):
 		"""
 		Actor Effect.
 
-		FormID of a SPEL record.
+		Form ID of a :class:`~.SPEL` record.
 		"""
 
 	class EITM(FormIDRecord):
 		"""
 		Unarmed Attack Effect.
 
-		FormID of a ENCH or SPEL record.
+		Form ID of a :class:`~.ENCH` or SPEL record.
 		"""
 
 	class EAMT(Uint16Record):
@@ -180,21 +180,21 @@ class CREA(Record):
 		"""
 		Death Item.
 
-		FormID of a LVLI record.
+		Form ID of a :class:`~.LVLI` record.
 		"""
 
 	class VTCK(FormIDRecord):
 		"""
 		Voice.
 
-		FormID of a VTYP record.
+		Form ID of a :class:`~.VTYP` record.
 		"""
 
 	class TPLT(FormIDRecord):
 		"""
 		Template.
 
-		FormID of a CREA or LVLC record.
+		Form ID of a :class:`~.CREA` or LVLC record.
 		"""
 
 	class SCRI(FormIDRecord):
@@ -208,7 +208,7 @@ class CREA(Record):
 		"""
 		Package.
 
-		FormID of a PACK record.
+		Form ID of a :class:`~.PACK` record.
 		"""
 
 	class KFFZ(List[bytes], RecordType):
@@ -314,14 +314,14 @@ class CREA(Record):
 		"""
 		Combat Style.
 
-		FormID of a CSTY record.
+		Form ID of a :class:`~.CSTY` record.
 		"""
 
 	class PNAM(FormIDRecord):
 		"""
 		Body Part Data.
 
-		FormID of a BPTD record.
+		Form ID of a :class:`~.BPTD` record.
 		"""
 
 	class TNAM(Float32Record):
@@ -355,7 +355,7 @@ class CREA(Record):
 
 	class CSCR(FormIDRecord):
 		"""
-		FormID of a CREA record to inherit sounds from.
+		Form ID of a :class:`~.CREA` record to inherit sounds from.
 		"""
 
 	class CSDT(IntEnumField):
@@ -420,14 +420,14 @@ class CREA(Record):
 		"""
 		Impact Dataset.
 
-		FormID of a IPDS record.
+		Form ID of a :class:`~.IPDS` record.
 		"""
 
 	class LNAM(FormIDRecord):
 		"""
 		Melee Weapon List.
 
-		FormID of a FLST record.
+		Form ID of a :class:`~.FLST` record.
 		"""
 
 	@classmethod

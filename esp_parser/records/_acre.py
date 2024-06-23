@@ -56,14 +56,14 @@ class ACRE(Record):
 		"""
 		Base.
 
-		FormID of a CREA record.
+		Form ID of a :class:`~.CREA` record.
 		"""
 
 	class XEZN(FormIDRecord):
 		"""
 		Encounter Zone.
 
-		FormID of a ECZN record.
+		Form ID of a :class:`~.ECZN` record.
 		"""
 
 	class XRGD(RawBytesRecord):
@@ -94,14 +94,14 @@ class ACRE(Record):
 		"""
 		Idle.
 
-		Patrol data. FormID of an IDLE record, or null.
+		Patrol data. Form ID of an IDLE record, or null.
 		"""
 
 	class TNAM(FormIDRecord):
 		"""
 		Topic.
 
-		Patrol data. FormID of a DIAL record, or null.
+		Patrol data. Form ID of a :class:`~.DIAL` record, or null.
 		"""
 
 	class XLCM(Int32Record):
@@ -113,7 +113,7 @@ class ACRE(Record):
 		"""
 		Owner.
 
-		Ownership data. FormID of a :class:`~.FACT`, :class:`~.ACHR` or :class:`~.NPC_` record.
+		Ownership data. Form ID of a `class:`~.FACT`, :class:`~.ACHR` or :class:`~.NPC_` record.
 		"""
 
 	class XRNK(Int32Record):
@@ -127,7 +127,7 @@ class ACRE(Record):
 		"""
 		Merchant Container.
 
-		FormID of a REFR record.
+		FormID of a :class:`~.REFR` record.
 		"""
 
 	class XCNT(Int32Record):

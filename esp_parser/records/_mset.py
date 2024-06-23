@@ -159,33 +159,45 @@ class MSET(Record):
 		"""
 		Intro (Battle, Dungeon) / Daytime (Incidental).
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class INAM(FormIDRecord):
 		"""
 		Outro (Battle, Dungeon) / Nighttime (Incidental).
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class KNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class LNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class MNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class NNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class ONAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class DATA(RawBytesRecord):
-		pass
+		"""
+		Unknown.
+		"""
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:

@@ -54,14 +54,14 @@ class EXPL(Record):
 		"""
 		Object Effect.
 
-		FormID of an ENCH or SPEL record.
+		Form ID of an :class:`~.ENCH` or :class:`~.SPEL` record.
 		"""
 
 	class MNAM(FormIDRecord):
 		"""
 		Image Space Modifier.
 
-		FormID of an IMAD record.
+		Form ID of an :class:`~.IMAD` record.
 		"""
 
 	@attrs.define

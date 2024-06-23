@@ -83,7 +83,7 @@ class RCPE(Record):
 		"""
 		Item.
 
-		FormID of an :class:`~.ARMO`, :class:`~.AMMO`, :class:`~.MISC`,
+		Form ID of an :class:`~.ARMO`, :class:`~.AMMO`, :class:`~.MISC`,
 		:class:`~.WEAP`, :class:`~.BOOK`, :class:`~.KEYM`, :class:`~.ALCH`,
 		:class:`~.NOTE`, :class:`~.IMOD`, :class:`~.CMNY`, :class:`~.CCRD`,
 		:class:`~.CHIP` or :class:`~.LIGH` record.
