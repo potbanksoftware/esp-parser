@@ -79,7 +79,8 @@ class REFR(Record):
 		:class:`~.LVLN`, :class:`~.LVLC`, :class:`~.MISC`, :class:`~.WEAP`, :class:`~.BOOK`,
 		:class:`~.KEYM`, :class:`~.ALCH`, :class:`~.LIGH`, :class:`~.GRAS`, :class:`~.ASPC`,
 		:class:`~.IDLM`, :class:`~.ARMA`, :class:`~.MSTT`, :class:`~.NOTE`, :class:`~.PWAT`,
-		:class:`~.SCOL`, :class:`~.TACT`, :class:`~.TERM` or :class:`~.TXST` record.
+		:class:`~.SCOL`, :class:`~.TACT`, :class:`~.TERM`, :class:`~.TXST`,	:class:`~.CCRD`,
+		:class:`~.IMOD` or :class:`~.CMNY` record.
 		"""
 
 	class XEZN(FormIDRecord):
@@ -347,7 +348,8 @@ class REFR(Record):
 		"""
 		Owner.
 
-		Ownership data. Form ID of a :class:`~.FACT`, :class:`~.ACHR` or :class:`~.NPC_` record.
+		Ownership data. Form ID of a :class:`~.FACT`, :class:`~.ACHR`,
+		:class:`~.CREA` or :class:`~.NPC_` record.
 		"""
 
 	class XRNK(Int32Record):

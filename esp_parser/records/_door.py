@@ -49,6 +49,8 @@ class DOOR(Record):
 
 	class SCRI(FormIDRecord):
 		"""
+		Script.
+
 		Form ID of a :class:`~.SCPT` record.
 		"""
 

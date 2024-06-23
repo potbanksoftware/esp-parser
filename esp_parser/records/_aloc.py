@@ -142,7 +142,9 @@ class ALOC(Record):
 		"""
 
 	class FNAM(RawBytesRecord):
-		pass
+		"""
+		Unknown.
+		"""
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:

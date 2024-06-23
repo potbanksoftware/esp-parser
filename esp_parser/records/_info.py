@@ -82,7 +82,7 @@ class INFO(Record):
 
 	class QSTI(FormIDRecord):
 		"""
-		The associates quest.
+		The associated quest.
 
 		Form ID of a :class:`~.QUST` record.
 		"""
@@ -96,6 +96,8 @@ class INFO(Record):
 
 	class PNAM(FormIDRecord):
 		"""
+		Previous :class:`~.INFO`.
+
 		Form ID of the previous :class:`~.INFO` record, or null.
 		"""
 
@@ -206,7 +208,7 @@ class INFO(Record):
 		"""
 		Unused.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class RNAM(CStringRecord):

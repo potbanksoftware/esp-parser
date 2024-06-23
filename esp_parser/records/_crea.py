@@ -201,7 +201,7 @@ class CREA(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class PKID(FormIDRecord):

@@ -138,7 +138,7 @@ class NOTE(Record):
 
 	class SNAM(FormIDRecord):
 		"""
-		Sound / NPC.
+		Sound / Actor (NPC).
 
 		Form ID of a :class:`~.SOUN` or :class:`~.NPC_` record.
 		"""

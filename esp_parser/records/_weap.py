@@ -75,14 +75,14 @@ class WEAP(Record):
 		"""
 		Script.
 
-		Form ID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class EITM(FormIDRecord):
 		"""
 		Object Effect.
 
-		Form ID of an ENCH or SPEL record.
+		Form ID of an :class:`~.ENCH` or :class:`~.SPEL` record.
 		"""
 
 	class EAMT(Int16Record):
@@ -94,19 +94,21 @@ class WEAP(Record):
 		"""
 		Ammo.
 
-		Form ID of an AMMO or FLST record.
+		Form ID of an :class:`~.AMMO` or :class:`~.FLST` record.
 		"""
 
 	class REPL(FormIDRecord):
 		"""
 		Repair List.
 
-		Form ID of a FLST record.
+		Form ID of a :class:`~.FLST` record.
 		"""
 
 	class ETYP(Int32Record):
 		"""
 		Equipment Type.
+
+		See https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/ETYP.html
 		"""
 
 	class BIPL(FormIDRecord):
@@ -268,7 +270,7 @@ class WEAP(Record):
 
 	class SNAM(FormIDRecord):
 		"""
-		Sound - Gun - Shoot 3D.
+		Sound - Gun - Shoot 3D / Shoot Dist.
 
 		Form ID of a :class:`~.SOUN` record.
 		"""
@@ -675,6 +677,8 @@ class WEAP(Record):
 	class VNAM(Uint32Record):
 		"""
 		Sound Level.
+
+		See https://tes5edit.github.io/fopdoc/FalloutNV/Records/Values/Sound%20Levels.html
 		"""
 
 	@classmethod

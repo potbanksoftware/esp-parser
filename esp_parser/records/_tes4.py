@@ -43,7 +43,7 @@ __all__ = ["TES4"]
 
 class TES4(Record):
 	"""
-	Record for Plugin info.
+	Record for plugin info.
 	"""
 
 	class HEDR(NamedTuple):
@@ -98,14 +98,14 @@ class TES4(Record):
 		"""
 		The plugin's author.
 
-		Max 512 bytes.
+		Max 511 bytes.
 		"""
 
 	class SNAM(CStringRecord):
 		"""
 		The plugin's description.
 
-		Max 512 bytes.
+		Max 511 bytes.
 		"""
 
 	class MAST(CStringRecord):

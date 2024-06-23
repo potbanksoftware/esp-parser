@@ -310,7 +310,7 @@ class NAVM(Record):
 
 	class NVGD(RawBytesRecord):
 		"""
-		Unknown.
+		NavMesh Grid.
 		"""
 
 	# class NVEX(RecordType):
