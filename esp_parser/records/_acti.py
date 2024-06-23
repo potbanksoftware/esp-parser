@@ -70,6 +70,13 @@ class ACTI(Record):
 		Form ID of a :class:`~.SOUN` record.
 		"""
 
+	class INAM(FormIDRecord):
+		"""
+		Radio Template.
+
+		Form ID of a :class:`~.SOUN` record.
+		"""
+
 	class RNAM(FormIDRecord):
 		"""
 		Radio Station.
@@ -82,6 +89,11 @@ class ACTI(Record):
 		Water Type.
 
 		Form ID of a :class:`~.WATR` record.
+		"""
+
+	class XATO(CStringRecord):
+		"""
+		Activation Prompt.
 		"""
 
 	@classmethod
@@ -101,15 +113,7 @@ class ACTI(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {
-					b"DEST",
-					b"FULL",
-					b"RNAM",
-					b"SCRI",
-					b"SNAM",
-					b"VNAM",
-					b"WNAM",
-					}:
+			elif record_type in {b"FULL", b"INAM", b"RNAM", b"SCRI", b"SNAM", b"VNAM", b"WNAM", b"XATO"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

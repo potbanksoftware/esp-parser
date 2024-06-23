@@ -31,8 +31,9 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID, PositionRotation
+from esp_parser.subrecords import EDID, PositionRotation, Script
 from esp_parser.types import (
+		CStringRecord,
 		Float32Record,
 		FormIDRecord,
 		Int32Record,
@@ -181,6 +182,11 @@ class ACRE(Record):
 	# 	https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/XAPR.html
 	# 	"""
 
+	class XATO(CStringRecord):
+		"""
+		Activation Prompt.
+		"""
+
 	# class XESP(RecordType):
 	# 	"""
 	# 	Enable Parent.
@@ -235,6 +241,7 @@ class ACRE(Record):
 					b"TNAM",
 					b"XAPD",
 					b"XAPR",
+					b"XATO",
 					b"XCLP",
 					b"XCNT",
 					b"XDCR",
@@ -259,5 +266,7 @@ class ACRE(Record):
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type == b"DATA":
 				yield PositionRotation.DATA.parse(raw_bytes)
+			elif record_type in {b"SCHR", b"SCDA", b"SCTX", b"SCRO", b"SLSD", b"SCVR"}:
+				yield getattr(Script, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

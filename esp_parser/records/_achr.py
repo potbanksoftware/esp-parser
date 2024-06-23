@@ -32,7 +32,16 @@ from typing import Iterator
 
 # this package
 from esp_parser.subrecords import EDID, PositionRotation, Script
-from esp_parser.types import Float32Record, FormIDRecord, RawBytesRecord, Record, RecordType
+from esp_parser.types import (
+		CStringRecord,
+		Float32Record,
+		FormIDRecord,
+		Int32Record,
+		RawBytesRecord,
+		Record,
+		RecordType,
+		Uint8Record
+		)
 
 __all__ = ["ACHR"]
 
@@ -77,6 +86,13 @@ class ACHR(Record):
 		Patrol data.
 		"""
 
+	# class XPPA(RecordType):
+	# 	"""
+	# 	Patrol Script Marker.
+	#
+	# 	Patrol data
+	# 	"""
+
 	class INAM(FormIDRecord):
 		"""
 		Idle.
@@ -91,11 +107,21 @@ class ACHR(Record):
 		Patrol data. Form ID of a :class:`~.DIAL` record, or null.
 		"""
 
+	class XLCM(Int32Record):
+		"""
+		Level Modifier.
+		"""
+
 	class XMRC(FormIDRecord):
 		"""
 		Merchant Container.
 
 		Form ID of a :class:`~.REFR` record, or null.
+		"""
+
+	class XCNT(Int32Record):
+		"""
+		Count.
 		"""
 
 	class XRDS(Float32Record):
@@ -108,12 +134,54 @@ class ACHR(Record):
 		Health.
 		"""
 
+	# class XDCR(RecordType):
+	# 	"""
+	# 	Decal.
+	#
+	# 	Linked decals
+	#
+	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/XDCR.html
+	# 	"""
+
 	class XLKR(FormIDRecord):
 		"""
 		Linked reference.
 
 		Form ID of a :class:`~.REFR`, :class:`~.ACRE`, :class:`~.ACHR`, :class:`~.PGRE` or :class:`~.PMIS` record.
 		"""
+
+	# class XCLP(RecordType):
+	# 	"""
+	# 	Linked Reference Color.
+	#
+	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/XCLP.html
+	# 	"""
+
+	class XAPD(Uint8Record):
+		"""
+		Activate parents flags.
+
+		See https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/XAPD.html
+		"""
+
+	# class XAPR(RecordType):
+	# 	"""
+	# 	Activate Parent Ref.
+	#
+	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/XAPR.html
+	# 	"""
+
+	class XATO(CStringRecord):
+		"""
+		Activation Prompt.
+		"""
+
+	# class XESP(RecordType):
+	# 	"""
+	# 	Enable Parent.
+	#
+	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/XESP.html
+	# 	"""
 
 	class XEMI(FormIDRecord):
 		"""
@@ -127,6 +195,18 @@ class ACHR(Record):
 		MultiBound Reference.
 
 		Form ID of a :class:`~.REFR` record.
+		"""
+
+	# class XIBS(RecordType):
+	# 	"""
+	# 	Ignored By Sandbox.
+	#
+	# 	Flag
+	# 	"""
+
+	class XSCL(Float32Record):
+		"""
+		Scale.
 		"""
 
 	@classmethod
@@ -150,16 +230,27 @@ class ACHR(Record):
 					b"INAM",
 					b"NAME",
 					b"TNAM",
+					b"XAPD",
+					b"XAPR",
+					b"XATO",
+					b"XCLP",
+					b"XCNT",
+					b"XDCR",
 					b"XEMI",
+					b"XESP",
 					b"XEZN",
 					b"XHLP",
+					b"XIBS",
+					b"XLCM",
 					b"XLKR",
 					b"XMBR",
 					b"XMRC",
+					b"XPPA",
 					b"XPRD",
 					b"XRDS",
 					b"XRGB",
 					b"XRGD",
+					b"XSCL"
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in {b"SCHR", b"SCDA", b"SCTX", b"SCRO", b"SLSD", b"SCVR"}:

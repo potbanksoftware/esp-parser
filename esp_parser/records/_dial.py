@@ -72,6 +72,11 @@ class DIAL(Record):
 		Priority.
 		"""
 
+	class TDUM(CStringRecord):
+		"""
+		Unknown.
+		"""
+
 	class DATA(NamedTuple):  # noqa: D106  # TODO
 		#: Dialog type
 		type: DialType
@@ -129,7 +134,7 @@ class DIAL(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {b"DATA", b"FULL", b"INFC", b"INFX", b"PNAM", b"QSTI"}:
+			elif record_type in {b"DATA", b"FULL", b"INFC", b"INFX", b"PNAM", b"QSTI", b"TDUM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
