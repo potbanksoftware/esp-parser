@@ -270,6 +270,9 @@ class REFR(Record):
 			"""
 			return ("type", "unused")
 
+		# TODO: handle 4 byte-long field, which is
+		# Patrol data. Form ID of a :class:`~.DIAL` record, or null.
+
 	class WMI1(FormIDRecord):
 		"""
 		Map Marker Reputation.
@@ -328,13 +331,6 @@ class REFR(Record):
 	# Patrol data.
 	#
 	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
-
-	class TNAM(FormIDRecord):
-		"""
-		Topic.
-
-		Patrol data. Form ID of a :class:`~.DIAL` record, or null.
-		"""
 
 	class XRDO(NamedTuple):
 		"""

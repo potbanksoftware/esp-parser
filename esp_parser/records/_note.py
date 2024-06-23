@@ -176,5 +176,4 @@ class NOTE(Record):
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
 			else:
-				breakpoint()
 				raise NotImplementedError(record_type)

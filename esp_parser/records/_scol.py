@@ -136,10 +136,8 @@ class SCOL(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type == b"ONAM":
-				yield cls.ONAM.parse(raw_bytes)
-			elif record_type == b"DATA":
-				yield cls.DATA.parse(raw_bytes)
+			elif record_type in {b"ONAM", b"DATA"}:
+				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
 			else:

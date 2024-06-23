@@ -35,7 +35,7 @@ from typing import Iterator, NamedTuple, Type
 from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import EDID, Script
+from esp_parser.subrecords import CTDA, EDID, Script
 from esp_parser.types import CStringRecord, FormIDRecord, Int16Record, Int32Record, Record, RecordType, Uint8Record
 from esp_parser.utils import namedtuple_qualname_repr
 
@@ -179,6 +179,8 @@ class QUST(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
+			elif record_type == b"CTDA":
+				yield CTDA.parse(raw_bytes)
 			elif record_type in {
 					b"CNAM",
 					b"DATA",

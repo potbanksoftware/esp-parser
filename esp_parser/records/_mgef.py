@@ -162,10 +162,10 @@ class MGEF(Record):
 			if not record_type:
 				break
 
-			if record_type in {b"FULL", b"DESC", b"ICON", b"MICO", b"DATA"}:
-				yield getattr(cls, record_type.decode()).parse(raw_bytes)
-			elif record_type == b"EDID":
+			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
+			elif record_type in {b"FULL", b"DESC", b"ICON", b"MICO", b"DATA"}:
+				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
 			else:

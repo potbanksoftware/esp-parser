@@ -73,10 +73,8 @@ class STAT(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type == b"BRUS":
-				yield cls.BRUS.parse(raw_bytes)
-			elif record_type == b"RNAM":
-				yield cls.BRUS.parse(raw_bytes)
+			elif record_type in {b"BRUS", b"RNAM"}:
+				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
 			else:

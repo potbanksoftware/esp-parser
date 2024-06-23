@@ -343,7 +343,6 @@ class PACK(Record):
 				yield CTDA.parse(raw_bytes)
 			elif record_type in {
 					b"CNAM",
-					b"CTDA",
 					b"IDLA",
 					b"IDLB",
 					b"IDLC",

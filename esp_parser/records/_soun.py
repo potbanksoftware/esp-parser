@@ -186,7 +186,7 @@ class SOUN(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {b"ANAM", b"FNAM", b"GNAM", b"HNAM", b"RNAM", b"SNDD or SNDX"}:
+			elif record_type in {b"ANAM", b"FNAM", b"GNAM", b"HNAM", b"RNAM", b"SNDD", b"SNDX"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
