@@ -39,7 +39,7 @@ __all__ = ["MSTT"]
 
 class MSTT(Record):
 	"""
-	Moveable Static
+	Moveable Static.
 	"""
 
 	class FULL(CStringRecord):
@@ -64,7 +64,7 @@ class MSTT(Record):
 		"""
 		Sound.
 
-		FormID of a SOUN (FO3, FNV) record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	@classmethod

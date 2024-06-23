@@ -39,7 +39,7 @@ __all__ = ["IDLM"]
 
 class IDLM(Record):
 	"""
-	Idle Marker
+	Idle Marker.
 	"""
 
 	class IDLF(Uint8Record):

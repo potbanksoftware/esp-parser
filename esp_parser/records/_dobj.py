@@ -39,7 +39,7 @@ __all__ = ["DOBJ"]
 
 class DOBJ(Record):
 	"""
-	Default Object Manager
+	Default Object Manager.
 	"""
 
 	# class DATA(RecordType):

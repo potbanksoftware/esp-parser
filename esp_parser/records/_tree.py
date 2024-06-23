@@ -39,7 +39,7 @@ __all__ = ["TREE"]
 
 class TREE(Record):
 	"""
-	Tree
+	Tree.
 	"""
 
 	# Model Data. collection

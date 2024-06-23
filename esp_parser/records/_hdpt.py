@@ -39,7 +39,7 @@ __all__ = ["HDPT"]
 
 class HDPT(Record):
 	"""
-	Head Part
+	Head Part.
 	"""
 
 	class FULL(CStringRecord):
@@ -62,7 +62,7 @@ class HDPT(Record):
 		"""
 		Extra Parts.
 
-		FormID of a HDPT record.
+		Form ID of a :class:`~.HDPT` record.
 		"""
 
 	@classmethod

@@ -39,7 +39,7 @@ __all__ = ["PROJ"]
 
 class PROJ(Record):
 	"""
-	Projectile
+	Projectile.
 	"""
 
 	class FULL(CStringRecord):

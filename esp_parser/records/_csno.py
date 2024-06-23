@@ -39,7 +39,7 @@ __all__ = ["CSNO"]
 
 class CSNO(Record):
 	"""
-	Casino
+	Casino.
 	"""
 
 	class FULL(CStringRecord):
@@ -54,42 +54,10 @@ class CSNO(Record):
 
 	class MODL(CStringRecord):
 		"""
-		Casino $1 Chip Model.
-		"""
+		Model.
 
-	class MODL(CStringRecord):
-		"""
-		Casino $5 Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Casino $10 Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Casino $25 Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Casino $100 Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Casino $500 Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Casino Roulette Chip Model.
-		"""
-
-	class MODL(CStringRecord):
-		"""
-		Slot Machine Model.
+		* Casino $1 / $5 / $10 / $25 / $100 / $500 Chip Model.
+		* Casino Roulette Chip Model / Slot Machine Model.
 		"""
 
 	class MOD2(CStringRecord):
@@ -111,57 +79,12 @@ class CSNO(Record):
 
 	class ICON(CStringRecord):
 		"""
-		Slot Reel Texture - Symbol 1.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol 2.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol 3.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol 4.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol 5.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol 6.
-		"""
-
-	class ICON(CStringRecord):
-		"""
-		Slot Reel Texture - Symbol W.
+		Slot Reel Texture - Symbol 1 / 2 / 3 / 4 / 5 / 6 / W.
 		"""
 
 	class ICO2(CStringRecord):
 		"""
-		BlackJack Texture - Deck 1.
-		"""
-
-	class ICO2(CStringRecord):
-		"""
-		BlackJack Texture - Deck 2.
-		"""
-
-	class ICO2(CStringRecord):
-		"""
-		BlackJack Texture - Deck 3.
-		"""
-
-	class ICO2(CStringRecord):
-		"""
-		BlackJack Texture - Deck 4.
+		BlackJack Texture - Deck 1/2/3/4.
 		"""
 
 	@classmethod

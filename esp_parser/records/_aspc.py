@@ -39,42 +39,14 @@ __all__ = ["ASPC"]
 
 class ASPC(Record):
 	"""
-	Acoustic Space
+	Acoustic Space.
 	"""
 
 	class SNAM(FormIDRecord):
 		"""
-		Dawn / Default Loop.
+		Dawn / Default Loop, or Afternoon, or Dusk, or Night, or Walla.
 
-		FormID of a SOUN record, or null.
-		"""
-
-	class SNAM(FormIDRecord):
-		"""
-		Afternoon.
-
-		FormID of a SOUN record, or null.
-		"""
-
-	class SNAM(FormIDRecord):
-		"""
-		Dusk.
-
-		FormID of a SOUN record, or null.
-		"""
-
-	class SNAM(FormIDRecord):
-		"""
-		Night.
-
-		FormID of a SOUN record, or null.
-		"""
-
-	class SNAM(FormIDRecord):
-		"""
-		Walla.
-
-		FormID of a SOUN record, or null.
+		Form ID of a :class:`~.SOUN` record, or null.
 		"""
 
 	class WNAM(Uint32Record):
@@ -86,7 +58,7 @@ class ASPC(Record):
 		"""
 		Use Sound from Region (Interiors Only).
 
-		FormID of a REGN record.
+		Form ID of a :class:`~.REGN` record.
 		"""
 
 	class ANAM(Uint32Record):

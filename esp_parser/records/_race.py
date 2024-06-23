@@ -39,7 +39,7 @@ __all__ = ["RACE"]
 
 class RACE(Record):
 	"""
-	Race
+	Race.
 	"""
 
 	class FULL(CStringRecord):
@@ -68,14 +68,14 @@ class RACE(Record):
 		"""
 		Older.
 
-		FormID of a RACE record.
+		Form ID of a :class:`~.RACE` record.
 		"""
 
 	class YNAM(FormIDRecord):
 		"""
 		Younger.
 
-		FormID of a RACE record.
+		Form ID of a :class:`~.RACE` record.
 		"""
 
 	# class NAM2(RecordType):

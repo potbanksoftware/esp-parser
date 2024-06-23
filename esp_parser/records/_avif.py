@@ -39,7 +39,7 @@ __all__ = ["AVIF"]
 
 class AVIF(Record):
 	"""
-	Actor Value Information
+	Actor Value Information.
 	"""
 
 	class FULL(CStringRecord):

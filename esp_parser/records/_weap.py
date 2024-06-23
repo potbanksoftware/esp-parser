@@ -326,14 +326,7 @@ class WEAP(Record):
 
 	class WMS1(FormIDRecord):
 		"""
-		Sound - Mod 1 - Shoot 3D (New Vegas only).
-
-		Form ID of a :class:`~.SOUN` record.
-		"""
-
-	class WMS1(FormIDRecord):
-		"""
-		Sound - Mod 1 - Shoot Dist (New Vegas only).
+		Sound - Mod 1 - Shoot 3D / Dist (New Vegas only).
 
 		Form ID of a :class:`~.SOUN` record.
 		"""

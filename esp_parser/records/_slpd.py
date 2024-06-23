@@ -39,7 +39,7 @@ __all__ = ["SLPD"]
 
 class SLPD(Record):
 	"""
-	Sleep Deprivation Stage
+	Sleep Deprivation Stage.
 	"""
 
 	# class DATA(RecordType):

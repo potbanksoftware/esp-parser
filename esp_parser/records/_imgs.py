@@ -39,7 +39,7 @@ __all__ = ["IMGS"]
 
 class IMGS(Record):
 	"""
-	Image Space
+	Image Space.
 	"""
 
 	# class DNAM(RecordType):

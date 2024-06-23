@@ -39,7 +39,7 @@ __all__ = ["GRAS"]
 
 class GRAS(Record):
 	"""
-	Grass
+	Grass.
 	"""
 
 	# Model Data. collection

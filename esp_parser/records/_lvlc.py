@@ -39,12 +39,12 @@ __all__ = ["LVLC"]
 
 class LVLC(Record):
 	"""
-	Leveled Creature
+	Leveled Creature.
 	"""
 
 	class LVLD(Uint8Record):
 		"""
-		Chance None.
+		Chance.
 		"""
 
 	class LVLF(Uint8Record):

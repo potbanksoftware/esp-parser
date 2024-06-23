@@ -39,7 +39,7 @@ __all__ = ["REGN"]
 
 class REGN(Record):
 	"""
-	Region
+	Region.
 	"""
 
 	class ICON(CStringRecord):
@@ -61,7 +61,7 @@ class REGN(Record):
 		"""
 		Worldspace.
 
-		FormID of a WRLD record.
+		Form ID of a :class:`~.WRLD` record.
 		"""
 
 	# Region Area. collection

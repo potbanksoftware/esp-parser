@@ -39,7 +39,7 @@ __all__ = ["FURN"]
 
 class FURN(Record):
 	"""
-	Furniture
+	Furniture.
 	"""
 
 	class FULL(CStringRecord):
@@ -55,7 +55,7 @@ class FURN(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	# Destruction Data. collection

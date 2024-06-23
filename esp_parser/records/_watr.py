@@ -39,7 +39,7 @@ __all__ = ["WATR"]
 
 class WATR(Record):
 	"""
-	Water
+	Water.
 	"""
 
 	class FULL(CStringRecord):
@@ -73,14 +73,14 @@ class WATR(Record):
 		"""
 		Sound.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class XNAM(FormIDRecord):
 		"""
 		Actor Effect.
 
-		FormID of a SPEL record.
+		Form ID of a :class:`~.SPEL` record.
 		"""
 
 	class DATA(Uint16Record):

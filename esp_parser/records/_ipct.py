@@ -39,7 +39,7 @@ __all__ = ["IPCT"]
 
 class IPCT(Record):
 	"""
-	Impact
+	Impact.
 	"""
 
 	# Model Data. collection
@@ -62,21 +62,21 @@ class IPCT(Record):
 		"""
 		Texture Set.
 
-		FormID of a TXST record.
+		Form ID of a :class:`~.TXST` record.
 		"""
 
 	class SNAM(FormIDRecord):
 		"""
 		Sound 1.
 
-		FormID of a SOUN (FO3, FNV) record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class NAM1(FormIDRecord):
 		"""
 		Sound 2.
 
-		FormID of a SOUN (FO3, FNV) record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	@classmethod

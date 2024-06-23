@@ -39,7 +39,7 @@ __all__ = ["PWAT"]
 
 class PWAT(Record):
 	"""
-	Placeable Water
+	Placeable Water.
 	"""
 
 	# Model Data. collection

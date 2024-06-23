@@ -89,6 +89,10 @@ class NAVM(Record):
 					)
 
 	class NvvxVertex(NamedTuple):
+		"""
+		Individual element in :class:`~.NAVM.NVVX`.
+		"""
+
 		x: float
 		y: float
 		z: float
@@ -148,6 +152,10 @@ class NAVM(Record):
 			return b"NVVX" + size + body
 
 	class NvtrTriangle(NamedTuple):
+		"""
+		Individual element in :class:`~.NAVM.NVTR`.
+		"""
+
 		vertex1: int
 		vertex2: int
 		vertex3: int
@@ -244,6 +252,10 @@ class NAVM(Record):
 			return b"NVCA" + size_field + body
 
 	class NvdpDoor(NamedTuple):
+		"""
+		Individual element in :class:`~.NAVM.NVDP`.
+		"""
+
 		#: Form ID of a :class:`~.REFR`` record.
 		reference: bytes
 		unknown: int

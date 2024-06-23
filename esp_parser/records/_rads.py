@@ -39,7 +39,7 @@ __all__ = ["RADS"]
 
 class RADS(Record):
 	"""
-	Radiation Stage
+	Radiation Stage.
 	"""
 
 	# class DATA(RecordType):

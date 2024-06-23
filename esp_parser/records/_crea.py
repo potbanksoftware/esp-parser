@@ -244,6 +244,10 @@ class CREA(Record):
 			return b"KFFZ" + size_field + body
 
 	class DataTypeEnum(IntEnum):
+		"""
+		Enum for ``CREA.DATA.type``.
+		"""
+
 		Animal = 0
 		MutatedAnimal = 1
 		MutatedInsect = 2

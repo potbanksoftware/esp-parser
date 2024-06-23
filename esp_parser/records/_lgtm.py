@@ -39,7 +39,7 @@ __all__ = ["LGTM"]
 
 class LGTM(Record):
 	"""
-	Lighting Template
+	Lighting Template.
 	"""
 
 	# class DATA(RecordType):

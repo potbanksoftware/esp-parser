@@ -39,7 +39,7 @@ __all__ = ["GLOB"]
 
 class GLOB(Record):
 	"""
-	Global Variable
+	Global Variable.
 	"""
 
 	class FNAM(Uint8Record):

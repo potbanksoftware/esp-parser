@@ -39,7 +39,7 @@ __all__ = ["CAMS"]
 
 class CAMS(Record):
 	"""
-	Camera Shot
+	Camera Shot.
 	"""
 
 	# Model Data. collection
@@ -55,7 +55,7 @@ class CAMS(Record):
 		"""
 		Image Space Modifier.
 
-		FormID of an IMAD record.
+		Form ID of an :class:`~.IMAD` record.
 		"""
 
 	@classmethod

@@ -39,7 +39,7 @@ __all__ = ["IMOD"]
 
 class IMOD(Record):
 	"""
-	Item Mod
+	Item Mod.
 	"""
 
 	class FULL(CStringRecord):
@@ -65,7 +65,7 @@ class IMOD(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class DESC(CStringRecord):
@@ -81,14 +81,14 @@ class IMOD(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	# class DATA(RecordType):

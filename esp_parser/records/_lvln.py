@@ -39,7 +39,7 @@ __all__ = ["LVLN"]
 
 class LVLN(Record):
 	"""
-	Leveled NPC
+	Leveled NPC.
 	"""
 
 	class LVLD(Uint8Record):

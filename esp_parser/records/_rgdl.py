@@ -39,7 +39,7 @@ __all__ = ["RGDL"]
 
 class RGDL(Record):
 	"""
-	Ragdoll
+	Ragdoll.
 	"""
 
 	class NVER(Uint32Record):
@@ -56,14 +56,14 @@ class RGDL(Record):
 		"""
 		Actor Base.
 
-		FormID of a CREA (FO3, FNV) or NPC_ (FO3, FNV) record.
+		Form ID of a :class:`~.CREA` or :class:`~.NPC_` record.
 		"""
 
 	class TNAM(FormIDRecord):
 		"""
 		Body Part Data.
 
-		FormID of a BPTD BPTD (FO3, FNV) record.
+		Form ID of a :class:`~.BPTD` record.
 		"""
 
 	# class RAFD(RecordType):

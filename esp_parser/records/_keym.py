@@ -83,7 +83,7 @@ class KEYM(Record):
 		Form ID of a :class:`~.SOUN` record.
 		"""
 
-	class DATA(NamedTuple):
+	class DATA(NamedTuple):  # noqa: D106  # TODO
 		value: int
 		weight: int
 

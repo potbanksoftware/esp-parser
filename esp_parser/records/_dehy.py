@@ -39,7 +39,7 @@ __all__ = ["DEHY"]
 
 class DEHY(Record):
 	"""
-	Dehydration Stage
+	Dehydration Stage.
 	"""
 
 	# class DATA(RecordType):

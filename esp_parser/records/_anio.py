@@ -39,7 +39,7 @@ __all__ = ["ANIO"]
 
 class ANIO(Record):
 	"""
-	Animated Object
+	Animated Object.
 	"""
 
 	# Model Data. collection
@@ -50,7 +50,7 @@ class ANIO(Record):
 		"""
 		Animation.
 
-		FormID of an IDLE record.
+		Form ID of an :class:`~.IDLE` record.
 		"""
 
 	@classmethod

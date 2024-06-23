@@ -39,7 +39,7 @@ __all__ = ["LSCR"]
 
 class LSCR(Record):
 	"""
-	Load Screen
+	Load Screen.
 	"""
 
 	class ICON(CStringRecord):
@@ -66,7 +66,7 @@ class LSCR(Record):
 		"""
 		Load Screen Type.
 
-		FormID of a LSCT record.
+		Form ID of a :class:`~.LSCT` record.
 		"""
 
 	@classmethod

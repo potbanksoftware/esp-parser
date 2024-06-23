@@ -39,7 +39,7 @@ __all__ = ["LSCT"]
 
 class LSCT(Record):
 	"""
-	Load Screen Type
+	Load Screen Type.
 	"""
 
 	# class DATA(RecordType):

@@ -39,7 +39,7 @@ __all__ = ["CHIP"]
 
 class CHIP(Record):
 	"""
-	Casino Chip
+	Casino Chip.
 	"""
 
 	class FULL(CStringRecord):
@@ -69,14 +69,14 @@ class CHIP(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	@classmethod

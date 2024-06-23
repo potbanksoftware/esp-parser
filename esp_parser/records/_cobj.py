@@ -39,7 +39,7 @@ __all__ = ["COBJ"]
 
 class COBJ(Record):
 	"""
-	Constructible Object
+	Constructible Object.
 	"""
 
 	class FULL(CStringRecord):
@@ -65,21 +65,21 @@ class COBJ(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class YNAM(FormIDRecord):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	# class DATA(RecordType):

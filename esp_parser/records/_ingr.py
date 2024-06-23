@@ -39,7 +39,7 @@ __all__ = ["INGR"]
 
 class INGR(Record):
 	"""
-	Ingredient
+	Ingredient.
 	"""
 
 	class FULL(CStringRecord):
@@ -65,7 +65,7 @@ class INGR(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class ETYP(Int32Record):

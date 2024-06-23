@@ -39,7 +39,7 @@ __all__ = ["AMEF"]
 
 class AMEF(Record):
 	"""
-	Ammo Effect
+	Ammo Effect.
 	"""
 
 	class FULL(CStringRecord):

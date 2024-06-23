@@ -39,7 +39,7 @@ __all__ = ["ENCH"]
 
 class ENCH(Record):
 	"""
-	Object Effect
+	Object Effect.
 	"""
 
 	class FULL(CStringRecord):

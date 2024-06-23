@@ -39,12 +39,12 @@ __all__ = ["LVLI"]
 
 class LVLI(Record):
 	"""
-	Leveled Item
+	Leveled Item.
 	"""
 
 	class LVLD(Uint8Record):
 		"""
-		Chance None.
+		Chance.
 		"""
 
 	class LVLF(Uint8Record):
@@ -58,7 +58,7 @@ class LVLI(Record):
 		"""
 		Global.
 
-		FormID of a GLOB record.
+		Form ID of a :class:`~.GLOB` record.
 		"""
 
 	# Leveled List Entry. collection

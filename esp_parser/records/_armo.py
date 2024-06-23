@@ -39,7 +39,7 @@ __all__ = ["ARMO"]
 
 class ARMO(Record):
 	"""
-	Armor
+	Armor.
 	"""
 
 	class FULL(CStringRecord):
@@ -51,14 +51,14 @@ class ARMO(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class EITM(FormIDRecord):
 		"""
 		Object Effect.
 
-		FormID of a ENCH or SPEL record.
+		Form ID of an :class:`~.ENCH` or :class:`~.SPEL` record.
 		"""
 
 	# class BMDT(RecordType):
@@ -121,14 +121,14 @@ class ARMO(Record):
 		"""
 		Repair List.
 
-		FormID of a FLST record.
+		Form ID of a :class:`~.FLST` record.
 		"""
 
 	class BIPL(FormIDRecord):
 		"""
 		Biped Model List.
 
-		FormID of a FLST record.
+		Form ID of a :class:`~.FLST` record.
 		"""
 
 	class ETYP(Int32Record):
@@ -142,14 +142,14 @@ class ARMO(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	# class DATA(RecordType):
@@ -180,7 +180,7 @@ class ARMO(Record):
 		"""
 		Animation Sounds Template.
 
-		FormID of an ARMO record.
+		Form ID of an :class:`~.ARMO` record.
 		"""
 
 	@classmethod

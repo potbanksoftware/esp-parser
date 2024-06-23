@@ -39,7 +39,7 @@ __all__ = ["ARMA"]
 
 class ARMA(Record):
 	"""
-	Armor Addon
+	Armor Addon.
 	"""
 
 	class FULL(CStringRecord):

@@ -39,7 +39,7 @@ __all__ = ["ECZN"]
 
 class ECZN(Record):
 	"""
-	Encounter Zone
+	Encounter Zone.
 	"""
 
 	# class DATA(RecordType):

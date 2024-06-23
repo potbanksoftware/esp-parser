@@ -39,7 +39,7 @@ __all__ = ["HUNG"]
 
 class HUNG(Record):
 	"""
-	Hunger Stage
+	Hunger Stage.
 	"""
 
 	# class DATA(RecordType):

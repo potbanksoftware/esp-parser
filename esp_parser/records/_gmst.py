@@ -39,7 +39,7 @@ __all__ = ["GMST"]
 
 class GMST(Record):
 	"""
-	Game Setting
+	Game Setting.
 	"""
 
 	# class DATA(RecordType):

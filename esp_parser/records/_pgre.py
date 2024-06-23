@@ -47,21 +47,21 @@ __all__ = ["PGRE"]
 
 class PGRE(Record):
 	"""
-	Placed Grenade
+	Placed Grenade.
 	"""
 
 	class NAME(FormIDRecord):
 		"""
 		Base.
 
-		FormID of a PROJ record.
+		Form ID of a :class:`~.PROJ` record.
 		"""
 
 	class XEZN(FormIDRecord):
 		"""
 		Encounter Zone.
 
-		FormID of an ECZN record.
+		Form ID of an :class:`~.ECZN` record.
 		"""
 
 	# class XRGD(RecordType):
@@ -92,7 +92,7 @@ class PGRE(Record):
 		"""
 		Idle.
 
-		Patrol data. FormID of an IDLE record, or null.
+		Patrol data. Form ID of an :class:`~.IDLE` record, or null.
 		"""
 
 	# Embedded Script. collection
@@ -105,14 +105,14 @@ class PGRE(Record):
 		"""
 		Topic.
 
-		Patrol data. FormID of a DIAL record, or null.
+		Patrol data. Form ID of a :class:`~.DIAL` record, or null.
 		"""
 
 	class XOWN(FormIDRecord):
 		"""
 		Owner.
 
-		Ownership data. FormID of a FACT, ACHR, CREA or NPC_ record.
+		Ownership data. Form ID of a :class:`~.FACT`, :class:`~.ACHR`, :class:`~.CREA` or :class:`~.NPC_` record.
 		"""
 
 	class XRNK(Int32Record):
@@ -157,7 +157,7 @@ class PGRE(Record):
 		"""
 		Linked Reference.
 
-		FormID of a REFR, ACRE, ACHR, PGRE or PMIS record.
+		Form ID of a :class:`~.REFR`, :class:`~.ACRE`, :class:`~.ACHR`, :class:`~.PGRE` or :class:`~.PMIS` record.
 		"""
 
 	# class XCLP(RecordType):
@@ -201,14 +201,14 @@ class PGRE(Record):
 		"""
 		Emittance.
 
-		FormID of a LIGH or REGN record.
+		Form ID of a :class:`~.LIGH` or :class:`~.REGN` record.
 		"""
 
 	class XMBR(FormIDRecord):
 		"""
 		MultiBound Reference.
 
-		FormID of a REFR record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	# class XIBS(RecordType):

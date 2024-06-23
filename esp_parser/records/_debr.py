@@ -39,7 +39,7 @@ __all__ = ["DEBR"]
 
 class DEBR(Record):
 	"""
-	Debris
+	Debris.
 	"""
 
 	# Debris Model. collection

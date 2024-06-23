@@ -39,7 +39,7 @@ __all__ = ["IPDS"]
 
 class IPDS(Record):
 	"""
-	Impact Dataset
+	Impact Dataset.
 	"""
 
 	# class DATA(RecordType):

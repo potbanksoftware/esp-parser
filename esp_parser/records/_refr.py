@@ -233,13 +233,19 @@ class REFR(Record):
 		"""
 
 	class BNAM(RawBytesRecord):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class MNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	class NNAM(Float32Record):
-		pass
+		"""
+		Unknown.
+		"""
 
 	@attrs.define
 	class TNAM(StructRecord):

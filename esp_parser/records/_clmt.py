@@ -39,7 +39,7 @@ __all__ = ["CLMT"]
 
 class CLMT(Record):
 	"""
-	Climate
+	Climate.
 	"""
 
 	# class WLST(RecordType):

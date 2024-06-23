@@ -39,7 +39,7 @@ __all__ = ["BPTD"]
 
 class BPTD(Record):
 	"""
-	Body Part Data
+	Body Part Data.
 	"""
 
 	# Model Data. collection
@@ -58,7 +58,7 @@ class BPTD(Record):
 		"""
 		Ragdoll.
 
-		FormID of a RGDL record.
+		Form ID of a :class:`~.RGDL` record.
 		"""
 
 	@classmethod

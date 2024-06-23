@@ -39,7 +39,7 @@ __all__ = ["TERM"]
 
 class TERM(Record):
 	"""
-	Terminal
+	Terminal.
 	"""
 
 	class FULL(CStringRecord):
@@ -55,7 +55,7 @@ class TERM(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	# Destruction Data. collection
@@ -71,14 +71,14 @@ class TERM(Record):
 		"""
 		Sound - Looping.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class PNAM(FormIDRecord):
 		"""
 		Password Note.
 
-		FormID of a NOTE record.
+		Form ID of a :class:`~.NOTE` record.
 		"""
 
 	# class DNAM(RecordType):

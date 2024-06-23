@@ -39,7 +39,7 @@ __all__ = ["ADDN"]
 
 class ADDN(Record):
 	"""
-	Addon Node
+	Addon Node.
 	"""
 
 	# Model Data. collection

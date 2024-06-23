@@ -39,7 +39,7 @@ __all__ = ["HAIR"]
 
 class HAIR(Record):
 	"""
-	Hair
+	Hair.
 	"""
 
 	class FULL(CStringRecord):

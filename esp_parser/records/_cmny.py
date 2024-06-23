@@ -39,7 +39,7 @@ __all__ = ["CMNY"]
 
 class CMNY(Record):
 	"""
-	Caravan Money
+	Caravan Money.
 	"""
 
 	class FULL(CStringRecord):
@@ -65,14 +65,14 @@ class CMNY(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class DATA(Uint32Record):

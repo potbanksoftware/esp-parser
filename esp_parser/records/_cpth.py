@@ -39,7 +39,7 @@ __all__ = ["CPTH"]
 
 class CPTH(Record):
 	"""
-	Camera Path
+	Camera Path.
 	"""
 
 	# class CTDA(RecordType):
@@ -65,7 +65,7 @@ class CPTH(Record):
 		"""
 		Camera Shot.
 
-		FormID of a CAMS record.
+		Form ID of a :class:`~.CAMS` record.
 		"""
 
 	@classmethod

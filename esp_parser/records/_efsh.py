@@ -39,7 +39,7 @@ __all__ = ["EFSH"]
 
 class EFSH(Record):
 	"""
-	Effect Shader
+	Effect Shader.
 	"""
 
 	class ICON(CStringRecord):

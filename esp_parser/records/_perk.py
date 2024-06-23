@@ -54,6 +54,10 @@ __all__ = ["PERK", "PerkEffect"]
 
 
 class PerkEffect(Collection):
+	"""
+	Effect subrecord collection for :class:`~.PERK`.
+	"""
+
 	members = {
 			b"PRKE",
 			b"DATA",  # Unreachable directly
@@ -308,7 +312,6 @@ class PERK(Record):
 				yield CTDA.parse(raw_bytes)
 			elif record_type in {b"FULL", b"DESC", b"ICON", b"MICO", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
-
 			elif record_type in PerkEffect.members:
 				yield PerkEffect.parse_member(record_type, raw_bytes)
 			else:

@@ -38,7 +38,7 @@ __all__ = ["LAND"]
 
 class LAND(Record):
 	"""
-	Landscape
+	Landscape.
 	"""
 
 	# class DATA(RecordType):

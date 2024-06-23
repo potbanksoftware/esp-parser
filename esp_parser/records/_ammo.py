@@ -39,7 +39,7 @@ __all__ = ["AMMO"]
 
 class AMMO(Record):
 	"""
-	Ammunition
+	Ammunition.
 	"""
 
 	class FULL(CStringRecord):
@@ -65,7 +65,7 @@ class AMMO(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	# Destruction Data. collection
@@ -76,14 +76,14 @@ class AMMO(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	# class DATA(RecordType):
@@ -112,7 +112,7 @@ class AMMO(Record):
 		"""
 		Ammo Effect.
 
-		FormID of an AMEF record.
+		Form ID of an :class:`~.AMEF` record.
 		"""
 
 	@classmethod

@@ -127,7 +127,7 @@ class ACRE(Record):
 		"""
 		Merchant Container.
 
-		FormID of a :class:`~.REFR` record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	class XCNT(Int32Record):

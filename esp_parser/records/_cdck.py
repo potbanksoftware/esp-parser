@@ -39,7 +39,7 @@ __all__ = ["CDCK"]
 
 class CDCK(Record):
 	"""
-	Caravan Deck
+	Caravan Deck.
 	"""
 
 	class FULL(CStringRecord):
@@ -51,7 +51,7 @@ class CDCK(Record):
 		"""
 		Card.
 
-		FormID of a CCRD record.
+		Form ID of a :class:`~.CCRD` record.
 		"""
 
 	class DATA(Uint32Record):

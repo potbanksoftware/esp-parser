@@ -39,7 +39,7 @@ __all__ = ["IDLE"]
 
 class IDLE(Record):
 	"""
-	Idle Animation
+	Idle Animation.
 	"""
 
 	# Model Data. collection

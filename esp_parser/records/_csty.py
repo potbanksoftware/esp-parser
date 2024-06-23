@@ -39,7 +39,7 @@ __all__ = ["CSTY"]
 
 class CSTY(Record):
 	"""
-	Combat Style
+	Combat Style.
 	"""
 
 	# class CSTD(RecordType):

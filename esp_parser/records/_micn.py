@@ -39,7 +39,7 @@ __all__ = ["MICN"]
 
 class MICN(Record):
 	"""
-	Menu Icon
+	Menu Icon.
 	"""
 
 	class ICON(CStringRecord):

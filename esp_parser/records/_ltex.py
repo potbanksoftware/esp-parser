@@ -39,7 +39,7 @@ __all__ = ["LTEX"]
 
 class LTEX(Record):
 	"""
-	Landscape Texture
+	Landscape Texture.
 	"""
 
 	class ICON(CStringRecord):
@@ -56,7 +56,7 @@ class LTEX(Record):
 		"""
 		Texture.
 
-		FormID of a TXST record.
+		Form ID of a :class:`~.TXST` record.
 		"""
 
 	# class HNAM(RecordType):
@@ -73,7 +73,7 @@ class LTEX(Record):
 		"""
 		Grass.
 
-		FormID of a GRAS record.
+		Form ID of a :class:`~.GRAS` record.
 		"""
 
 	@classmethod
