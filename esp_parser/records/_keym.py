@@ -110,6 +110,13 @@ class KEYM(Record):
 
 	RecordType.register(DATA)
 
+	class RNAM(FormIDRecord):
+		"""
+		Sound - Random/Looping.
+
+		Form ID of a :class:`~.SOUN` record.
+		"""
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -127,7 +134,7 @@ class KEYM(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM", b"DATA"}:
+			elif record_type in {b"DATA", b"FULL", b"ICON", b"MICO", b"RNAM", b"SCRI", b"YNAM", b"ZNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

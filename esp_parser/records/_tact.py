@@ -47,9 +47,20 @@ class TACT(Record):
 		Name.
 		"""
 
+	class SCRI(FormIDRecord):
+		"""
+		Script.
+
+		Form ID of a :class:`~.SCPT` record.
+		"""
+
+	# Destruction Data. collection
+	#
+	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Destruction.html
+
 	class SNAM(FormIDRecord):
 		"""
-		Sound.
+		(Looping) Sound.
 
 		Form ID of a :class:`~.SOUN` record.
 		"""
@@ -59,6 +70,13 @@ class TACT(Record):
 		Voice type.
 
 		Form ID of a :class:`~.VTYP` record.
+		"""
+
+	class INAM(FormIDRecord):
+		"""
+		Radio Template.
+
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	@classmethod
@@ -78,7 +96,7 @@ class TACT(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {b"FULL", b"SNAM", b"VNAM"}:
+			elif record_type in {b"FULL", b"INAM", b"SCRI", b"SNAM", b"VNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

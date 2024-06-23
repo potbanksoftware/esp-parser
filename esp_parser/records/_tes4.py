@@ -84,6 +84,16 @@ class TES4(Record):
 
 	RecordType.register(HEDR)
 
+	# class OFST(RecordType):
+	# 	"""
+	# 	Unknown.
+	# 	"""
+
+	# class DELE(RecordType):
+	# 	"""
+	# 	Unknown.
+	# 	"""
+
 	class CNAM(CStringRecord):
 		"""
 		The plugin's author.
@@ -124,6 +134,18 @@ class TES4(Record):
 
 			return b"DATA" + bytes(self)
 
+	# class ONAM(RecordType):
+	# 	"""
+	# 	formOverrides.
+	#
+	# 	Overridden records. An array of REFR, ACHR, ACRE, PMIS, PBEA, PGRE, LAND and NAVM records.
+	# 	"""
+
+	# class SCRN(RecordType):
+	# 	"""
+	# 	screenshot.
+	# 	"""
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -137,7 +159,7 @@ class TES4(Record):
 			if not record_type:
 				break
 
-			if record_type in {b"HEDR", b"CNAM", b"SNAM", b"MAST", b"DATA"}:
+			if record_type in {b"CNAM", b"DATA", b"DELE", b"HEDR", b"MAST", b"OFST", b"ONAM", b"SCRN", b"SNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

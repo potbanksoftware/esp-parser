@@ -294,6 +294,23 @@ class WRLD(Record):
 		Water Noise Texture.
 		"""
 
+	# class IMPS(RecordType):
+	# 	"""
+	# 	Swapped Impact.
+	# 	"""
+
+	# class IMPF(RecordType):
+	# 	"""
+	# 	Footstep Material.
+	#
+	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/IMPF.html
+	# 	"""
+
+	# class OFST(RecordType):
+	# 	"""
+	# 	Offset Data.
+	# 	"""
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -315,6 +332,8 @@ class WRLD(Record):
 					b"DNAM",
 					b"FULL",
 					b"ICON",
+					b"IMPF",
+					b"IMPS",
 					b"INAM",
 					b"MICO",
 					b"MNAM",
@@ -324,6 +343,7 @@ class WRLD(Record):
 					b"NAM4",
 					b"NAM9",
 					b"NNAM",
+					b"OFST",
 					b"ONAM",
 					b"PNAM",
 					b"WNAM",
