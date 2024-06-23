@@ -49,7 +49,7 @@ class KEYM(Record):
 
 	class FULL(CStringRecord):
 		"""
-		Name/
+		Name.
 		"""
 
 	class ICON(CStringRecord):
@@ -127,15 +127,7 @@ class KEYM(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"SCRI",
-					b"YNAM",
-					b"ZNAM",
-					b"DATA",
-					}:
+			elif record_type in {b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)

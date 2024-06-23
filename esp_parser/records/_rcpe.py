@@ -35,7 +35,7 @@ import attrs
 
 # this package
 from esp_parser.subrecords import CTDA, EDID
-from esp_parser.types import AttrsStructRecord, CStringRecord, FormIDRecord, Record, RecordType, Uint32Record
+from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord, Uint32Record
 
 __all__ = ["RCPE"]
 
@@ -51,7 +51,7 @@ class RCPE(Record):
 		"""
 
 	@attrs.define
-	class DATA(AttrsStructRecord):
+	class DATA(StructRecord):
 		"""
 		Data.
 		"""
@@ -77,12 +77,7 @@ class RCPE(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"skill",
-					"level",
-					"category",
-					"sub_category",
-					)
+			return ("skill", "level", "category", "sub_category")
 
 	class RCIL(FormIDRecord):
 		"""
@@ -121,13 +116,7 @@ class RCPE(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"CTDA":
 				yield CTDA.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"DATA",
-					b"RCIL",
-					b"RCQY",
-					b"RCOD",
-					}:
+			elif record_type in {b"FULL", b"DATA", b"RCIL", b"RCQY", b"RCOD"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

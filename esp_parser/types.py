@@ -39,10 +39,9 @@ import attrs
 from typing_extensions import Self
 
 __all__ = [
-		"AttrsStructRecord",
 		"BytesRecordType",
-		"CStringRecord",
 		"Collection",
+		"CStringRecord",
 		"FaceGenRecord",
 		"Float32Record",
 		"FormIDRecord",
@@ -79,6 +78,7 @@ class RecordType(Protocol):
 		raise NotImplementedError
 
 
+@attrs.define
 class StructRecord(RecordType):
 	"""
 	Base class for records in ESP files.
@@ -126,13 +126,6 @@ class StructRecord(RecordType):
 		pack_items = [getattr(self, field_name) for field_name in self.get_field_names()]
 		body = struct.pack(pack_struct, *pack_items)
 		return self.__class__.__name__.encode() + size_field + body
-
-
-@attrs.define
-class AttrsStructRecord(StructRecord):
-	"""
-	Intermediate type for attrs-decorated record types, to give a better repr.
-	"""
 
 	def __repr__(self) -> str:
 		return f"{self.__class__.__qualname__}({super().__repr__()})"

@@ -128,7 +128,10 @@ def records_as_python(records: Iterator["RecordType"], plugin_name: str) -> str:
 	:param plugin_name: Determines the function name.
 	"""
 
+	# records = list(records)
 	output = ',\n'.join(repr(record) for record in records)
+
+	# TODO: process in parallel
 
 	visitor = FunctionCallFinder()
 	tree = ast.parse(output)

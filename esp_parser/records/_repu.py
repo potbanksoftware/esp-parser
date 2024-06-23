@@ -39,7 +39,7 @@ __all__ = ["REPU"]
 
 class REPU(Record):
 	"""
-	Reputation
+	Reputation.
 	"""
 
 	class FULL(CStringRecord):
@@ -77,12 +77,7 @@ class REPU(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"DATA",
-					}:
+			elif record_type in {b"FULL", b"ICON", b"MICO", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

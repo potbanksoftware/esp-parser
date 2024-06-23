@@ -30,7 +30,7 @@ SPEL record type.
 import struct
 from enum import IntEnum
 from io import BytesIO
-from typing import Iterator, NamedTuple, Type
+from typing import Iterator, NamedTuple, Tuple, Type
 
 # 3rd party
 import attrs
@@ -38,7 +38,7 @@ from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import CTDA, EDID
-from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
+from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord
 from esp_parser.utils import namedtuple_qualname_repr
 
 __all__ = ["SPEL"]
@@ -55,7 +55,7 @@ class SPEL(Record):
 		"""
 
 	@attrs.define
-	class SPIT(RecordType):
+	class SPIT(StructRecord):
 		"""
 		Effect type, cost etc.
 		"""
@@ -68,27 +68,43 @@ class SPEL(Record):
 		#: Unused
 		level: int
 
-		flags: int  # https://tes5edit.github.io/fopdoc/Fallout3/Records/SPEL.html
+		flags: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/SPEL.html
 
 		unused: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x10\x00"
-			return cls(*struct.unpack("<IIIB3s", raw_bytes.read(16)))
+			return "<IIIB3s", 16
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"SPIT" + struct.pack("<HIIIB3s", 16, self.type, self.cost, self.level, self.flags, self.unused)
+			return ("type", "cost", "level", "flags", "unused")
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x10\x00"
+		# 	return cls(*struct.unpack("<IIIB3s", raw_bytes.read(16)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"SPIT" + struct.pack("<HIIIB3s", 16, self.type, self.cost, self.level, self.flags, self.unused)
 
 	class EFID(FormIDRecord):
 		"""
@@ -157,12 +173,7 @@ class SPEL(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"CTDA":
 				yield CTDA.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"SPIT",
-					b"EFID",
-					b"EFIT",
-					}:
+			elif record_type in {b"FULL", b"SPIT", b"EFID", b"EFIT"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

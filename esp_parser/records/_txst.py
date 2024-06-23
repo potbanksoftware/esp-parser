@@ -27,17 +27,15 @@ TXST record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import CStringRecord, Record, RecordType, Uint16Record
+from esp_parser.types import CStringRecord, Record, RecordType, StructRecord, Uint16Record
 
 __all__ = ["TXST"]
 
@@ -82,7 +80,7 @@ class TXST(Record):
 		"""
 
 	@attrs.define
-	class DODT(RecordType):
+	class DODT(StructRecord):
 		"""
 		Decal Data.
 		"""
@@ -98,37 +96,64 @@ class TXST(Record):
 		flags: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/DODT.html
 		color: bytes  # TODO: comment for rgba
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x24\x00"  # size field
-			return cls(*struct.unpack("<fffffffBB2s4s", raw_bytes.read(36)))
+			return "<fffffffBB2s4s", 36
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			packed = struct.pack(
-					"<fffffffBB2s4s",
-					self.min_width,
-					self.max_width,
-					self.min_height,
-					self.max_height,
-					self.depth,
-					self.shininess,
-					self.parallax_scale,
-					self.parallax_passes,
-					self.flags,
-					self.color,
+			return (
+					"min_width",
+					"max_width",
+					"min_height",
+					"max_height",
+					"depth",
+					"shininess",
+					"parallax_scale",
+					"parallax_passes",
+					"flags",
+					"color",
 					)
 
-			return b"DODT\x24\x00" + packed
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x24\x00"  # size field
+		# 	return cls(*struct.unpack("<fffffffBB2s4s", raw_bytes.read(36)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	packed = struct.pack(
+		# 			"<fffffffBB2s4s",
+		# 			self.min_width,
+		# 			self.max_width,
+		# 			self.min_height,
+		# 			self.max_height,
+		# 			self.depth,
+		# 			self.shininess,
+		# 			self.parallax_scale,
+		# 			self.parallax_passes,
+		# 			self.flags,
+		# 			self.color,
+		# 			)
+
+		# 	return b"DODT\x24\x00" + packed
 
 	class DNAM(Uint16Record):
 		"""
@@ -154,16 +179,7 @@ class TXST(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {
-					b"TX00",
-					b"TX01",
-					b"TX02",
-					b"TX03",
-					b"TX04",
-					b"TX05",
-					b"DODT",
-					b"DNAM",
-					}:
+			elif record_type in {b"TX00", b"TX01", b"TX02", b"TX03", b"TX04", b"TX05", b"DODT", b"DNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

@@ -43,7 +43,7 @@ __all__ = ["IMAD"]
 
 class IMAD(Record):
 	"""
-	Image Space Adapter
+	Image Space Adapter.
 	"""
 
 	@attrs.define
@@ -184,7 +184,6 @@ class IMAD(Record):
 
 		TODO: An array of Color structures.
 		https://tes5edit.github.io/fopdoc/Fallout3/Records/IMAD.html
-
 		"""
 
 	class RNAM(RawBytesRecord):
@@ -233,7 +232,6 @@ class IMAD(Record):
 
 		TODO: An array of Time structures.
 		https://tes5edit.github.io/fopdoc/Fallout3/Records/IMAD.html
-
 		"""
 
 	class XNAM(RawBytesRecord):
@@ -716,14 +714,14 @@ class IMAD(Record):
 		"""
 		Sound - Intro.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class RDSI(FormIDRecord):
 		"""
 		Sound - Outro.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	@classmethod

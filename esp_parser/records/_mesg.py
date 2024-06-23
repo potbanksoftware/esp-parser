@@ -56,7 +56,7 @@ class MESG(Record):
 		"""
 		Icon.
 
-		FormID of a MICN record, or null.
+		Form ID of a :class:`~.MICN` record, or null.
 		"""
 
 	# class NAM1(RecordType):
@@ -108,7 +108,7 @@ class MESG(Record):
 		"""
 		Flags.
 
-		See below for values.
+		See https://tes5edit.github.io/fopdoc/Fallout3/Records/MESG.html
 		"""
 
 	class TNAM(Uint32Record):

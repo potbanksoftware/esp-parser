@@ -69,10 +69,7 @@ class MUSC(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"FNAM",
-					b"ANAM",
-					}:
+			elif record_type in {b"FNAM", b"ANAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

@@ -65,28 +65,28 @@ class NOTE(Record):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class DATA(Uint8Record):
 		"""
 		Type.
 
-		Enum - see values below.
+		Enum - see https://tes5edit.github.io/fopdoc/Fallout3/Records/NOTE.html
 		"""
 
 	class ONAM(FormIDRecord):
 		"""
 		Quest.
 
-		FormID of a QUST record.
+		Form ID of a :class:`~.QUST` record.
 		"""
 
 	class XNAM(CStringRecord):
@@ -98,7 +98,7 @@ class NOTE(Record):
 		"""
 		Text / Topic.
 
-		A text string, or the Form ID of a :class:`~.DIAL` record (in which case 4-bytes long).
+		A text string, or the form ID of a :class:`~.DIAL` record (in which case 4-bytes long).
 		"""
 
 		@classmethod
@@ -161,16 +161,7 @@ class NOTE(Record):
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
 			elif record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"YNAM",
-					b"ZNAM",
-					b"DATA",
-					b"ONAM",
-					b"XNAM",
-					b"TNAM",
-					b"SNAM",
+					b"FULL", b"ICON", b"MICO", b"YNAM", b"ZNAM", b"DATA", b"ONAM", b"XNAM", b"TNAM", b"SNAM"
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:

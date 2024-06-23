@@ -237,7 +237,7 @@ class REFR(Record):
 		"""
 		Map Marker Flags.
 
-		See below for values.
+		See https://tes5edit.github.io/fopdoc/FalloutNV/Records/REFR.html
 		"""
 
 	class FULL(CStringRecord):
@@ -314,7 +314,7 @@ class REFR(Record):
 		"""
 		Target.
 
-		FormID of a REFR, ACRE, ACHR, PGRE or PMIS record.
+		Form ID of a :class:`~.REFR`, :class:`~.ACRE`, :class:`~.ACHR`, :class:`~.PGRE` or :class:`~.PMIS` record.
 		"""
 
 	class XLCM(Int32Record):
@@ -324,9 +324,7 @@ class REFR(Record):
 
 	class XPRD(Float32Record):
 		"""
-		Idle Time.
-
-		Patrol data
+		Patrol data - idle time.
 		"""
 
 	# class XPPA(RecordType):
@@ -338,9 +336,9 @@ class REFR(Record):
 
 	class INAM(FormIDRecord):
 		"""
-		Idle.
+		Patrol data - Idle.
 
-		Patrol data. FormID of an IDLE record, or null.
+		Form ID of an :class:`~.IDLE` record, or null.
 		"""
 
 	# Embedded Script. collection
@@ -457,7 +455,7 @@ class REFR(Record):
 		"""
 		Ammo Type.
 
-		FormID of an AMMO record, or null.
+		Form ID of an :class:`~.AMMO` record, or null.
 		"""
 
 	class XAMC(Int32Record):
@@ -476,7 +474,7 @@ class REFR(Record):
 		"""
 		Lit Water.
 
-		FormID of a REFR record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	# class XDCR(RecordType):
@@ -492,7 +490,7 @@ class REFR(Record):
 		"""
 		Linked Reference.
 
-		FormID of a REFR, ACRE, ACHR, PGRE or PMIS record.
+		Form ID of a :class:`~.REFR`, :class:`~.ACRE`, :class:`~.ACHR`, :class:`~.PGRE` or :class:`~.PMIS` record.
 		"""
 
 	# class XCLP(RecordType):
@@ -504,9 +502,7 @@ class REFR(Record):
 
 	class XAPD(Uint8Record):
 		"""
-		Flags.
-
-		Activate parents.
+		Activate parents flags.
 
 		https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/XAPD.html
 		"""
@@ -531,14 +527,14 @@ class REFR(Record):
 		"""
 		Emittance.
 
-		FormID of a LIGH or REGN record.
+		Form ID of a :class:`~.LIGH` or :class:`~.REGN` record.
 		"""
 
 	class XMBR(FormIDRecord):
 		"""
 		MultiBound Reference.
 
-		FormID of a REFR record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	class XACT(Uint32Record):
@@ -608,7 +604,7 @@ class REFR(Record):
 		"""
 		Linked Room.
 
-		FormID of a REFR record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	# class XOCP(RecordType):
@@ -714,5 +710,4 @@ class REFR(Record):
 			elif record_type == b"DATA":
 				yield PositionRotation.DATA.parse(raw_bytes)
 			else:
-				breakpoint()
 				raise NotImplementedError(record_type)

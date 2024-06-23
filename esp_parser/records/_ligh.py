@@ -27,17 +27,15 @@ LIGH record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID, OBND, Model
-from esp_parser.types import CStringRecord, Float32Record, FormIDRecord, Record, RecordType
+from esp_parser.types import CStringRecord, Float32Record, FormIDRecord, Record, RecordType, StructRecord
 
 __all__ = ["LIGH"]
 
@@ -68,7 +66,7 @@ class LIGH(Record):
 		"""
 
 	@attrs.define
-	class DATA(RecordType):
+	class DATA(StructRecord):
 		"""
 		Data.
 		"""
@@ -83,33 +81,58 @@ class LIGH(Record):
 		value: int
 		weight: float
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x20\x00"
-			return cls(*struct.unpack("<iI4sIffIf", raw_bytes.read(32)))
+			return "<iI4sIffIf", 32
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			packed = struct.pack(
-					"<iI4sIffIf",
-					self.time,
-					self.radius,
-					self.color,
-					self.flags,
-					self.falloff_exponent,
-					self.fov,
-					self.value,
-					self.weight,
+
+			return (
+					"time",
+					"radius",
+					"color",
+					"flags",
+					"falloff_exponent",
+					"fov",
+					"value",
+					"weight",
 					)
-			return b"DATA" + b"\x20\x00" + packed
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x20\x00"
+		# 	return cls(*struct.unpack("<iI4sIffIf", raw_bytes.read(32)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+		# 	packed = struct.pack(
+		# 			"<iI4sIffIf",
+		# 			self.time,
+		# 			self.radius,
+		# 			self.color,
+		# 			self.flags,
+		# 			self.falloff_exponent,
+		# 			self.fov,
+		# 			self.value,
+		# 			self.weight,
+		# 			)
+		# 	return b"DATA" + b"\x20\x00" + packed
 
 	class FNAM(Float32Record):
 		"""

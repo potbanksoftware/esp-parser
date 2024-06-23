@@ -38,7 +38,6 @@ from typing_extensions import Self
 # this package
 from esp_parser.subrecords import CTDA, EDID
 from esp_parser.types import (
-		AttrsStructRecord,
 		Collection,
 		CStringRecord,
 		FormIDRecord,
@@ -46,6 +45,7 @@ from esp_parser.types import (
 		MarkerRecord,
 		Record,
 		RecordType,
+		StructRecord,
 		Uint8Record,
 		Uint16Record
 		)
@@ -66,7 +66,7 @@ class PerkEffect(Collection):
 			}
 
 	@attrs.define
-	class PRKE(AttrsStructRecord):
+	class PRKE(StructRecord):
 		"""
 		Effect subrecord header.
 		"""
@@ -87,14 +87,10 @@ class PerkEffect(Collection):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"type",
-					"rank",
-					"priority",
-					)
+			return ("type", "rank", "priority")
 
 	@attrs.define
-	class DATAQuestStage(AttrsStructRecord):
+	class DATAQuestStage(StructRecord):
 		"""
 		Data (Quest + Stage).
 		"""
@@ -111,6 +107,14 @@ class PerkEffect(Collection):
 			"""
 			return "<4sb3s", 8
 
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("quest", "quest_stage", "unused")
+
 		def unparse(self) -> bytes:
 			"""
 			Turn this record back into raw bytes for an ESP file.
@@ -118,12 +122,8 @@ class PerkEffect(Collection):
 
 			pack_struct, size = self.get_struct_and_size()
 			size_field = struct.pack("<H", size)
-			body = struct.pack(
-					pack_struct,
-					self.quest,
-					self.quest_stage,
-					self.unused,
-					)
+			pack_items = [getattr(self, field_name) for field_name in self.get_field_names()]
+			body = struct.pack(pack_struct, *pack_items)
 			return b"DATA" + size_field + body
 
 	class DATAAbility(FormIDRecord):
@@ -139,7 +139,7 @@ class PerkEffect(Collection):
 			return b"DATA" + b"\x04\x00" + self
 
 	@attrs.define
-	class DATAEntryPoint(AttrsStructRecord):
+	class DATAEntryPoint(StructRecord):
 		"""
 		Data (Quest + Stage).
 		"""
@@ -155,6 +155,14 @@ class PerkEffect(Collection):
 			"""
 			return "<BBB", 3
 
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("entry_point", "function", "perk_condition_tab_count")
+
 		def unparse(self) -> bytes:
 			"""
 			Turn this record back into raw bytes for an ESP file.
@@ -162,12 +170,8 @@ class PerkEffect(Collection):
 
 			pack_struct, size = self.get_struct_and_size()
 			size_field = struct.pack("<H", size)
-			body = struct.pack(
-					pack_struct,
-					self.entry_point,
-					self.function,
-					self.perk_condition_tab_count,
-					)
+			pack_items = [getattr(self, field_name) for field_name in self.get_field_names()]
+			body = struct.pack(pack_struct, *pack_items)
 			return b"DATA" + size_field + body
 
 	class PRKC(Int8Record):
@@ -233,7 +237,7 @@ class PERK(Record):
 		"""
 
 	@attrs.define
-	class DATA(AttrsStructRecord):
+	class DATA(StructRecord):
 		"""
 		Data.
 		"""
@@ -283,13 +287,7 @@ class PERK(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"trait",
-					"min_level",
-					"ranks",
-					"playable",
-					"hidden",
-					)
+			return ("trait", "min_level", "ranks", "playable", "hidden")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -308,13 +306,7 @@ class PERK(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"CTDA":
 				yield CTDA.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"DESC",
-					b"ICON",
-					b"MICO",
-					b"DATA",
-					}:
+			elif record_type in {b"FULL", b"DESC", b"ICON", b"MICO", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 
 			elif record_type in PerkEffect.members:

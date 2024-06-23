@@ -969,6 +969,9 @@ class Destruction(Collection):
 
 
 class Effect(Collection):
+	"""
+	Effect Subrecord Collection.
+	"""
 
 	members = {b"EFIT", b"EFID"}
 

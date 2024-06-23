@@ -99,7 +99,7 @@ class PACK(Record):
 	@attrs.define
 	class PLDT(StructRecord):
 		"""
-		Location Subrecord - Location 1
+		Location Subrecord - Location 1.
 		"""
 
 		type: int  # Enum - see https://tes5edit.github.io/fopdoc/Fallout3/Records/PACK.html
@@ -125,11 +125,7 @@ class PACK(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"type",
-					"location",
-					"radius",
-					)
+			return ("type", "location", "radius")
 
 	class PLD2(PLDT):
 		"""
@@ -160,13 +156,7 @@ class PACK(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"month",
-					"day_of_week",
-					"date",
-					"time",
-					"duration",
-					)
+			return ("month", "day_of_week", "date", "time", "duration")
 
 	@attrs.define
 	class PTDT(StructRecord):
@@ -192,12 +182,7 @@ class PACK(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"type",
-					"target",
-					"count_or_distance",
-					"unknown",
-					)
+			return ("type", "target", "count_or_distance", "unknown")
 
 	class IDLF(Uint8Record):
 		"""
@@ -232,7 +217,7 @@ class PACK(Record):
 		"""
 		Combat Style.
 
-		FormID of a CSTY record.
+		Form ID of a :class:`~.CSTY` record.
 		"""
 
 	# class PKED(RecordType):
@@ -304,14 +289,7 @@ class PACK(Record):
 			"""
 			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			return (
-					"fov",
-					"topic",
-					"flags",
-					"unused",
-					"dialog_type",
-					"unknown",
-					)
+			return ("fov", "topic", "flags", "unused", "dialog_type", "unknown")
 
 	class POBA(MarkerRecord):
 		"""
@@ -322,7 +300,7 @@ class PACK(Record):
 		"""
 		OnBegin Idle / OnEnd Idle / OnChange Idle.
 
-		FormID of an IDLE record, or null.
+		Form ID of an :class:`~.IDLE` record, or null.
 		"""
 
 	# OnBegin Embedded Script. collection
@@ -333,7 +311,7 @@ class PACK(Record):
 		"""
 		OnBegin Topic / OnEnd Topic / OnChange Topic.
 
-		FormID of a DIAL record, or null.
+		Form ID of a :class:`~.DIAL` record, or null.
 		"""
 
 	# OnEnd Embedded Script. collection

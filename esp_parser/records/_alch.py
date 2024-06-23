@@ -27,17 +27,23 @@ ALCH record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import CTDA, EDID, OBND, Destruction, Effect, Model
-from esp_parser.types import CStringRecord, Float32Record, FormIDRecord, Int32Record, Record, RecordType
+from esp_parser.types import (
+		CStringRecord,
+		Float32Record,
+		FormIDRecord,
+		Int32Record,
+		Record,
+		RecordType,
+		StructRecord
+		)
 
 __all__ = ["ALCH"]
 
@@ -51,10 +57,6 @@ class ALCH(Record):
 		"""
 		Name.
 		"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Model.html
 
 	class ICON(CStringRecord):
 		"""
@@ -70,32 +72,28 @@ class ALCH(Record):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
-
-	# Destruction Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Destruction.html
 
 	class YNAM(FormIDRecord):
 		"""
 		Sound - Pick Up.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		FormID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ETYP(Int32Record):
 		"""
 		Equipment Type.
 
-		https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/ETYP.html
+		See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/ETYP.html for enum values.
 		"""
 
 	class DATA(Float32Record):
@@ -104,7 +102,7 @@ class ALCH(Record):
 		"""
 
 	@attrs.define
-	class ENIT(RecordType):
+	class ENIT(StructRecord):
 		"""
 		Effect Data.
 		"""
@@ -120,36 +118,55 @@ class ALCH(Record):
 		#: Form ID of a :class:`~.SOUN` record, or null.
 		sound_consume: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x14\x00"  # size field
-			return cls(*struct.unpack("<iB3s4sf4s", raw_bytes.read(20)))
+			return "<iB3s4sf4s", 20
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"ENIT" + struct.pack(
-					"<HiB3s4sf4s",
-					20,
-					self.value,
-					self.flags,
-					self.unused,
-					self.withdrawal_effect,
-					self.addiction_chance,
-					self.sound_consume,
+			return (
+					"value",
+					"flags",
+					"unused",
+					"withdrawal_effect",
+					"addiction_chance",
+					"sound_consume",
 					)
 
-	# Effect. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x14\x00"  # size field
+		# 	return cls(*struct.unpack("<iB3s4sf4s", raw_bytes.read(20)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"ENIT" + struct.pack(
+		# 			"<HiB3s4sf4s",
+		# 			20,
+		# 			self.value,
+		# 			self.flags,
+		# 			self.unused,
+		# 			self.withdrawal_effect,
+		# 			self.addiction_chance,
+		# 			self.sound_consume,
+		# 			)
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -184,12 +201,9 @@ class ALCH(Record):
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
-
 			elif record_type in Destruction.members:
 				yield Destruction.parse_member(record_type, raw_bytes)
-
 			elif record_type in Effect.members:
 				yield Effect.parse_member(record_type, raw_bytes)
-
 			else:
 				raise NotImplementedError(record_type)

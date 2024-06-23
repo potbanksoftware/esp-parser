@@ -51,7 +51,7 @@ class RCCT(Record):
 		"""
 		Flags.
 
-		See values below.
+		See https://tes5edit.github.io/fopdoc/FalloutNV/Records/RCCT.html
 		"""
 
 	@classmethod
@@ -69,10 +69,7 @@ class RCCT(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"FULL",
-					b"DATA",
-					}:
+			elif record_type in {b"FULL", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

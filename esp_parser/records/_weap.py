@@ -120,14 +120,14 @@ class WEAP(Record):
 		"""
 		Sound - Pick Up.
 
-		Form ID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Sound - Drop.
 
-		Form ID of a SOUN record.
+		Form ID of a :class:`~.SOUN` record.
 		"""
 
 	class EFSD(FormIDRecord):

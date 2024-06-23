@@ -53,22 +53,18 @@ class CHAL(Record):
 	class ICON(CStringRecord):
 		"""
 		Path to icon texture, when viewed in PipBoy.
-
-		Optional
 		"""
 
 	class MICO(CStringRecord):
 		"""
 		Path to icon texture, when viewed in upper-left message.
-
-		Optional
 		"""
 
 	class SCRI(FormIDRecord):
 		"""
 		Script.
 
-		FormID of a SCPT record.
+		Form ID of a :class:`~.SCPT` record.
 		"""
 
 	class DESC(CStringRecord):

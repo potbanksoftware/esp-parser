@@ -29,7 +29,7 @@ NPC\_ record type.
 # stdlib
 import struct
 from io import BytesIO
-from typing import Iterator, NamedTuple, Type
+from typing import Iterator, NamedTuple, Tuple, Type
 
 # 3rd party
 import attrs
@@ -46,6 +46,7 @@ from esp_parser.types import (
 		IntEnumField,
 		Record,
 		RecordType,
+		StructRecord,
 		Uint16Record
 		)
 from esp_parser.utils import namedtuple_qualname_repr
@@ -292,7 +293,7 @@ class NPC_(Record):
 			return namedtuple_qualname_repr(self)
 
 	@attrs.define
-	class DNAM(RecordType):
+	class DNAM(StructRecord):
 		"""
 		Skills.
 		"""
@@ -332,53 +333,98 @@ class NPC_(Record):
 		survival_offset: int
 		unarmed_offset: int
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x1c\x00"  # size field
-			return cls(*struct.unpack("<BBBBBBBBBBBBBBBBBBBBBBBBBBBB", raw_bytes.read(28)))
+			return "<BBBBBBBBBBBBBBBBBBBBBBBBBBBB", 28
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"DNAM\x1c\x00" + struct.pack(
-					"<BBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-					self.barter,
-					self.big_guns,
-					self.energy_weapons,
-					self.explosives,
-					self.lockpick,
-					self.medicine,
-					self.melee_weapons,
-					self.repair,
-					self.science,
-					self.small_guns,
-					self.sneak,
-					self.speech,
-					self.survival,
-					self.unarmed,
-					self.barter_offset,
-					self.big_guns_offset,
-					self.energy_weapons_offset,
-					self.explosives_offset,
-					self.lockpick_offset,
-					self.medicine_offset,
-					self.melee_weapons_offset,
-					self.repair_offset,
-					self.science_offset,
-					self.small_guns_offset,
-					self.sneak_offset,
-					self.speech_offset,
-					self.survival_offset,
-					self.unarmed_offset,
+			return (
+					"barter",
+					"big_guns",
+					"energy_weapons",
+					"explosives",
+					"lockpick",
+					"medicine",
+					"melee_weapons",
+					"repair",
+					"science",
+					"small_guns",
+					"sneak",
+					"speech",
+					"survival",
+					"unarmed",
+					"barter_offset",
+					"big_guns_offset",
+					"energy_weapons_offset",
+					"explosives_offset",
+					"lockpick_offset",
+					"medicine_offset",
+					"melee_weapons_offset",
+					"repair_offset",
+					"science_offset",
+					"small_guns_offset",
+					"sneak_offset",
+					"speech_offset",
+					"survival_offset",
+					"unarmed_offset",
 					)
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x1c\x00"  # size field
+		# 	return cls(*struct.unpack("<BBBBBBBBBBBBBBBBBBBBBBBBBBBB", raw_bytes.read(28)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"DNAM\x1c\x00" + struct.pack(
+		# 			"<BBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+		# 			self.barter,
+		# 			self.big_guns,
+		# 			self.energy_weapons,
+		# 			self.explosives,
+		# 			self.lockpick,
+		# 			self.medicine,
+		# 			self.melee_weapons,
+		# 			self.repair,
+		# 			self.science,
+		# 			self.small_guns,
+		# 			self.sneak,
+		# 			self.speech,
+		# 			self.survival,
+		# 			self.unarmed,
+		# 			self.barter_offset,
+		# 			self.big_guns_offset,
+		# 			self.energy_weapons_offset,
+		# 			self.explosives_offset,
+		# 			self.lockpick_offset,
+		# 			self.medicine_offset,
+		# 			self.melee_weapons_offset,
+		# 			self.repair_offset,
+		# 			self.science_offset,
+		# 			self.small_guns_offset,
+		# 			self.sneak_offset,
+		# 			self.speech_offset,
+		# 			self.survival_offset,
+		# 			self.unarmed_offset,
+		# 			)
 
 	class PNAM(FormIDRecord):
 		"""

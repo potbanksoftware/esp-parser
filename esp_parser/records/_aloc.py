@@ -57,19 +57,19 @@ class ALOC(Record):
 
 	class NAM1(RawBytesRecord):
 		"""
-		??.
+		Unknown.
 
 		Possibly a combination of flags and enums.
 		"""
 
 	class NAM2(RawBytesRecord):
 		"""
-		??.
+		Unknown.
 		"""
 
 	class NAM3(RawBytesRecord):
 		"""
-		??.
+		Unknown.
 		"""
 
 	class NAM4(Float32Record):
@@ -96,55 +96,53 @@ class ALOC(Record):
 		"""
 		Neutral Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class ZNAM(FormIDRecord):
 		"""
 		Ally Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class XNAM(FormIDRecord):
 		"""
 		Friend Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class YNAM(FormIDRecord):
 		"""
 		Enemy Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class LNAM(FormIDRecord):
 		"""
 		Location Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class GNAM(FormIDRecord):
 		"""
 		Battle Media Set.
 
-		FormID of a MSET record.
+		Form ID of a :class:`~.MSET` record.
 		"""
 
 	class RNAM(FormIDRecord):
 		"""
 		Conditional Faction.
 
-		FormID of a FACT record.
+		Form ID of a :class:`~.FACT` record.
 		"""
 
 	class FNAM(RawBytesRecord):
-		"""
-		??.
-		"""
+		pass
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:

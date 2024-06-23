@@ -29,7 +29,7 @@ CELL record type.
 # stdlib
 import struct
 from io import BytesIO
-from typing import Iterator, List, NamedTuple, Tuple, Type
+from typing import Iterator, List, Tuple, Type
 
 # 3rd party
 import attrs
@@ -47,7 +47,6 @@ from esp_parser.types import (
 		StructRecord,
 		Uint8Record
 		)
-from esp_parser.utils import namedtuple_qualname_repr
 
 __all__ = ["CELL"]
 
@@ -69,7 +68,8 @@ class CELL(Record):
 		See https://tes5edit.github.io/fopdoc/Fallout3/Records/CELL.html
 		"""
 
-	class XCLC(NamedTuple):
+	@attrs.define
+	class XCLC(StructRecord):
 		"""
 		Grid reference of the cell.
 		"""
@@ -78,28 +78,44 @@ class CELL(Record):
 		y: int = 0
 		force_hide_land: int = 0
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x0c\x00"  # size field
-			return cls(*struct.unpack("<iiI", raw_bytes.read(12)))
+			return "<iiI", 12
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"XCLC\x0c\x00" + struct.pack("<iiI", *self)
+			return ('x', 'y', "force_hide_land")
 
-		def __repr__(self) -> str:
-			return namedtuple_qualname_repr(self)
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
 
-	RecordType.register(XCLC)
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x0c\x00"  # size field
+		# 	return cls(*struct.unpack("<iiI", raw_bytes.read(12)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"XCLC\x0c\x00" + struct.pack("<iiI", *self)
+
+		# def __repr__(self) -> str:
+		# 	return namedtuple_qualname_repr(self)
+
+	# RecordType.register(XCLC)
 
 	@attrs.define
 	class XCLL(StructRecord):

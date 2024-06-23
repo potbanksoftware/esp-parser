@@ -27,17 +27,15 @@ MGEF record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID, Model
-from esp_parser.types import CStringRecord, Record, RecordType
+from esp_parser.types import CStringRecord, Record, RecordType, StructRecord
 
 __all__ = ["MGEF"]
 
@@ -68,7 +66,7 @@ class MGEF(Record):
 		"""
 
 	@attrs.define
-	class DATA(RecordType):
+	class DATA(StructRecord):
 		"""
 		Data.
 		"""
@@ -115,44 +113,80 @@ class MGEF(Record):
 		archtype: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/MGEF.html
 		actor_value: int
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x48\x00"
-			return cls(*struct.unpack("<If4siiH2s4sf4s4s4s4s4s4sffIi", raw_bytes.read(72)))
+			return "<If4siiH2s4sf4s4s4s4s4s4sffIi", 72
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
-			packed = struct.pack(
-					"<If4siiH2s4sf4s4s4s4s4s4sffIi",
-					self.flags,
-					self.base_cost,
-					self.associated_item,
-					self.magic_school,
-					self.resistance_type,
-					self.unknown,
-					self.unused,
-					self.light,
-					self.projectile_speed,
-					self.effect_shader,
-					self.object_display_shader,
-					self.effect_sound,
-					self.bold_sound,
-					self.hit_sound,
-					self.area_sound,
-					self.constant_effect_enchantment_factor,
-					self.constant_effect_barter_factor,
-					self.archtype,
-					self.actor_value,
+
+			return (
+					"flags",
+					"base_cost",
+					"associated_item",
+					"magic_school",
+					"resistance_type",
+					"unknown",
+					"unused",
+					"light",
+					"projectile_speed",
+					"effect_shader",
+					"object_display_shader",
+					"effect_sound",
+					"bold_sound",
+					"hit_sound",
+					"area_sound",
+					"constant_effect_enchantment_factor",
+					"constant_effect_barter_factor",
+					"archtype",
+					"actor_value",
 					)
-			return b"DATA" + b"\x48\x00" + packed
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x48\x00"
+		# 	return cls(*struct.unpack("<If4siiH2s4sf4s4s4s4s4s4sffIi", raw_bytes.read(72)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+		# 	packed = struct.pack(
+		# 			"<If4siiH2s4sf4s4s4s4s4s4sffIi",
+		# 			self.flags,
+		# 			self.base_cost,
+		# 			self.associated_item,
+		# 			self.magic_school,
+		# 			self.resistance_type,
+		# 			self.unknown,
+		# 			self.unused,
+		# 			self.light,
+		# 			self.projectile_speed,
+		# 			self.effect_shader,
+		# 			self.object_display_shader,
+		# 			self.effect_sound,
+		# 			self.bold_sound,
+		# 			self.hit_sound,
+		# 			self.area_sound,
+		# 			self.constant_effect_enchantment_factor,
+		# 			self.constant_effect_barter_factor,
+		# 			self.archtype,
+		# 			self.actor_value,
+		# 			)
+		# 	return b"DATA" + b"\x48\x00" + packed
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -167,15 +201,8 @@ class MGEF(Record):
 			if not record_type:
 				break
 
-			if record_type in {
-					b"FULL",
-					b"DESC",
-					b"ICON",
-					b"MICO",
-					b"DATA",
-					}:
+			if record_type in {b"FULL", b"DESC", b"ICON", b"MICO", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
-
 			elif record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type in Model.members:

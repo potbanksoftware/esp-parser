@@ -124,17 +124,8 @@ class MISC(Record):
 			if not record_type:
 				break
 
-			if record_type in {
-					b"FULL",
-					b"ICON",
-					b"MICO",
-					b"SCRI",
-					b"YNAM",
-					b"ZNAM",
-					b"DATA",
-					}:
+			if record_type in {b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
-
 			elif record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":

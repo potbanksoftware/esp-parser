@@ -27,17 +27,15 @@ FACT record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID, XNAM
-from esp_parser.types import CStringRecord, Float32Record, Int32Record, Record, RecordType
+from esp_parser.types import CStringRecord, Float32Record, Int32Record, Record, RecordType, StructRecord
 
 __all__ = ["FACT"]
 
@@ -53,7 +51,7 @@ class FACT(Record):
 		"""
 
 	@attrs.define
-	class DATA(RecordType):
+	class DATA(StructRecord):
 		"""
 		Data.
 		"""
@@ -63,23 +61,39 @@ class FACT(Record):
 		flags2: int
 		unused: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x04\x00"  # size field
-			return cls(*struct.unpack("<BB2s", raw_bytes.read(4)))
+			return "<BB2s", 4
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"DATA\x04\x00" + struct.pack("<BB2s", self.flags1, self.flags2, self.unused)
+			return ("flags1", "flags2", "unused")
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x04\x00"  # size field
+		# 	return cls(*struct.unpack("<BB2s", raw_bytes.read(4)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"DATA\x04\x00" + struct.pack("<BB2s", self.flags1, self.flags2, self.unused)
 
 	class CNAM(Float32Record):
 		"""

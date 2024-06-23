@@ -79,36 +79,15 @@ class ACRE(Record):
 		"""
 		Idle Time.
 
-		Patrol data
+		Patrol data.
 		"""
 
 	class XPPA(MarkerRecord):
 		"""
 		Patrol Script Marker.
 
-		Patrol data
+		Patrol data.
 		"""
-
-		# def __repr__(self) -> str:
-		# 	return "ACRE.XPPA()"
-
-		# @classmethod
-		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-		# 	"""
-		# 	Parse this subrecord.
-
-		# 	:param raw_bytes: Raw bytes for this record
-		# 	"""
-
-		# 	assert raw_bytes.read(2) == b"\x00\x00"  # size field
-		# 	return cls()
-
-		# def unparse(self) -> bytes:
-		# 	"""
-		# 	Turn this subrecord back into raw bytes for an ESP file.
-		# 	"""
-
-		# 	return b"XPPA\x00\x00"
 
 	class INAM(FormIDRecord):
 		"""
@@ -116,12 +95,6 @@ class ACRE(Record):
 
 		Patrol data. FormID of an IDLE record, or null.
 		"""
-
-	# Embedded Script. collection
-	#
-	# Patrol data.
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
 
 	class TNAM(FormIDRecord):
 		"""
@@ -194,11 +167,9 @@ class ACRE(Record):
 
 	class XAPD(Uint8Record):
 		"""
-		Flags.
+		Activate parents flags.
 
-		Activate parents
-
-		https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/XAPD.html
+		See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/XAPD.html
 		"""
 
 	# class XAPR(RecordType):
@@ -221,14 +192,14 @@ class ACRE(Record):
 		"""
 		Emittance.
 
-		FormID of a LIGH or REGN record.
+		Form ID of a LIGH or :class:`~.REGN` record.
 		"""
 
 	class XMBR(FormIDRecord):
 		"""
 		MultiBound Reference.
 
-		FormID of a REFR record.
+		Form ID of a :class:`~.REFR` record.
 		"""
 
 	# class XIBS(RecordType):

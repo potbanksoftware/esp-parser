@@ -64,9 +64,7 @@ class VTYP(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {
-					b"DNAM",
-					}:
+			elif record_type in {b"DNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

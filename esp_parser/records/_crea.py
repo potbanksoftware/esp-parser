@@ -29,7 +29,7 @@ CREA record type.
 # stdlib
 import struct
 from io import BytesIO
-from typing import Iterator, List, Type
+from typing import Iterator, List, Tuple, Type
 
 # 3rd party
 import attrs
@@ -45,6 +45,7 @@ from esp_parser.types import (
 		IntEnumField,
 		Record,
 		RecordType,
+		StructRecord,
 		Uint8Record,
 		Uint16Record,
 		Uint32Record
@@ -146,7 +147,7 @@ class CREA(Record):
 			return b"NIFT" + size_field + body
 
 	@attrs.define
-	class SNAM(RecordType):
+	class SNAM(StructRecord):
 		"""
 		Faction.
 		"""
@@ -159,23 +160,39 @@ class CREA(Record):
 		rank: int
 		unused: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x08\x00"  # size field
-			return cls(*struct.unpack("<4sB3s", raw_bytes.read(8)))
+			return "<4sB3s", 8
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"SNAM" + struct.pack("<H4sB3s", 8, self.faction, self.rank, self.unused)
+			return ("faction", "rank", "unused")
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x08\x00"  # size field
+		# 	return cls(*struct.unpack("<4sB3s", raw_bytes.read(8)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"SNAM" + struct.pack("<H4sB3s", 8, self.faction, self.rank, self.unused)
 
 	class INAM(FormIDRecord):
 		"""
@@ -255,12 +272,12 @@ class CREA(Record):
 		Giant = 7
 
 	@attrs.define
-	class DATA(RecordType):
+	class DATA(StructRecord):
 		"""
-		Data/
+		Data.
 		"""
 
-		type: "CREA.DataTypeEnum"  # Enum - see below for values.
+		type: "CREA.DataTypeEnum" = attrs.field(converter=lambda x: CREA.DataTypeEnum(x))
 		combat_skill: int
 		magic_skill: int
 		stealth_skill: int
@@ -275,39 +292,70 @@ class CREA(Record):
 		agility: int
 		luck: int
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x11\x00"  # size field
-			return cls(*struct.unpack("<BBBBh2shBBBBBBB", raw_bytes.read(17)))
+			return "<BBBBh2shBBBBBBB", 17
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"DATA\x11\x00" + struct.pack(
-					"<BBBBh2shBBBBBBB",
-					self.type,
-					self.combat_skill,
-					self.magic_skill,
-					self.stealth_skill,
-					self.health,
-					self.unused,
-					self.damage,
-					self.strength,
-					self.perception,
-					self.endurance,
-					self.charisma,
-					self.intelligence,
-					self.agility,
-					self.luck,
+			return (
+					"type",
+					"combat_skill",
+					"magic_skill",
+					"stealth_skill",
+					"health",
+					"unused",
+					"damage",
+					"strength",
+					"perception",
+					"endurance",
+					"charisma",
+					"intelligence",
+					"agility",
+					"luck",
 					)
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x11\x00"  # size field
+		# 	return cls(*struct.unpack("<BBBBh2shBBBBBBB", raw_bytes.read(17)))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"DATA\x11\x00" + struct.pack(
+		# 			"<BBBBh2shBBBBBBB",
+		# 			self.type,
+		# 			self.combat_skill,
+		# 			self.magic_skill,
+		# 			self.stealth_skill,
+		# 			self.health,
+		# 			self.unused,
+		# 			self.damage,
+		# 			self.strength,
+		# 			self.perception,
+		# 			self.endurance,
+		# 			self.charisma,
+		# 			self.intelligence,
+		# 			self.agility,
+		# 			self.luck,
+		# 			)
 
 	class RNAM(Uint8Record):
 		"""

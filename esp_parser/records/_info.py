@@ -27,17 +27,24 @@ INFO record type.
 #
 
 # stdlib
-import struct
 from io import BytesIO
-from typing import Iterator, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import CTDA, DialType, InfoNextSpeaker, Script
-from esp_parser.types import CStringRecord, FormIDRecord, IntEnum, MarkerRecord, Record, RecordType, Uint32Record
+from esp_parser.types import (
+		CStringRecord,
+		FormIDRecord,
+		IntEnum,
+		MarkerRecord,
+		Record,
+		RecordType,
+		StructRecord,
+		Uint32Record
+		)
 
 __all__ = ["INFO"]
 
@@ -48,33 +55,49 @@ class INFO(Record):
 	"""
 
 	@attrs.define
-	class DATA(RecordType):  # noqa: D106  # TODO
+	class DATA(StructRecord):  # noqa: D106  # TODO
 		#: Dialog type
-		type: DialType
+		type: DialType = attrs.field(converter=DialType)
 
 		next_speaker: InfoNextSpeaker
 
 		# See https://tes5edit.github.io/fopdoc/Fallout3/Records/INFO.html
 		flags: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x04\x00"  # size field
-			type_, next_speaker = struct.unpack("<BB", raw_bytes.read(2))
-			return cls(DialType(type_), next_speaker, raw_bytes.read(2))
+			return "<BB2s", 4
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"DATA\x04\x00" + struct.pack("<BB", self.type, self.next_speaker) + self.flags
+			return ("type", "next_speaker", "flags")
+
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x04\x00"  # size field
+		# 	type_, next_speaker = struct.unpack("<BB", raw_bytes.read(2))
+		# 	return cls(DialType(type_), next_speaker, raw_bytes.read(2))
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	return b"DATA\x04\x00" + struct.pack("<BB", self.type, self.next_speaker) + self.flags
 
 	class QSTI(FormIDRecord):
 		"""
@@ -87,7 +110,7 @@ class INFO(Record):
 		"""
 		Topic.
 
-		FormID of a DIAL record.
+		Form ID of a :class:`~.DIAL` record.
 		"""
 
 	class PNAM(FormIDRecord):
@@ -99,7 +122,7 @@ class INFO(Record):
 		"""
 		Topic.
 
-		FormID of a DIAL record.
+		Form ID of a :class:`~.DIAL` record.
 		"""
 
 	class TRDTEmotionType(IntEnum):
@@ -117,12 +140,12 @@ class INFO(Record):
 		Pained = 7
 
 	@attrs.define
-	class TRDT(RecordType):
+	class TRDT(StructRecord):
 		"""
 		Response Data.
 		"""
 
-		emotion_type: "INFO.TRDTEmotionType"
+		emotion_type: "INFO.TRDTEmotionType" = attrs.field(converter=lambda x: INFO.TRDTEmotionType(x))
 		emotion_value: int
 		unused: bytes
 		response_number: int
@@ -135,36 +158,61 @@ class INFO(Record):
 		flags: int
 		unused__: bytes
 
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x18\x00"  # size field
-			unpacked = struct.unpack("<Ii4sB3s4sB3s", raw_bytes.read(24))
-			return cls(INFO.TRDTEmotionType(unpacked[0]), *unpacked[1:])
+			return "<Ii4sB3s4sB3s", 24
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			packed = struct.pack(
-					"<Ii4sB3s4sB3s",
-					self.emotion_type,
-					self.emotion_value,
-					self.unused,
-					self.response_number,
-					self.unused_,
-					self.sound,
-					self.flags,
-					self.unused__,
+			return (
+					"emotion_type",
+					"emotion_value",
+					"unused",
+					"response_number",
+					"unused_",
+					"sound",
+					"flags",
+					"unused__",
 					)
 
-			return b"TRDT\x18\x00" + packed
+		# @classmethod
+		# def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		# 	"""
+		# 	Parse this subrecord.
+
+		# 	:param raw_bytes: Raw bytes for this record
+		# 	"""
+
+		# 	assert raw_bytes.read(2) == b"\x18\x00"  # size field
+		# 	unpacked = struct.unpack("<Ii4sB3s4sB3s", raw_bytes.read(24))
+		# 	return cls(INFO.TRDTEmotionType(unpacked[0]), *unpacked[1:])
+
+		# def unparse(self) -> bytes:
+		# 	"""
+		# 	Turn this subrecord back into raw bytes for an ESP file.
+		# 	"""
+
+		# 	packed = struct.pack(
+		# 			"<Ii4sB3s4sB3s",
+		# 			self.emotion_type,
+		# 			self.emotion_value,
+		# 			self.unused,
+		# 			self.response_number,
+		# 			self.unused_,
+		# 			self.sound,
+		# 			self.flags,
+		# 			self.unused__,
+		# 			)
+
+		# 	return b"TRDT\x18\x00" + packed
 
 	class NAM1(CStringRecord):
 		"""
@@ -252,14 +300,14 @@ class INFO(Record):
 		"""
 		Actor Value / Perk.
 
-		FormID of a AVIF or PERK record.
+		Form ID of a :class:`~.AVIF` or :class:`~.PERK` record.
 		"""
 
 	class DNAM(Uint32Record):
 		"""
 		Speech Challenge.
 
-		Enum - see below for values
+		Enum - see https://tes5edit.github.io/fopdoc/Fallout3/Records/INFO.html
 		"""
 
 	class TCFU(FormIDRecord):
