@@ -36,7 +36,7 @@ import attrs
 from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import ACBS, AIDT, EDID, OBND, Item, Model
+from esp_parser.subrecords import ACBS, AIDT, EDID, OBND, Destruction, Item, Model
 from esp_parser.types import (
 		BytesRecordType,
 		CStringRecord,
@@ -64,6 +64,13 @@ class NPC_(Record):
 		Name.
 		"""
 
+	# class SNAM(RecordType):
+	# 	"""
+	# 	Faction.
+	#
+	# 	https://tes5edit.github.ioSubrecords/SNAM (CREA, NPC_).md
+	# 	"""
+
 	class INAM(FormIDRecord):
 		"""
 		Death Item.
@@ -90,6 +97,13 @@ class NPC_(Record):
 		Race.
 
 		Form ID of a :class:`~.RACE`.
+		"""
+
+	class SPLO(FormIDRecord):
+		"""
+		Actor Effect.
+
+		Form ID of a :class:`~.SPEL` record.
 		"""
 
 	class EITM(FormIDRecord):
@@ -244,6 +258,13 @@ class NPC_(Record):
 		Script.
 
 		Form ID of a :class:`~.SCPT` record.
+		"""
+
+	class PKID(FormIDRecord):
+		"""
+		Package.
+
+		Form ID of a :class:`~.PACK` record.
 		"""
 
 	class CNAM(FormIDRecord):
@@ -519,7 +540,7 @@ class NPC_(Record):
 			if not record_type:
 				break
 
-			if record_type in b"EDID":
+			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
@@ -546,9 +567,12 @@ class NPC_(Record):
 					b"NAM5",
 					b"NAM6",
 					b"NAM7",
+					b"PKID",
 					b"PNAM",
 					b"RNAM",
 					b"SCRI",
+					b"SNAM",
+					b"SPLO",
 					b"TPLT",
 					b"VTCK",
 					b"ZNAM",
@@ -558,5 +582,7 @@ class NPC_(Record):
 				yield Model.parse_member(record_type, raw_bytes)
 			elif record_type in Item.members:
 				yield Item.parse_member(record_type, raw_bytes)
+			elif record_type in Destruction.members:
+				yield Destruction.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

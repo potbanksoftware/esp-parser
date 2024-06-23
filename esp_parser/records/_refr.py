@@ -264,10 +264,27 @@ class REFR(Record):
 			"""
 			return ("type", "unused")
 
+	class WMI1(FormIDRecord):
+		"""
+		Map Marker Reputation.
+
+		Form ID of a :class:`~.REPU` record.
+		"""
+
 	class MMRK(MarkerRecord):
 		"""
 		Audio marker (New Vegas only).
 		"""
+
+	# class XSRF(RecordType):
+	# 	"""
+	# 	Unknown.
+	# 	"""
+
+	# class XSRD(RecordType):
+	# 	"""
+	# 	Unknown.
+	# 	"""
 
 	class XTRG(FormIDRecord):
 		"""
@@ -306,12 +323,12 @@ class REFR(Record):
 	#
 	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
 
-	# class TNAM(FormIDRecord):
-	# 	"""
-	# 	Topic.
+	class TNAM(FormIDRecord):
+		"""
+		Topic.
 
-	# 	Patrol data. FormID of a DIAL record, or null.
-	# 	"""
+		Patrol data. Form ID of a :class:`~.DIAL` record, or null.
+		"""
 
 	class XRDO(NamedTuple):
 		"""
@@ -476,6 +493,11 @@ class REFR(Record):
 	# 	https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/XAPR.html
 	# 	"""
 
+	class XATO(CStringRecord):
+		"""
+		Activation Prompt.
+		"""
+
 	# class XESP(RecordType):
 	# 	"""
 	# 	Enable Parent.
@@ -618,12 +640,13 @@ class REFR(Record):
 					b"RCLR",
 					b"RCLR",
 					b"TNAM",
-					b"TNAM",
+					b"WMI1",
 					b"XACT",
 					b"XAMC",
 					b"XAMT",
 					b"XAPD",
 					b"XAPR",
+					b"XATO",
 					b"XCHG",
 					b"XCLP",
 					b"XCNT",
@@ -662,6 +685,8 @@ class REFR(Record):
 					b"XRNK",
 					b"XSCL",
 					b"XSED",
+					b"XSRD",
+					b"XSRF",
 					b"XTEL",
 					b"XTRG",
 					b"XTRI",

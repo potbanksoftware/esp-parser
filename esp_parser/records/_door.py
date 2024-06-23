@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID, OBND, Model
+from esp_parser.subrecords import EDID, OBND, Destruction, Model
 from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, Uint8Record
 
 __all__ = ["DOOR"]
@@ -103,5 +103,7 @@ class DOOR(Record):
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
+			elif record_type in Destruction.members:
+				yield Destruction.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

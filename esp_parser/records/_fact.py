@@ -35,7 +35,15 @@ import attrs
 
 # this package
 from esp_parser.subrecords import EDID, XNAM
-from esp_parser.types import CStringRecord, Float32Record, Int32Record, Record, RecordType, StructRecord
+from esp_parser.types import (
+		CStringRecord,
+		Float32Record,
+		FormIDRecord,
+		Int32Record,
+		Record,
+		RecordType,
+		StructRecord
+		)
 
 __all__ = ["FACT"]
 
@@ -102,6 +110,13 @@ class FACT(Record):
 		Insignia (unused).
 		"""
 
+	class WMI1(FormIDRecord):
+		"""
+		Reputation.
+
+		Form ID of a :class:`~.REPU` record.
+		"""
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -119,7 +134,7 @@ class FACT(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"XNAM":
 				yield XNAM.parse(raw_bytes)
-			elif record_type in {b"CNAM", b"DATA", b"FNAM", b"FULL", b"INAM", b"MNAM", b"RNAM"}:
+			elif record_type in {b"CNAM", b"DATA", b"FNAM", b"FULL", b"INAM", b"MNAM", b"RNAM", b"WMI1"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

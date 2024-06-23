@@ -35,7 +35,7 @@ from typing import Iterator, NamedTuple, Type
 from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import EDID, OBND, Model
+from esp_parser.subrecords import EDID, OBND, Destruction, Model
 from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
 from esp_parser.utils import namedtuple_qualname_repr
 
@@ -139,5 +139,7 @@ class MISC(Record):
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
+			elif record_type in Destruction.members:
+				yield Destruction.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

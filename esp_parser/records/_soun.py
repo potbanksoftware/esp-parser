@@ -37,7 +37,7 @@ from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import CStringRecord, Record, RecordType, Uint8Record
+from esp_parser.types import CStringRecord, Int16Record, Int32Record, Record, RecordType, Uint8Record
 
 __all__ = ["SOUN"]
 
@@ -152,6 +152,23 @@ class SOUN(Record):
 			assert len(packed_body) == size
 			return b"SNDD" + struct.pack("<H", size) + packed_body
 
+	# class ANAM(RecordType):
+	# 	"""
+	# 	Attenuation Points.
+	#
+	# 	Each int16 represents a separate point on an attenuation curve.
+	# 	"""
+
+	class GNAM(Int16Record):
+		"""
+		Reverb Attenuation Control.
+		"""
+
+	class HNAM(Int32Record):
+		"""
+		Priority.
+		"""
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -169,11 +186,7 @@ class SOUN(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type == b"FNAM":
-				yield cls.FNAM.parse(raw_bytes)
-			elif record_type == b"SNDD":
-				yield cls.SNDD.parse(raw_bytes)
-			elif record_type == b"RNAM":
-				yield cls.RNAM.parse(raw_bytes)
+			elif record_type in {b"ANAM", b"FNAM", b"GNAM", b"HNAM", b"RNAM", b"SNDD or SNDX"}:
+				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

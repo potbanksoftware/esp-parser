@@ -36,7 +36,7 @@ import attrs
 from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import EDID, OBND, Model
+from esp_parser.subrecords import EDID, OBND, Destruction, Model
 from esp_parser.types import (
 		CStringRecord,
 		FormIDRecord,
@@ -324,23 +324,26 @@ class WEAP(Record):
 		Form ID of a :class:`~.SOUN` record.
 		"""
 
-	# class WMS1(FormIDRecord):
-	# 	"""
-	# 	Sound - Mod 1 - Shoot 3D (New Vegas only).
-	# 	FormID of a SOUN record.
-	# 	"""
+	class WMS1(FormIDRecord):
+		"""
+		Sound - Mod 1 - Shoot 3D (New Vegas only).
 
-	# class WMS1(FormIDRecord):
-	# 	"""
-	# 	Sound - Mod 1 - Shoot Dist (New Vegas only).
-	# 	FormID of a SOUN record.
-	# 	"""
+		Form ID of a :class:`~.SOUN` record.
+		"""
 
-	# class WMS2(FormIDRecord):
-	# 	"""
-	# 	Sound - Mod 1 - Shoot 2D (New Vegas only).
-	# 	FormID of a SOUN record.
-	# 	"""
+	class WMS1(FormIDRecord):
+		"""
+		Sound - Mod 1 - Shoot Dist (New Vegas only).
+
+		Form ID of a :class:`~.SOUN` record.
+		"""
+
+	class WMS2(FormIDRecord):
+		"""
+		Sound - Mod 1 - Shoot 2D (New Vegas only).
+
+		Form ID of a :class:`~.SOUN` record.
+		"""
 
 	class DATA(NamedTuple):
 		"""
@@ -735,6 +738,8 @@ class WEAP(Record):
 					b"WMI1",
 					b"WMI2",
 					b"WMI3",
+					b"WMS1",
+					b"WMS2",
 					b"WNAM",
 					b"WNM1",
 					b"WNM2",
@@ -750,5 +755,7 @@ class WEAP(Record):
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:
 				yield Model.parse_member(record_type, raw_bytes)
+			elif record_type in Destruction.members:
+				yield Destruction.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
