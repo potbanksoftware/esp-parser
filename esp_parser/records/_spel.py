@@ -27,19 +27,15 @@ SPEL record type.
 #
 
 # stdlib
-import struct
-from enum import IntEnum
 from io import BytesIO
-from typing import Iterator, NamedTuple, Tuple, Type
+from typing import Iterator, Tuple
 
 # 3rd party
 import attrs
-from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import CTDA, EDID
-from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord
-from esp_parser.utils import namedtuple_qualname_repr
+from esp_parser.subrecords import CTDA, EDID, Effect
+from esp_parser.types import CStringRecord, Record, RecordType, StructRecord
 
 __all__ = ["SPEL"]
 
@@ -88,56 +84,6 @@ class SPEL(Record):
 
 			return ("type", "cost", "level", "flags", "unused")
 
-	class EFID(FormIDRecord):
-		"""
-		Base effect.
-
-		Form ID of a :class:`~.MGEF` record.
-		"""
-
-	class EfitTypeEnum(IntEnum):
-		"""
-		Enum for ``SPEL.EFIT``.
-		"""
-
-		Self = 0
-		Touch = 1
-		Target = 2
-
-	class EFIT(NamedTuple):
-		"""
-		Effect Data.
-		"""
-
-		magnitude: int
-		area: int
-		duration: int
-		type: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
-		actor_value: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
-
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
-			"""
-
-			assert raw_bytes.read(2) == b"\x14\x00"  # size field
-			return cls(*struct.unpack("<IIIIi", raw_bytes.read(20)))
-
-		def unparse(self) -> bytes:
-			"""
-			Turn this subrecord back into raw bytes for an ESP file.
-			"""
-
-			return b"EFIT" + struct.pack("<HIIIIi", 20, *self)
-
-		def __repr__(self) -> str:
-			return namedtuple_qualname_repr(self)
-
-	RecordType.register(EFIT)
-
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -155,7 +101,9 @@ class SPEL(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"CTDA":
 				yield CTDA.parse(raw_bytes)
-			elif record_type in {b"FULL", b"SPIT", b"EFID", b"EFIT"}:
+			elif record_type in {b"FULL", b"SPIT"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Effect.members:
+				yield Effect.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

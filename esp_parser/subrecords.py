@@ -29,7 +29,7 @@ Subrecord types used by multiple records.
 # stdlib
 import struct
 from io import BytesIO
-from typing import List, NamedTuple, Type
+from typing import List, NamedTuple, Tuple, Type
 
 # 3rd party
 import attrs
@@ -44,7 +44,8 @@ from esp_parser.types import (
 		Int32Record,
 		IntEnum,
 		MarkerRecord,
-		RecordType
+		RecordType,
+		StructRecord
 		)
 from esp_parser.utils import NULL, namedtuple_qualname_repr
 
@@ -965,32 +966,45 @@ class Effect(Collection):
 		Form ID of a :class:`~.MGEF` record.
 		"""
 
-	class EFIT(NamedTuple):
+	class EfitTypeEnum(IntEnum):
+		"""
+		Enum for ``SPEL.EFIT``.
+		"""
+
+		Self = 0
+		Touch = 1
+		Target = 2
+
+	@attrs.define
+	class EFIT(StructRecord):
+		"""
+		Effect Data.
+		"""
+
 		magnitude: int
 		area: int
 		duration: int
-		type: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
+		type: "Effect.EfitTypeEnum" = attrs.field(converter=lambda x: Effect.EfitTypeEnum(x))
 		actor_value: int  # See https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Effect.html
 
-		def __repr__(self) -> str:
-			return namedtuple_qualname_repr(self)
-
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
 			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
+			Returns the pack/unpack struct string and the corresponding size.
 			"""
 
-			assert raw_bytes.read(2) == b"\x14\x00"  # size field
-			return cls(*struct.unpack("<IIIIi", raw_bytes.read(20)))
+			return "<IIIIi", 20
 
-		def unparse(self) -> bytes:
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
 			"""
-			Turn this subrecord back into raw bytes for an ESP file.
+			Returns a list of attributes on this class in the order they should be packed.
 			"""
 
-			return b"EFIT" + struct.pack("<HIIIIi", 20, *self)
-
-	RecordType.register(EFIT)
+			return (
+					"magnitude",
+					"area",
+					"duration",
+					"type",
+					"actor_value",
+					)
