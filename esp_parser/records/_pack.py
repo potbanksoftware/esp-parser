@@ -303,24 +303,12 @@ class PACK(Record):
 		Form ID of an :class:`~.IDLE` record, or null.
 		"""
 
-	# OnBegin Embedded Script. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
-
 	class TNAM(FormIDRecord):
 		"""
 		OnBegin Topic / OnEnd Topic / OnChange Topic.
 
 		Form ID of a :class:`~.DIAL` record, or null.
 		"""
-
-	# OnEnd Embedded Script. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
-
-	# OnChange Embedded Script. collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
 
 	class POEA(RawBytesRecord):
 		"""

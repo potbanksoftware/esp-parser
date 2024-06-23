@@ -303,11 +303,6 @@ class NAVM(Record):
 
 			return b"NVDP" + size + body
 
-	# class NVDP(RecordType):
-	# 	"""
-	# 	Doors.
-	# 	"""
-
 	class NVGD(RawBytesRecord):
 		"""
 		NavMesh Grid.

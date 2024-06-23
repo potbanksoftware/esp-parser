@@ -195,10 +195,6 @@ class INFO(Record):
 		Form ID of a :class:`~.DIAL` record.
 		"""
 
-	# Embedded Script (Begin). collection
-	#
-	# https://tes5edit.github.io/fopdoc/Fallout3/Records/Subrecords/Script.html
-
 	class NEXT(MarkerRecord):
 		"""
 		Marker between scripts.
