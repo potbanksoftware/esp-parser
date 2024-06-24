@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID
+from esp_parser.subrecords import CTDA, EDID
 from esp_parser.types import FormIDRecord, Record, RecordType, Uint8Record
 
 __all__ = ["CPTH"]
@@ -41,13 +41,6 @@ class CPTH(Record):
 	"""
 	Camera Path.
 	"""
-
-	# class CTDA(RecordType):
-	# 	"""
-	# 	Condition.
-	#
-	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/CTDA.html
-	# 	"""
 
 	# class ANAM(RecordType):
 	# 	"""
@@ -83,7 +76,9 @@ class CPTH(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {b"ANAM", b"CTDA", b"DATA", b"SNAM"}:
+			elif record_type == b"CTDA":
+				yield CTDA.parse(raw_bytes)
+			elif record_type in {b"ANAM", b"DATA", b"SNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

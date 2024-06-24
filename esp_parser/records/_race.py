@@ -32,7 +32,7 @@ from typing import Iterator
 
 # this package
 from esp_parser.subrecords import EDID
-from esp_parser.types import CStringRecord, Float32Record, FormIDRecord, Record, RecordType
+from esp_parser.types import CStringRecord, Float32Record, FormIDRecord, MarkerRecord, Record, RecordType
 
 __all__ = ["RACE"]
 
@@ -56,7 +56,7 @@ class RACE(Record):
 	# 	"""
 	# 	Relation.
 	#
-	# 	https://tes5edit.github.ioSubrecords/XNAM (FACT, RACE).md
+	# 	https://tes5edit.github.ioSubrecords/XNAM (:class:`~.FACT`, :class:`~.RACE`).md
 	# 	"""
 
 	# class DATA(RecordType):
@@ -78,10 +78,10 @@ class RACE(Record):
 		Form ID of a :class:`~.RACE` record.
 		"""
 
-	# class NAM2(RecordType):
-	# 	"""
-	# 	Unkonwin Marker.
-	# 	"""
+	class NAM2(MarkerRecord):
+		"""
+		Unknown Marker.
+		"""
 
 	# class VTCK(RecordType):
 	# 	"""
@@ -113,47 +113,47 @@ class RACE(Record):
 	# 	Unknown.
 	# 	"""
 
-	# class NAM0(RecordType):
-	# 	"""
-	# 	Head Data Marker.
-	# 	"""
+	class NAM0(MarkerRecord):
+		"""
+		Head Data Marker.
+		"""
 
-	# class MNAM(RecordType):
-	# 	"""
-	# 	Male Head Data Marker.
-	# 	"""
+	class MNAM(MarkerRecord):
+		"""
+		Male Head Data Marker.
+		"""
 
 	# Male Head Part. collection
 	#
 	# See below for details.
 
-	# class FNAM(RecordType):
-	# 	"""
-	# 	Female Head Data Marker.
-	# 	"""
+	class FNAM(MarkerRecord):
+		"""
+		Female Head Data Marker.
+		"""
 
 	# Female Head Part. collection
 	#
 	# See below for details.
 
-	# class NAM1(RecordType):
-	# 	"""
-	# 	Body Data Marker.
-	# 	"""
+	class NAM1(MarkerRecord):
+		"""
+		Body Data Marker.
+		"""
 
-	# class MNAM(RecordType):
-	# 	"""
-	# 	Male Body Data Marker.
-	# 	"""
+	class MNAM(MarkerRecord):
+		"""
+		Male Body Data Marker.
+		"""
 
 	# Male Body Part. collection
 	#
 	# See below for details.
 
-	# class FNAM(RecordType):
-	# 	"""
-	# 	Female Body Data Marker.
-	# 	"""
+	class FNAM(MarkerRecord):
+		"""
+		Female Body Data Marker.
+		"""
 
 	# Female Body Part. collection
 	#
@@ -163,20 +163,20 @@ class RACE(Record):
 	# 	"""
 	# 	Hairs.
 	#
-	# 	Array of HAIR record FormIDs.
+	# 	Array of :class:`~.HAIR` record Form IDs.
 	# 	"""
 
 	# class ENAM(RecordType):
 	# 	"""
 	# 	Eyes.
 	#
-	# 	Array of EYES record FormIDs.
+	# 	Array of :class:`~.EYES` record Form IDs.
 	# 	"""
 
-	# class MNAM(RecordType):
-	# 	"""
-	# 	Male FaceGen Data Marker.
-	# 	"""
+	class MNAM(MarkerRecord):
+		"""
+		Male FaceGen Data Marker.
+		"""
 
 	# class FGGS(RecordType):
 	# 	"""
@@ -198,10 +198,10 @@ class RACE(Record):
 	# 	??.
 	# 	"""
 
-	# class FNAM(RecordType):
-	# 	"""
-	# 	Female FaceGen Data Marker.
-	# 	"""
+	class FNAM(MarkerRecord):
+		"""
+		Female FaceGen Data Marker.
+		"""
 
 	# class FGGS(RecordType):
 	# 	"""

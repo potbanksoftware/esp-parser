@@ -37,6 +37,7 @@ from esp_parser.types import (
 		Float32Record,
 		FormIDRecord,
 		Int32Record,
+		MarkerRecord,
 		Record,
 		RecordType,
 		Uint8Record
@@ -81,12 +82,12 @@ class PGRE(Record):
 		Patrol data
 		"""
 
-	# class XPPA(RecordType):
-	# 	"""
-	# 	Patrol Script Marker.
-	#
-	# 	Patrol data
-	# 	"""
+	class XPPA(MarkerRecord):
+		"""
+		Patrol Script Marker.
+
+		Patrol data
+		"""
 
 	class INAM(FormIDRecord):
 		"""
@@ -211,12 +212,12 @@ class PGRE(Record):
 		Form ID of a :class:`~.REFR` record.
 		"""
 
-	# class XIBS(RecordType):
-	# 	"""
-	# 	Ignored By Sandbox.
-	#
-	# 	Flag
-	# 	"""
+	class XIBS(MarkerRecord):
+		"""
+		Ignored By Sandbox.
+
+		Flag
+		"""
 
 	class XSCL(Float32Record):
 		"""
@@ -227,7 +228,7 @@ class PGRE(Record):
 	# 	"""
 	# 	Position / Rotation.
 	#
-	# 	https://tes5edit.github.ioSubrecords/DATA (ACHR, ACRE).md
+	# 	https://tes5edit.github.ioSubrecords/DATA (:class:`~.ACHR`, :class:`~.ACRE`).md
 	# 	"""
 
 	@classmethod
