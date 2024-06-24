@@ -120,7 +120,7 @@ class RACE(Record):
 
 	class MNAM(MarkerRecord):
 		"""
-		Male Head Data Marker.
+		Male Head / Body / FaceGen Data Marker.
 		"""
 
 	# Male Head Part. collection
@@ -129,7 +129,7 @@ class RACE(Record):
 
 	class FNAM(MarkerRecord):
 		"""
-		Female Head Data Marker.
+		Female Head / Body / FaceGen Data Marker.
 		"""
 
 	# Female Head Part. collection
@@ -141,19 +141,9 @@ class RACE(Record):
 		Body Data Marker.
 		"""
 
-	class MNAM(MarkerRecord):
-		"""
-		Male Body Data Marker.
-		"""
-
 	# Male Body Part. collection
 	#
 	# See below for details.
-
-	class FNAM(MarkerRecord):
-		"""
-		Female Body Data Marker.
-		"""
 
 	# Female Body Part. collection
 	#
@@ -172,11 +162,6 @@ class RACE(Record):
 	#
 	# 	Array of :class:`~.EYES` record Form IDs.
 	# 	"""
-
-	class MNAM(MarkerRecord):
-		"""
-		Male FaceGen Data Marker.
-		"""
 
 	# class FGGS(RecordType):
 	# 	"""
@@ -197,11 +182,6 @@ class RACE(Record):
 	# 	"""
 	# 	??.
 	# 	"""
-
-	class FNAM(MarkerRecord):
-		"""
-		Female FaceGen Data Marker.
-		"""
 
 	# class FGGS(RecordType):
 	# 	"""
