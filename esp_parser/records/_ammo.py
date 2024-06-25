@@ -28,11 +28,14 @@ AMMO record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
-from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
+from esp_parser.subrecords import EDID, OBND, Model
+from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord
 
 __all__ = ["AMMO"]
 
@@ -46,10 +49,6 @@ class AMMO(Record):
 		"""
 		Name.
 		"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
 
 	class ICON(CStringRecord):
 		"""
@@ -86,17 +85,78 @@ class AMMO(Record):
 		Form ID of a :class:`~.SOUN` record.
 		"""
 
-	# class DATA(RecordType):
-	# 	"""
-	# 	Data.
-	#
-	# 	https://tes5edit.github.io#data
-	# 	"""
+	@attrs.define
+	class DATA(StructRecord):
+		"""
+		Data.
+		"""
 
-	# class DAT2(RecordType):
-	# 	"""
-	# 	Data 2.
-	# 	"""
+		speed: float
+		flags: int  # See https://tes5edit.github.io/fopdoc/FalloutNV/Records/AMMO.html
+		unused: bytes
+		value: int
+		clip_rounds: int
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<fB3sIB", 13
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return (
+					"speed",
+					"flags",
+					"unused",
+					"value",
+					"clip_rounds",
+					)
+
+	@attrs.define
+	class DAT2(StructRecord):
+		"""
+		Data 2.
+		"""
+
+		projectiles_per_shot: int
+
+		#: Form ID of a :class:`~.PROJ`` record, or null.
+		projectile: bytes
+
+		weight: float
+
+		#: Form ID of an :class:`~.AMMO` or :class:`~.MISC` record, or null.
+		consumed_ammo: bytes
+		consumed_percentage: float
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<I4sf4sf", 20
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return (
+					"projectiles_per_shot",
+					"projectile",
+					"weight",
+					"consumed_ammo",
+					"consumed_percentage",
+					)
 
 	class ONAM(CStringRecord):
 		"""
@@ -146,5 +206,7 @@ class AMMO(Record):
 					b"ZNAM"
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

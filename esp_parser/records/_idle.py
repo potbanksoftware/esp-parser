@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import CTDA, EDID
+from esp_parser.subrecords import CTDA, EDID, Model
 from esp_parser.types import Record, RecordType
 
 __all__ = ["IDLE"]
@@ -41,10 +41,6 @@ class IDLE(Record):
 	"""
 	Idle Animation.
 	"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
 
 	# class ANAM(RecordType):
 	# 	"""
@@ -75,5 +71,7 @@ class IDLE(Record):
 				yield CTDA.parse(raw_bytes)
 			elif record_type in {b"ANAM", b"DATA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID, OBND
+from esp_parser.subrecords import EDID, OBND, Model
 from esp_parser.types import Record, RecordType, Uint8Record
 
 __all__ = ["LVLN"]
@@ -58,10 +58,6 @@ class LVLN(Record):
 	#
 	# See below for details.
 
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -81,5 +77,7 @@ class LVLN(Record):
 				yield OBND.parse(raw_bytes)
 			elif record_type in {b"LVLD", b"LVLF"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

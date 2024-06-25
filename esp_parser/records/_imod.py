@@ -28,11 +28,14 @@ IMOD record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
-from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
+from esp_parser.subrecords import EDID, OBND, Model
+from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord
 
 __all__ = ["IMOD"]
 
@@ -46,10 +49,6 @@ class IMOD(Record):
 		"""
 		Name.
 		"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
 
 	class ICON(CStringRecord):
 		"""
@@ -91,10 +90,30 @@ class IMOD(Record):
 		Form ID of a :class:`~.SOUN` record.
 		"""
 
-	# class DATA(RecordType):
-	# 	"""
-	# 	Data.
-	# 	"""
+	@attrs.define
+	class DATA(StructRecord):
+		"""
+		Data.
+		"""
+
+		value: int
+		weight: float
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<If", 8
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("value", "weight")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -115,5 +134,7 @@ class IMOD(Record):
 				yield OBND.parse(raw_bytes)
 			elif record_type in {b"DATA", b"DESC", b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

@@ -28,11 +28,14 @@ LVLI record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
-from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import FormIDRecord, Record, RecordType, Uint8Record
+from esp_parser.subrecords import EDID, OBND, Item, Model
+from esp_parser.types import FormIDRecord, Record, RecordType, StructRecord, Uint8Record
 
 __all__ = ["LVLI"]
 
@@ -65,9 +68,41 @@ class LVLI(Record):
 	#
 	# See below for details.
 
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
+	@attrs.define
+	class LVLO(StructRecord):
+		"""
+		Levelled list base data.
+		"""
+
+		level: int
+		unused: bytes
+
+		reference: bytes
+		"""
+		Form ID of an :class:`~.ARMO`, :class:`~.AMMO`, :class:`~.MISC`,
+		:class:`~.WEAP`, :class:`~.BOOK`, :class:`~.LVLI`, :class:`~.KEYM`,
+		:class:`~.ALCH`, :class:`~.NOTE`, :class:`~.IMOD`, :class:`~.CMNY`,
+		:class:`~.CCRD` or :class:`~.CHIP` record.
+		"""
+
+		count: int
+		unused_: bytes
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<h2s4sh2s", 12
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("level", "unused", "reference", "count", "unused_")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -86,7 +121,11 @@ class LVLI(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
-			elif record_type in {b"LVLD", b"LVLF", b"LVLG"}:
+			elif record_type == b"COED":
+				yield Item.COED.parse(raw_bytes)
+			elif record_type in {b"LVLD", b"LVLF", b"LVLG", b"LVLO"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

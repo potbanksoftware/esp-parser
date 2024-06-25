@@ -56,6 +56,7 @@ __all__ = [
 		"AidtAssistanceEnum",
 		"AidtConfidenceEnum",
 		"AidtMoodEnum",
+		"BMDT",
 		"CTDA",
 		"Destruction",
 		"DialType",
@@ -154,15 +155,88 @@ class Model(Collection):
 	Subrecords for models.
 	"""
 
-	members = {b"MODL", b"MODB", b"MODS"}
+	members = {
+			b"MODL",
+			b"MOD2",
+			b"MOD3",
+			b"MOD4",
+			b"MODB",
+			b"MODT",
+			b"MO2T",
+			b"MO3T",
+			b"MO4T",
+			b"MODS",
+			b"MO2S",
+			b"MO3S",
+			b"MO4S",
+			}
 
 	class MODL(CStringRecord):
 		"""
 		Model Filename.
 		"""
 
+	class MOD2(MODL):
+		"""
+		Model Filename (2nd instance).
+		"""
+
+	class MOD3(MODL):
+		"""
+		Model Filename (3rd instance).
+		"""
+
+	class MOD4(MODL):
+		"""
+		Model Filename (4th instance).
+		"""
+
 	class MODB(FormIDRecord):  # noqa: D106  # TODO
 		pass
+
+	class MODT(List[int], RecordType):
+		"""
+		Texture File Hashes.
+		"""
+
+		def __repr__(self) -> str:
+			return f"{self.__class__.__qualname__}({super().__repr__()})"
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			size = struct.unpack("<H", raw_bytes.read(2))[0]
+			return cls(struct.unpack(f"<{size}B", raw_bytes.read(size)))
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			size = len(self)
+			size_field = struct.pack("<H", size)
+			body = struct.pack(f"<{size}B", *self)
+			return b"NIFT" + size_field + body
+
+	class MO2T(MODT):
+		"""
+		Texture File Hashes (2nd instance).
+		"""
+
+	class MO3T(MODT):
+		"""
+		Texture File Hashes (3rd instance).
+		"""
+
+	class MO4T(MODT):
+		"""
+		Texture File Hashes (4th instance).
+		"""
 
 	@attrs.define
 	class AlternateTexture:
@@ -237,6 +311,21 @@ class Model(Collection):
 			size = alt_textures_size + 4  # +4 for count field
 			count = len(self)
 			return b"MODS" + struct.pack("<HI", size, count) + alt_textures
+
+	class MO2S(MODS):
+		"""
+		List of alternate textures (2nd instance).
+		"""
+
+	class MO3S(MODS):
+		"""
+		List of alternate textures (2nd instance).
+		"""
+
+	class MO4S(MODS):
+		"""
+		List of alternate textures (2nd instance).
+		"""
 
 
 class Script:
@@ -1008,3 +1097,32 @@ class Effect(Collection):
 					"type",
 					"actor_value",
 					)
+
+
+@attrs.define
+class BMDT(StructRecord):
+	"""
+	Biped Data.
+
+	Used in the :class:`~.ARMO` and :class:`~.ARMA` record types.
+	"""
+
+	biped_flags: int
+	general_flags: int
+	unused: bytes
+
+	@staticmethod
+	def get_struct_and_size() -> Tuple[str, int]:
+		"""
+		Returns the pack/unpack struct string and the corresponding size.
+		"""
+
+		return "<IB3s", 8
+
+	@staticmethod
+	def get_field_names() -> Tuple[str, ...]:
+		"""
+		Returns a list of attributes on this class in the order they should be packed.
+		"""
+
+		return ("biped_flags", "general_flags", "unused")

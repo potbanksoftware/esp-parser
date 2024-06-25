@@ -28,11 +28,14 @@ AMEF record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
 from esp_parser.subrecords import EDID
-from esp_parser.types import CStringRecord, Record, RecordType
+from esp_parser.types import CStringRecord, Record, RecordType, StructRecord
 
 __all__ = ["AMEF"]
 
@@ -47,10 +50,28 @@ class AMEF(Record):
 		Name.
 		"""
 
-	# class DATA(RecordType):
-	# 	"""
-	# 	Data.
-	# 	"""
+	@attrs.define
+	class DATA(StructRecord):  # noqa: D106  # TODO
+
+		type: int  # Enum - see https://tes5edit.github.io/fopdoc/FalloutNV/Records/AMEF.html
+		operation: int  # Enum - see https://tes5edit.github.io/fopdoc/FalloutNV/Records/AMEF.html
+		value: float
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<IIf", 12
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("type", "operation", "value")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:

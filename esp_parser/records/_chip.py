@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID, OBND
+from esp_parser.subrecords import EDID, OBND, Destruction, Model
 from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
 
 __all__ = ["CHIP"]
@@ -47,10 +47,6 @@ class CHIP(Record):
 		Name.
 		"""
 
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
 	class ICON(CStringRecord):
 		"""
 		Large Icon Filename.
@@ -60,10 +56,6 @@ class CHIP(Record):
 		"""
 		Small Icon FIlename.
 		"""
-
-	# Destruction Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Destruction.html
 
 	class YNAM(FormIDRecord):
 		"""
@@ -98,5 +90,9 @@ class CHIP(Record):
 				yield OBND.parse(raw_bytes)
 			elif record_type in {b"FULL", b"ICON", b"MICO", b"YNAM", b"ZNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
+			elif record_type in Destruction.members:
+				yield Destruction.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

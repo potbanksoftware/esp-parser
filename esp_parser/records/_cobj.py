@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID, OBND
+from esp_parser.subrecords import EDID, OBND, Model
 from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType
 
 __all__ = ["COBJ"]
@@ -46,10 +46,6 @@ class COBJ(Record):
 		"""
 		Name.
 		"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
 
 	class ICON(CStringRecord):
 		"""
@@ -106,5 +102,7 @@ class COBJ(Record):
 				yield OBND.parse(raw_bytes)
 			elif record_type in {b"DATA", b"FULL", b"ICON", b"MICO", b"SCRI", b"YNAM", b"ZNAM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

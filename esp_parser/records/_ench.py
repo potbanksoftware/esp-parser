@@ -28,11 +28,14 @@ ENCH record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
-from esp_parser.subrecords import EDID
-from esp_parser.types import CStringRecord, Record, RecordType
+from esp_parser.subrecords import CTDA, EDID, Effect
+from esp_parser.types import CStringRecord, Record, RecordType, StructRecord
 
 __all__ = ["ENCH"]
 
@@ -47,14 +50,33 @@ class ENCH(Record):
 		Name.
 		"""
 
-	# class ENIT(RecordType):
-	# 	"""
-	# 	Effect Data.
-	# 	"""
+	@attrs.define
+	class ENIT(StructRecord):
+		"""
+		Effect Data.
+		"""
 
-	# Effect. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Effect.html
+		type: int
+		unused: bytes
+		unused_: bytes
+		flags: int
+		unused__: bytes
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<I4s4sB3s", 16
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("type", "unused", "unused_", "flags", "unused__")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -71,7 +93,11 @@ class ENCH(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
+			elif record_type == b"CTDA":
+				yield CTDA.parse(raw_bytes)
 			elif record_type in {b"ENIT", b"FULL"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Effect.members:
+				yield Effect.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

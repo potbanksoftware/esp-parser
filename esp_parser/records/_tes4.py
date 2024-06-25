@@ -29,7 +29,7 @@ TES4 record type.
 # stdlib
 import struct
 from io import BytesIO
-from typing import Iterator, NamedTuple, Type
+from typing import Iterator, List, NamedTuple, Type
 
 # 3rd party
 from typing_extensions import Self
@@ -134,12 +134,44 @@ class TES4(Record):
 
 			return b"DATA" + bytes(self)
 
-	# class ONAM(RecordType):
-	# 	"""
-	# 	formOverrides.
-	#
-	# 	Overridden records. An array of REFR, ACHR, ACRE, PMIS, PBEA, PGRE, LAND and NAVM records.
-	# 	"""
+	class ONAM(List[bytes], RecordType):
+		"""
+		Form Overrides.
+
+		Overridden records. An array of :class:`~.REFR`, :class:`~.ACHR`, :class:`~.ACRE`,
+		:class:`~.PMIS`, :class:`~.PBEA`, :class:`~.PGRE`, :class:`~.LAND` and :class:`~.NAVM` records.
+		"""
+
+		def __repr__(self) -> str:
+			return f"{self.__class__.__qualname__}({super().__repr__()})"
+
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			size = struct.unpack("<H", raw_bytes.read(2))[0]
+
+			buf = raw_bytes.read(size)
+
+			count = size // 4
+			assert not size % 4
+
+			return cls(struct.unpack('<' + ("4s" * count), buf))
+
+		def unparse(self) -> bytes:
+			"""
+			Turn this subrecord back into raw bytes for an ESP file.
+			"""
+
+			body = b"".join(self)
+
+			size = len(body)
+			assert len(self) * 4 == size
+			return b"MODS" + struct.pack("<H", size) + body
 
 	# class SCRN(RecordType):
 	# 	"""

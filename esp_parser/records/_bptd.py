@@ -31,7 +31,7 @@ from io import BytesIO
 from typing import Iterator
 
 # this package
-from esp_parser.subrecords import EDID
+from esp_parser.subrecords import EDID, Model
 from esp_parser.types import FormIDRecord, Record, RecordType
 
 __all__ = ["BPTD"]
@@ -41,18 +41,6 @@ class BPTD(Record):
 	"""
 	Body Part Data.
 	"""
-
-	# Model Data. collection
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
-	# Body Part. collection
-	#
-	# See below for details.
-
-	# Unnamed Body Part. collection
-	#
-	# See below for details.
 
 	class RAGA(FormIDRecord):
 		"""
@@ -78,5 +66,7 @@ class BPTD(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type in {b"RAGA"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)

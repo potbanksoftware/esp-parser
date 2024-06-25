@@ -28,11 +28,14 @@ ARMA record type.
 
 # stdlib
 from io import BytesIO
-from typing import Iterator
+from typing import Iterator, Tuple
+
+# 3rd party
+import attrs
 
 # this package
-from esp_parser.subrecords import EDID, OBND
-from esp_parser.types import CStringRecord, Int32Record, Record, RecordType
+from esp_parser.subrecords import BMDT, EDID, OBND, Model
+from esp_parser.types import CStringRecord, Int32Record, Record, RecordType, StructRecord
 
 __all__ = ["ARMA"]
 
@@ -47,25 +50,6 @@ class ARMA(Record):
 		Name.
 		"""
 
-	# class BMDT(RecordType):
-	# 	"""
-	# 	Biped Data.
-	#
-	# 	https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/BMDT.html
-	# 	"""
-
-	# Male Biped Model Data. collection
-	#
-	# The MODB subrecord is not present in this instance.
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
-	# Male World Model Data. collection
-	#
-	# #2
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
 	class ICON(CStringRecord):
 		"""
 		Male inventory icon filename.
@@ -75,18 +59,6 @@ class ARMA(Record):
 		"""
 		Male message icon filename.
 		"""
-
-	# Female Biped Model Data. collection
-	#
-	# #3
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
-
-	# Female World Model Data. collection
-	#
-	# #4
-	#
-	# https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/Model.html
 
 	class ICO2(CStringRecord):
 		"""
@@ -105,17 +77,55 @@ class ARMA(Record):
 		https://tes5edit.github.io/fopdoc/FalloutNV/Records/Subrecords/ETYP.html
 		"""
 
-	# class DATA(RecordType):
-	# 	"""
-	# 	Data.
-	#
-	# 	https://tes5edit.github.ioSubrecords/DATA (ARMO, ARMA).md
-	# 	"""
+	@attrs.define
+	class DATA(StructRecord):
+		"""
+		Data.
+		"""
 
-	# class DNAM(RecordType):
-	# 	"""
-	# 	.
-	# 	"""
+		value: int
+		max_condition: int
+		weight: float
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<IIf", 12
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("value", "max_condition", "weight")
+
+	@attrs.define
+	class DNAM(StructRecord):  # noqa: D106  # TODO
+
+		#: Value is divided by 100.
+		ar: int
+		flags: int  # See https://tes5edit.github.io/fopdoc/FalloutNV/Records/ARMO.html
+		unknown: bytes
+
+		@staticmethod
+		def get_struct_and_size() -> Tuple[str, int]:
+			"""
+			Returns the pack/unpack struct string and the corresponding size.
+			"""
+
+			return "<hH8s", 12
+
+		@staticmethod
+		def get_field_names() -> Tuple[str, ...]:
+			"""
+			Returns a list of attributes on this class in the order they should be packed.
+			"""
+
+			return ("ar", "flags", "unknown")
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
@@ -134,7 +144,11 @@ class ARMA(Record):
 				yield EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
 				yield OBND.parse(raw_bytes)
+			elif record_type == b"BMDT":
+				yield BMDT.parse(raw_bytes)
 			elif record_type in {b"BMDT", b"DATA", b"DNAM", b"ETYP", b"FULL", b"ICO2", b"ICON", b"MIC2", b"MICO"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
+			elif record_type in Model.members:
+				yield Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
