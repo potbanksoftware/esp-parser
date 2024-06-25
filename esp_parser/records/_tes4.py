@@ -139,8 +139,10 @@ class TES4(Record):
 		Form Overrides.
 
 		Overridden records. An array of :class:`~.REFR`, :class:`~.ACHR`, :class:`~.ACRE`,
-		:class:`~.PMIS`, :class:`~.PBEA`, :class:`~.PGRE`, :class:`~.LAND` and :class:`~.NAVM` records.
+		:class:`~.PMIS`, :class:`~.PGRE`, :class:`~.LAND` and :class:`~.NAVM` records.
 		"""
+
+		# Also refers to :class:`~.PBEA` which doesn't exist.
 
 		def __repr__(self) -> str:
 			return f"{self.__class__.__qualname__}({super().__repr__()})"

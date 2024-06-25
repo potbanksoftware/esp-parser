@@ -127,7 +127,7 @@ class AMMO(Record):
 
 		projectiles_per_shot: int
 
-		#: Form ID of a :class:`~.PROJ`` record, or null.
+		#: Form ID of a :class:`~.PROJ` record, or null.
 		projectile: bytes
 
 		weight: float

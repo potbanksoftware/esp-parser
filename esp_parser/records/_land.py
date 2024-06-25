@@ -69,7 +69,7 @@ class LAND(Record):
 	# 	"""
 	# 	Textures.
 	#
-	# 	An array of LTEX record FormIDs, or null.
+	# 	An array of :class:`~.LTEX` record form IDs, or null.
 	# 	"""
 
 	@classmethod
