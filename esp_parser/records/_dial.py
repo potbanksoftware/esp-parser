@@ -52,15 +52,12 @@ class DIAL(Record):
 		Form ID of the associated quest (:class:`~.QUST`).
 		"""
 
-	# class QSTR(BytesRecordType):
-	# 	"""
-	# 	Form ID of the associated quest (:class:`~.QUST`).
-	# 	"""
+	class QSTR(FormIDRecord):
+		"""
+		Form ID of the associated quest (Fallout 3) /  Removed Quest (New Vegas).
 
-	# 	@classmethod
-	# 	def parse(cls, raw_bytes: BytesIO):
-	# 		raise NotImplementedError
-	# 		return cls(raw_bytes.read(4))
+		Form ID of a :class:`~.QUST` record.
+		"""
 
 	class FULL(CStringRecord):
 		"""
@@ -134,7 +131,7 @@ class DIAL(Record):
 
 			if record_type == b"EDID":
 				yield EDID.parse(raw_bytes)
-			elif record_type in {b"DATA", b"FULL", b"INFC", b"INFX", b"PNAM", b"QSTI", b"TDUM"}:
+			elif record_type in {b"DATA", b"FULL", b"INFC", b"INFX", b"PNAM", b"QSTI", b"QSTR", b"TDUM"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
