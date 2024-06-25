@@ -56,8 +56,8 @@ esp-parser
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfcoding/esp-parser/badge.svg
-		:target: https://dependency-dash.repo-helper.uk/github/domdfcoding/esp-parser/
+	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/badge.svg
+		:target: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/
 		:alt: Requirements Status
 
 	.. |codefactor| codefactor-shield::
@@ -125,6 +125,6 @@ Installation
 
 	View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/index.html>`__.
 
-	:github:repo:`Browse the GitHub Repository <domdfcoding/esp-parser>`
+	:github:repo:`Browse the GitHub Repository <domdfmodding/esp-parser>`
 
 .. end links

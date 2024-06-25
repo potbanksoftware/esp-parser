@@ -18,9 +18,9 @@ name = "Dominic Davis-Foster"
 email = "dominic@davis-foster.co.uk"
 
 [project.urls]
-Homepage = "https://github.com/domdfcoding/esp-parser"
-"Issue Tracker" = "https://github.com/domdfcoding/esp-parser/issues"
-"Source Code" = "https://github.com/domdfcoding/esp-parser"
+Homepage = "https://github.com/domdfmodding/esp-parser"
+"Issue Tracker" = "https://github.com/domdfmodding/esp-parser/issues"
+"Source Code" = "https://github.com/domdfmodding/esp-parser"
 Documentation = "https://esp-parser.readthedocs.io/en/latest"
 
 [project.scripts]
@@ -52,7 +52,7 @@ always = [
 ]
 
 [tool.sphinx-pyproject]
-github_username = "domdfcoding"
+github_username = "domdfmodding"
 github_repository = "esp-parser"
 author = "Dominic Davis-Foster"
 project = "esp-parser"
