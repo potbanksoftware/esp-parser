@@ -35,7 +35,7 @@ import attrs
 
 # this package
 from esp_parser.subrecords import EDID
-from esp_parser.types import CStringRecord, FormIDRecord, Record, RecordType, StructRecord
+from esp_parser.types import CStringRecord, FormIDRecord, IntEnum, Record, RecordType, StructRecord
 
 __all__ = ["CHAL"]
 
@@ -72,19 +72,39 @@ class CHAL(Record):
 		Description.
 		"""
 
+	class DataTypeEnum(IntEnum):
+		KillFromFormList = 0
+		KillSpecificFormID = 1
+		KillAnyInCategory = 2
+		HitEnemy = 3
+		DiscoverMapMarker = 4
+		UseItem = 5
+		AcquireItem = 6
+		UseSkill = 7
+		DoDamage = 8
+		UseItemFromList = 9
+		AcquireItemFromList = 10
+		MiscellaneousStat = 11
+		CraftUsingItem = 12
+		ScriptedChallenge = 13
+
 	@attrs.define
 	class DATA(StructRecord):
 		"""
 		Data.
 		"""
 
-		type: int  # Enum - see https://tes5edit.github.io/fopdoc/FalloutNV/Records/CHAL.html
+		type: int = attrs.field(converter=lambda x: CHAL.DataTypeEnum(x))
 		threshold: int
 		flags: int  # See https://tes5edit.github.io/fopdoc/FalloutNV/Records/CHAL.html
 		interval: int
 		value1: bytes  # Depends on ``type``
 		value2: bytes  # Depends on ``type``
 		value3: bytes  # Depends on ``type``
+
+		FLAG_START_DISABLED = 0x00000001
+		FLAG_RECURRING = 0x00000002
+		FLAG_SHOW_ZERO_PROGRESS = 0x00000004
 
 		@staticmethod
 		def get_struct_and_size() -> Tuple[str, int]:
