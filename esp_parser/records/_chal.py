@@ -73,6 +73,10 @@ class CHAL(Record):
 		"""
 
 	class DataTypeEnum(IntEnum):
+		"""
+		Enum for ``CHAL.DATA.type``.
+		"""
+
 		KillFromFormList = 0
 		KillSpecificFormID = 1
 		KillAnyInCategory = 2

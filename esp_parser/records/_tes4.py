@@ -29,7 +29,7 @@ TES4 record type.
 # stdlib
 import struct
 from io import BytesIO
-from typing import Iterator, List, NamedTuple, Type
+from typing import Iterator, NamedTuple, Type
 
 # 3rd party
 from typing_extensions import Self

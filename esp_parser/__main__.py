@@ -79,10 +79,10 @@ def main(esp_file: str, output_file: Optional[str] = None, python: bool = False)
 	assert output_file is not None
 
 	if output_file == '-':
-		print(str(reformatted_output))
+		print(reformatted_output)
 	else:
 		with open(output_file, 'w', encoding="UTF-8") as fp:
-			fp.write(str(reformatted_output))
+			fp.write(reformatted_output)
 
 
 if __name__ == "__main__":
