@@ -60,6 +60,7 @@ __all__ = [
 		"CTDA",
 		"Destruction",
 		"DialType",
+		"DNAM",
 		"EDID",
 		"Effect",
 		"InfoNextSpeaker",
@@ -1126,3 +1127,32 @@ class BMDT(StructRecord):
 		"""
 
 		return ("biped_flags", "general_flags", "unused")
+
+
+@attrs.define
+class DNAM(StructRecord):
+	"""
+	DNAM record type for :class:`~.ARMA` and :class:`ARMO` in Fallout 3 only.
+
+	In New Vegas :class:`~.ARMA` and :class:`ARMO` have their own versions.
+	"""
+
+	#: Value is divided by 100.
+	ar: int
+	flags: int  # See https://tes5edit.github.io/fopdoc/FalloutNV/Records/ARMO.html
+
+	@staticmethod
+	def get_struct_and_size() -> Tuple[str, int]:
+		"""
+		Returns the pack/unpack struct string and the corresponding size.
+		"""
+
+		return "<hH", 4
+
+	@staticmethod
+	def get_field_names() -> Tuple[str, ...]:
+		"""
+		Returns a list of attributes on this class in the order they should be packed.
+		"""
+
+		return ("ar", "flags")

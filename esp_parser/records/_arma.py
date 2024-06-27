@@ -27,14 +27,16 @@ ARMA record type.
 #
 
 # stdlib
+import struct
 from io import BytesIO
-from typing import Iterator, Tuple
+from typing import Iterator, Tuple, Type
 
 # 3rd party
 import attrs
+from typing_extensions import Self
 
 # this package
-from esp_parser.subrecords import BMDT, EDID, OBND, Model
+from esp_parser import subrecords
 from esp_parser.types import CStringRecord, Int32Record, Record, RecordType, StructRecord
 
 __all__ = ["ARMA"]
@@ -127,6 +129,25 @@ class ARMA(Record):
 
 			return ("ar", "flags", "unknown")
 
+		@classmethod
+		def parse(cls: Type[Self], raw_bytes: BytesIO) -> RecordType:  # type: ignore[override]
+			"""
+			Parse this subrecord.
+
+			:param raw_bytes: Raw bytes for this record
+			"""
+
+			unpack_struct, expected_size = cls.get_struct_and_size()
+			size = struct.unpack("<H", raw_bytes.read(2))[0]
+			if size == 4:
+				# Fallout 3
+				buf = BytesIO(struct.pack("<H", 4) + raw_bytes.read(4))
+				return subrecords.DNAM.parse(buf)
+			else:
+				if size != expected_size:
+					raise ValueError(f"Size mismatch for {cls}: Expected {expected_size}, got {size}")
+				return cls(*struct.unpack(unpack_struct, raw_bytes.read(size)))
+
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
 		"""
@@ -141,14 +162,14 @@ class ARMA(Record):
 				break
 
 			if record_type == b"EDID":
-				yield EDID.parse(raw_bytes)
+				yield subrecords.EDID.parse(raw_bytes)
 			elif record_type == b"OBND":
-				yield OBND.parse(raw_bytes)
+				yield subrecords.OBND.parse(raw_bytes)
 			elif record_type == b"BMDT":
-				yield BMDT.parse(raw_bytes)
+				yield subrecords.BMDT.parse(raw_bytes)
 			elif record_type in {b"BMDT", b"DATA", b"DNAM", b"ETYP", b"FULL", b"ICO2", b"ICON", b"MIC2", b"MICO"}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
-			elif record_type in Model.members:
-				yield Model.parse_member(record_type, raw_bytes)
+			elif record_type in subrecords.Model.members:
+				yield subrecords.Model.parse_member(record_type, raw_bytes)
 			else:
 				raise NotImplementedError(record_type)
