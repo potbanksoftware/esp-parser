@@ -18,7 +18,7 @@ esp-parser
 	* - Docs
 	  - |docs| |docs_check|
 	* - Tests
-	  - |actions_linux| |actions_windows| |actions_macos|
+	  - |actions_linux| |actions_windows| |actions_macos| |coveralls|
 	* - Activity
 	  - |commits-latest| |commits-since| |maintained|
 	* - QA
@@ -57,6 +57,10 @@ esp-parser
 .. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/badge.svg
 	:target: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/
 	:alt: Requirements Status
+
+.. |coveralls| image:: https://img.shields.io/coveralls/github/domdfmodding/esp-parser/master?logo=coveralls
+	:target: https://coveralls.io/github/domdfmodding/esp-parser?branch=master
+	:alt: Coverage
 
 .. |codefactor| image:: https://img.shields.io/codefactor/grade/github/domdfmodding/esp-parser?logo=codefactor
 	:target: https://www.codefactor.io/repository/github/domdfmodding/esp-parser

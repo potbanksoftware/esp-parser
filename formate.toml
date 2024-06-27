@@ -27,7 +27,22 @@ lines_between_types = 0
 use_parentheses = true
 remove_redundant_aliases = true
 default_section = "THIRDPARTY"
-known_third_party = [ "attrs", "typing_extensions",]
+known_third_party = [
+    "attrs",
+    "click",
+    "coincidence",
+    "consolekit",
+    "coverage",
+    "coverage_pyver_pragma",
+    "domdf_python_tools",
+    "formate",
+    "importlib_metadata",
+    "pytest",
+    "pytest_cov",
+    "pytest_randomly",
+    "pytest_timeout",
+    "typing_extensions",
+]
 known_first_party = [ "esp_parser",]
 
 [config]

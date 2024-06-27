@@ -1,0 +1,11 @@
+TES4(
+		flags=0,
+		id=b'\x00\x00\x00\x00',
+		revision=0,
+		version=15,
+		unknown=b'\x00\x00',
+		data=[
+				TES4.HEDR(version=1.340000033378601, num_records=0, next_object_id=b'\x00\x08\x00\x00'),
+				TES4.CNAM(b'DEFAULT')
+				]
+		)

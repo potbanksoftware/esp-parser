@@ -15,7 +15,7 @@ console_scripts:
 
 enable_conda: false
 on_pypi: false
-enable_tests: false
+min_coverage: 70
 mypy_version: "1.10.0"
 use_whey: true
 standalone_contrib_guide: true
