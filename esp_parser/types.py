@@ -137,11 +137,6 @@ class Record(RecordType):
 	Represents a record in an ESP file.
 	"""
 
-	#: Record type (4 bytes long)
-	type: bytes
-
-	# data_size: int
-
 	#: Record flags
 	flags: int
 	# See https://tes5edit.github.io/fopdoc/Fallout3/Records.html
@@ -173,15 +168,22 @@ class Record(RecordType):
 		yield from ()
 
 	@classmethod
-	def parse(cls: Type[Self], record_type: bytes, raw_bytes: BytesIO) -> Self:
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 		"""
 		Parse this record.
 
-		:param record_type: 4-byte identifier for this record, e.g. ``b"INFO"``
 		:param raw_bytes: Raw bytes for this record
 		"""
 
-		buf = raw_bytes.read(20)
+		first_4_bytes = raw_bytes.read(4)
+		if first_4_bytes == cls.__name__.encode():
+			# The record type
+			buf = raw_bytes.read(20)
+		else:
+			buf = first_4_bytes + raw_bytes.read(16)
+
+		assert len(buf) == 20
+
 		unpacked = struct.unpack("<II4sIH2s", buf)
 		data_size, flags, form_id, revision, version, unknown = unpacked
 
@@ -197,7 +199,6 @@ class Record(RecordType):
 		data = list(cls.parse_subrecords(raw_data))
 
 		return cls(
-				type=record_type,
 				flags=flags,
 				id=form_id,
 				revision=revision,
@@ -229,7 +230,8 @@ class Record(RecordType):
 				self.version,
 				self.unknown,
 				)
-		return self.type + packed + body
+		record_type = self.__class__.__name__.encode()
+		return record_type + packed + body
 
 
 class BytesRecordType(RecordType, bytes):

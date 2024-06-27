@@ -76,7 +76,6 @@ def create_tes4(
 		data.append(TES4.DATA(b'\x08\x00\x00\x00\x00\x00\x00\x00\x00\x00'))
 
 	return TES4(
-			type=b"TES4",
 			flags=0,
 			id=b'\x00\x00\x00\x00',
 			revision=0,

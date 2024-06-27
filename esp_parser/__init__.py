@@ -171,6 +171,6 @@ def parse_esp(raw_bytes: BytesIO) -> Iterator[Union[RecordType, "Group"]]:
 				b"WEAP",
 				b"WRLD",
 				}:
-			yield getattr(records, record_type.decode()).parse(record_type, raw_bytes)
+			yield getattr(records, record_type.decode()).parse(raw_bytes)
 		else:
 			raise NotImplementedError(record_type)
