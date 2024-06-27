@@ -65,7 +65,7 @@ class CONT(Record):
 		"""
 
 		flags: int
-		wright: float
+		weight: float
 
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
