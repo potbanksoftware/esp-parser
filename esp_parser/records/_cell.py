@@ -45,7 +45,8 @@ from esp_parser.types import (
 		Record,
 		RecordType,
 		StructRecord,
-		Uint8Record
+		Uint8Record,
+		Uint32Record
 		)
 
 __all__ = ["CELL"]
@@ -151,30 +152,12 @@ class CELL(Record):
 		Light template giving the Form ID of an :class:`~.LGTM` record. May be 0.
 		"""
 
-	class LNAM(RecordType, int):
+	class LNAM(Uint32Record):
 		"""
 		Lighting template flags.
 
 		See https://tes5edit.github.io/fopdoc/Fallout3/Records/CELL.html
 		"""
-
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
-			"""
-
-			assert raw_bytes.read(2) == b"\x04\x00"  # size field
-			return cls(*struct.unpack("<I", raw_bytes.read(4)))
-
-		def unparse(self) -> bytes:
-			"""
-			Turn this subrecord back into raw bytes for an ESP file.
-			"""
-
-			return b"LNAM\x04\x00" + struct.pack("<I", self)
 
 	class XCLW(Float32Record):
 		"""

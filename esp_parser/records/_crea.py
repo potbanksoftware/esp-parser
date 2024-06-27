@@ -38,6 +38,7 @@ from typing_extensions import Self
 # this package
 from esp_parser.subrecords import ACBS, AIDT, EDID, OBND, Destruction, Item, Model
 from esp_parser.types import (
+		BytesArrayRecord,
 		CStringRecord,
 		Float32Record,
 		FormIDRecord,
@@ -85,15 +86,12 @@ class CREA(Record):
 		https://tes5edit.github.io/fopdoc/Fallout3/Records/Values/Attack%20Animations.html
 		"""
 
-	class NIFZ(List[bytes], RecordType):
+	class NIFZ(BytesArrayRecord):
 		"""
 		Model List.
 
 		An array of model filenames (``.nif``).
 		"""
-
-		def __repr__(self) -> str:
-			return f"{self.__class__.__qualname__}({super().__repr__()})"
 
 		@classmethod
 		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
@@ -102,6 +100,10 @@ class CREA(Record):
 
 			:param raw_bytes: Raw bytes for this record
 			"""
+
+			# TODO: if it ends with two null bytes  there will be two empty strings in the list
+			# (one even if there's just a single null byte)
+			# Strip off and add back in as part of unparse, to avoid them being missed out by the user.
 
 			size = struct.unpack("<H", raw_bytes.read(2))[0]
 			body = raw_bytes.read(size)
@@ -211,37 +213,12 @@ class CREA(Record):
 		Form ID of a :class:`~.PACK` record.
 		"""
 
-	class KFFZ(List[bytes], RecordType):
+	class KFFZ(BytesArrayRecord):
 		"""
 		Animatons.
 
 		An array of animation filenames (``.kf``).
 		"""
-
-		def __repr__(self) -> str:
-			return f"{self.__class__.__qualname__}({super().__repr__()})"
-
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
-			"""
-
-			size = struct.unpack("<H", raw_bytes.read(2))[0]
-			body = raw_bytes.read(size)
-			return cls(body.split(b"\x00"))
-
-		def unparse(self) -> bytes:
-			"""
-			Turn this subrecord back into raw bytes for an ESP file.
-			"""
-
-			body = b"\00".join(self)
-			size = len(body)
-			size_field = struct.pack("<H", size)
-			return b"KFFZ" + size_field + body
 
 	class DataTypeEnum(IntEnum):
 		"""

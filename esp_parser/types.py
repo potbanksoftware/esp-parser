@@ -32,18 +32,20 @@ import struct
 import zlib
 from abc import abstractmethod
 from io import BytesIO
-from typing import Iterator, List, Protocol, Set, Tuple, Type, Union
+from typing import TYPE_CHECKING, Iterator, List, Protocol, Set, Tuple, Type, Union
 
 # 3rd party
 import attrs
 from typing_extensions import Self
 
 __all__ = [
+		"BytesArrayRecord",
 		"BytesRecordType",
 		"Collection",
 		"CStringRecord",
 		"FaceGenRecord",
 		"Float32Record",
+		"FormIDArrayRecord",
 		"FormIDRecord",
 		"Int16Record",
 		"Int32Record",
@@ -59,6 +61,8 @@ __all__ = [
 		"Uint32Record",
 		"Uint8Record"
 		]
+
+_cov_instantiated_objects: Set[str] = set()
 
 
 class RecordType(Protocol):
@@ -76,6 +80,11 @@ class RecordType(Protocol):
 		"""
 
 		raise NotImplementedError
+
+	if not TYPE_CHECKING:
+
+		def __attrs_post_init__(self) -> None:
+			_cov_instantiated_objects.add(self.__class__.__qualname__)
 
 
 @attrs.define
@@ -626,3 +635,66 @@ class MarkerRecord(RecordType):
 
 		name = self.__class__.__name__.encode()
 		return name + b"\x00\x00"
+
+
+class BytesArrayRecord(List[bytes], RecordType):
+	"""
+	An array of bytestrings.
+	"""
+
+	def __repr__(self) -> str:
+		return f"{self.__class__.__qualname__}({super().__repr__()})"
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		size = struct.unpack("<H", raw_bytes.read(2))[0]
+		body = raw_bytes.read(size)
+		return cls(body.split(b"\x00"))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		body = b"\00".join(self)
+		size = len(body)
+		size_field = struct.pack("<H", size)
+		name = self.__class__.__name__.encode()
+		return name + size_field + body
+
+
+class FormIDArrayRecord(BytesArrayRecord):
+	"""
+	An array of 4-byte long form IDs.
+	"""
+
+	@classmethod
+	def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
+		"""
+		Parse this subrecord.
+
+		:param raw_bytes: Raw bytes for this record
+		"""
+
+		size = struct.unpack("<H", raw_bytes.read(2))[0]
+		length = size // 4
+		assert not size % 4
+		return cls(struct.unpack('<' + ("4s" * length), raw_bytes.read(size)))
+
+	def unparse(self) -> bytes:
+		"""
+		Turn this subrecord back into raw bytes for an ESP file.
+		"""
+
+		body = b"".join(self)
+		size = len(body)
+		assert size == len(self) * 4
+		size_field = struct.pack("<H", size)
+		name = self.__class__.__name__.encode()
+		return name + size_field + body

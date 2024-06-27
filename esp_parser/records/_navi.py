@@ -37,7 +37,7 @@ from typing_extensions import Self
 
 # this package
 from esp_parser.subrecords import EDID
-from esp_parser.types import Record, RecordType, Uint32Record
+from esp_parser.types import FormIDArrayRecord, Record, RecordType, Uint32Record
 
 __all__ = ["NAVI"]
 
@@ -112,37 +112,13 @@ class NAVI(Record):
 					)
 			return b"NVMI" + packed
 
-	class NVCI(List[bytes], RecordType):
+	class NVCI(FormIDArrayRecord):
 		"""
 		Unknown.
+
+		Contains one or more form IDs of :class:`~.NAVM` records,
+		followed by one or more form IDs of :class:`~.DOOR` records.
 		"""
-
-		def __repr__(self) -> str:
-			return f"{self.__class__.__qualname__}({super().__repr__()})"
-
-		@classmethod
-		def parse(cls: Type[Self], raw_bytes: BytesIO) -> Self:
-			"""
-			Parse this subrecord.
-
-			:param raw_bytes: Raw bytes for this record
-			"""
-
-			size = struct.unpack("<H", raw_bytes.read(2))[0]
-			length = size // 4
-			assert not size % 4
-			return cls(struct.unpack('<' + ("4s" * length), raw_bytes.read(size)))
-
-		def unparse(self) -> bytes:
-			"""
-			Turn this subrecord back into raw bytes for an ESP file.
-			"""
-
-			body = b"".join(self)
-			size = len(body)
-			assert size == len(self) * 4
-			size_field = struct.pack("<H", size)
-			return b"NVCI" + size_field + body
 
 	@classmethod
 	def parse_subrecords(cls, raw_bytes: BytesIO) -> Iterator[RecordType]:
