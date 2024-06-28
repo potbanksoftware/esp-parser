@@ -28,11 +28,12 @@ Output a representation of an ESP file as text or Python source code.
 
 # stdlib
 import ast
-from typing import TYPE_CHECKING, Iterator, List
+from typing import TYPE_CHECKING, Iterable, List
 
 # 3rd party
 from domdf_python_tools.paths import TemporaryPathPlus, in_directory
 from domdf_python_tools.stringlist import StringList
+from domdf_python_tools.typing import PathLike
 from formate import call_hooks
 from formate.config import load_toml, parse_hooks
 
@@ -88,7 +89,7 @@ class FunctionCallFinder(ast.NodeVisitor):
 			self.generic_visit(node)
 
 
-def reformat(source: str, output_filename: str) -> str:
+def reformat(source: str, output_filename: PathLike) -> str:
 	"""
 	Reformat the text or Python representation of an ESP file's records.
 
@@ -110,7 +111,7 @@ def reformat(source: str, output_filename: str) -> str:
 	return str(reformatted_source)
 
 
-def records_as_text(records: Iterator["RecordType"]) -> str:
+def records_as_text(records: Iterable["RecordType"]) -> str:
 	"""
 	Get a text representation of the records, one top-level record or group per line.
 
@@ -120,7 +121,7 @@ def records_as_text(records: Iterator["RecordType"]) -> str:
 	return '\n'.join(repr(record) for record in records)
 
 
-def records_as_python(records: Iterator["RecordType"], plugin_name: str) -> str:
+def records_as_python(records: Iterable["RecordType"], plugin_name: str) -> str:
 	"""
 	Get a Python source code representation of the records, as an unformatted function which returns a list of :class:`~.RecordType` objects.
 
