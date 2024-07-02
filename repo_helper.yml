@@ -28,6 +28,7 @@ sphinx_conf_epilogue:
 extra_sphinx_extensions:
  - attr_utils.autoattrs
  - ignore_missing_xref
+ - sphinxcontrib.jquery
 
 python_versions:
  - "3.8"

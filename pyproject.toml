@@ -81,6 +81,7 @@ extensions = [
     "html_section",
     "attr_utils.autoattrs",
     "ignore_missing_xref",
+    "sphinxcontrib.jquery",
 ]
 gitstamp_fmt = "%d %b %Y"
 templates_path = [ "_templates",]
