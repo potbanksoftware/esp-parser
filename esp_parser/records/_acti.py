@@ -45,8 +45,6 @@ class ACTI(Record):
 	class FULL(CStringRecord):
 		"""
 		Activator name.
-
-		Max 512 bytes.
 		"""
 
 	class SCRI(FormIDRecord):

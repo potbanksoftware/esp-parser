@@ -50,11 +50,6 @@ class ADDN(Record):
 		Node Index.
 		"""
 
-	# class DNAM(RecordType):
-	# 	"""
-	# 	Data.
-	# 	"""
-
 	@attrs.define
 	class DNAM(StructRecord):
 		"""
