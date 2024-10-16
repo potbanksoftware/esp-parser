@@ -1,4 +1,4 @@
-attr-utils>=1.0.0
+attr-utils>=1.1.0
 default-values>=0.6.0
 domdf-sphinx-theme>=0.3.0
 extras-require>=0.5.0
