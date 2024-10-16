@@ -69,7 +69,7 @@ def dump_to_modules(esp_file: "PathPlus", output_file: Optional[str] = None) -> 
 
 	output_dir: PathPlus
 	if output_file:
-		output_dir = PathPlus(output_dir).with_suffix('')
+		output_dir = PathPlus(output_file).with_suffix('')
 	else:
 		output_dir = PathPlus(plugin_name)
 
