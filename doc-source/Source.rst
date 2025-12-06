@@ -3,13 +3,13 @@ Downloading source code
 =========================
 
 The ``esp-parser`` source code is available on GitHub,
-and can be accessed from the following URL: https://github.com/domdfmodding/esp-parser
+and can be accessed from the following URL: https://github.com/potbanksoftware/esp-parser
 
 If you have ``git`` installed, you can clone the repository with the following command:
 
 .. prompt:: bash
 
-	git clone https://github.com/domdfmodding/esp-parser
+	git clone https://github.com/potbanksoftware/esp-parser
 
 .. parsed-literal::
 

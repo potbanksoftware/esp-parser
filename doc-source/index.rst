@@ -56,8 +56,8 @@ esp-parser
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/badge.svg
-		:target: https://dependency-dash.repo-helper.uk/github/domdfmodding/esp-parser/
+	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/potbanksoftware/esp-parser/badge.svg
+		:target: https://dependency-dash.repo-helper.uk/github/potbanksoftware/esp-parser/
 		:alt: Requirements Status
 
 	.. |coveralls| coveralls-shield::
@@ -128,6 +128,6 @@ Installation
 
 	View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/index.html>`__.
 
-	:github:repo:`Browse the GitHub Repository <domdfmodding/esp-parser>`
+	:github:repo:`Browse the GitHub Repository <potbanksoftware/esp-parser>`
 
 .. end links
