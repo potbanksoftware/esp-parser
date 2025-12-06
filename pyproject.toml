@@ -33,7 +33,7 @@ platforms = [ "Windows", "macOS", "Linux",]
 
 [tool.whey]
 base-classifiers = []
-python-versions = [ "3.8", "3.9", "3.10", "3.11", "3.12",]
+python-versions = [ "3.8", "3.9", "3.10", "3.11", "3.12", "3.13",]
 python-implementations = [ "CPython",]
 platforms = [ "Windows", "macOS", "Linux",]
 license-key = "MIT"
@@ -132,7 +132,7 @@ autodoc_exclude_members = [
 ]
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 namespace_packages = true
 check_untyped_defs = true
 warn_unused_ignores = true
