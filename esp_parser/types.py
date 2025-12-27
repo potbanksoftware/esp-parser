@@ -38,7 +38,7 @@ from typing import TYPE_CHECKING, Iterator, List, Protocol, Set, Tuple, Type, Un
 import attrs
 from typing_extensions import Self
 
-__all__ = [
+__all__ = (
 		"BytesArrayRecord",
 		"BytesRecordType",
 		"Collection",
@@ -59,8 +59,8 @@ __all__ = [
 		"StructRecord",
 		"Uint16Record",
 		"Uint32Record",
-		"Uint8Record"
-		]
+		"Uint8Record",
+		)
 
 _cov_instantiated_objects: Set[str] = set()
 
@@ -602,6 +602,7 @@ class Collection:
 		"""
 		Parse subrecords in this collection.
 
+		:param record_type:
 		:param raw_bytes: Raw bytes for this record's subrecords
 		"""
 

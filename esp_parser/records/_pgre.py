@@ -272,7 +272,7 @@ class PGRE(Record):
 					b"XRGB",
 					b"XRGD",
 					b"XRNK",
-					b"XSCL"
+					b"XSCL",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

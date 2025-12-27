@@ -49,7 +49,7 @@ from esp_parser.types import (
 		)
 from esp_parser.utils import NULL, namedtuple_qualname_repr
 
-__all__ = [
+__all__ = (
 		"ACBS",
 		"AIDT",
 		"AidtAggroEnum",
@@ -71,8 +71,8 @@ __all__ = [
 		"Script",
 		"SkillEnum",
 		"XNAM",
-		"XnamCombatReactionEnum"
-		]
+		"XnamCombatReactionEnum",
+		)
 
 
 class EDID(CStringRecord):
@@ -255,6 +255,8 @@ class Model(Collection):
 		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
 			Unpack bytes for the :class:`~.Model.AlternateTexture`.
+
+			:param raw_bytes:
 			"""
 
 			alt_texture_name_length = struct.unpack("<I", raw_bytes.read(4))[0]
@@ -585,7 +587,7 @@ class ACBS(RecordType):
 				self.speed_multiplier,
 				self.karma,
 				self.disposition_base,
-				self.template_flags
+				self.template_flags,
 				)
 		return b"ACBS\x18\x00" + packed
 

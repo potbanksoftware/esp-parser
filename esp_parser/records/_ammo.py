@@ -203,7 +203,7 @@ class AMMO(Record):
 					b"RCIL",
 					b"SCRI",
 					b"YNAM",
-					b"ZNAM"
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in Model.members:

@@ -50,6 +50,8 @@ __all__ = ["parse_esp"]
 def parse_esp(raw_bytes: BytesIO) -> Iterator[Union[RecordType, "Group"]]:
 	"""
 	Recursively parse an ESP file.
+
+	:param raw_bytes:
 	"""
 
 	# this package

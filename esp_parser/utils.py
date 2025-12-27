@@ -57,6 +57,7 @@ def create_tes4(
 	:param num_records: Number of records and groups (not including the TES4 record itself).
 	:param next_object_id: Next available object ID, as a 4-byte sequence.
 	:param author: Optional author's name.
+	:param description:
 	:param masters: List the plugin's master files, listed in the order they were present in when the plugin was created.
 	"""
 

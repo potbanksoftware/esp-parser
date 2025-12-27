@@ -31,10 +31,10 @@ def test_achr_record(advanced_data_regression: AdvancedDataRegressionFixture):
 							unused=b'\xcd\xcd\xcd',
 							withdrawal_effect=b'\x00\x00\x00\x00',
 							addiction_chance=0.0,
-							sound_consume=b';\xb7\x07\x00'
+							sound_consume=b';\xb7\x07\x00',
 							),
 					Effect.EFID(b'vF\x03\x01'),
-					Effect.EFIT(magnitude=0, area=0, duration=0, type=Effect.EfitTypeEnum.Self, actor_value=-1)
+					Effect.EFIT(magnitude=0, area=0, duration=0, type=Effect.EfitTypeEnum.Self, actor_value=-1),
 					]
 			)
 

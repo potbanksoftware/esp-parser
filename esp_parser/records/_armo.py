@@ -261,7 +261,7 @@ class ARMO(Record):
 					b"SNAM",
 					b"TNAM",
 					b"YNAM",
-					b"ZNAM"
+					b"ZNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in subrecords.Model.members:

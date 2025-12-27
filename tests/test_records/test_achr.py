@@ -23,9 +23,14 @@ def test_achr_record(advanced_data_regression: AdvancedDataRegressionFixture):
 							),
 					ACHR.XRGB(b'\x00\x00\x00\x80\x00\x00\x00\x80\xe7\x0f\xc9\xbf'),
 					PositionRotation.DATA(
-							xp=-69202.640625, yp=16929.505859375, zp=9522.4404296875, xr=0.0, yr=0.0, zr=0.0
-							)
-					]
+							xp=-69202.640625,
+							yp=16929.505859375,
+							zp=9522.4404296875,
+							xr=0.0,
+							yr=0.0,
+							zr=0.0,
+							),
+					],
 			)
 	advanced_data_regression.check(achr.unparse())
 

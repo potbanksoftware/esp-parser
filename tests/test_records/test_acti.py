@@ -21,8 +21,8 @@ def test_achr_record(advanced_data_regression: AdvancedDataRegressionFixture):
 					OBND(X1=-6, Y1=-9, Z1=-1, X2=6, Y2=9, Z2=1),
 					ACTI.FULL(b'A Book'),
 					Model.MODL(b'meshes\\clutter\\books\\bookgeneric01.nif'),
-					ACTI.SCRI(b'\xa3\x98\x02\x01')
-					]
+					ACTI.SCRI(b'\xa3\x98\x02\x01'),
+					],
 			)
 
 	buffer = acti.unparse()

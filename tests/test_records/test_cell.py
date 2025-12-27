@@ -32,7 +32,7 @@ def test_cell_record(advanced_data_regression: AdvancedDataRegressionFixture):
 							directional_rotation_z=0,
 							directional_fade=1.0,
 							fog_clip_distance=1500.0,
-							fog_power=1.0
+							fog_power=1.0,
 							),
 					CELL.LTMP(b'\x00\x00\x00\x00'),
 					CELL.LNAM(159),
@@ -40,8 +40,8 @@ def test_cell_record(advanced_data_regression: AdvancedDataRegressionFixture):
 					CELL.XNAM(b''),
 					CELL.XCIM(b'zP\x01\x00'),
 					CELL.XEZN(b'\xaaZ\x03\x00'),
-					CELL.XCMO(b'\x06\t\t\x00')
-					]
+					CELL.XCMO(b'\x06\t\t\x00'),
+					],
 			)
 
 	advanced_data_regression.check(cell.unparse())
@@ -68,7 +68,7 @@ def test_cell_record_xclc(advanced_data_regression: AdvancedDataRegressionFixtur
 					CELL.XNAM(b''),
 					CELL.XCLR([b'\xe3<\x12\x00', b'&\xd2\x15\x00']),
 					CELL.XCAS(b'b=\x11\x00'),
-					CELL.XCMO(b'\xd4\xa6\x08\x00')
+					CELL.XCMO(b'\xd4\xa6\x08\x00'),
 					]
 			)
 

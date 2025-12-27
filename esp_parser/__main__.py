@@ -102,12 +102,12 @@ def dump_to_modules(esp_file: "PathPlus", output_file: Union["PathPlus", str, No
 			init_file_source.append(f"from .{submodule} import create_{submodule.lower()}")
 
 		init_file_source.append(f"def {plugin_name}():")
-		init_file_source.append("\treturn [", )
+		init_file_source.append("\treturn [")
 
 		for submodule in submodules:
-			init_file_source.append(f"\t\t*create_{submodule.lower()}(),", )
+			init_file_source.append(f"\t\t*create_{submodule.lower()}(),")
 
-		init_file_source.append("\t]", )
+		init_file_source.append("\t]")
 
 		(output_dir / "__init__.py").write_text(reformat(str(init_file_source), (output_dir / "__init__.py")))
 

@@ -27,10 +27,10 @@ def test_chal_record(advanced_data_regression: AdvancedDataRegressionFixture):
 							interval=1,
 							value1=b'\x00\x00',
 							value2=b'\x00\x00',
-							value3=b'\x00\x00\x00\x00'
+							value3=b'\x00\x00\x00\x00',
 							),
-					CHAL.SNAM(b'\xae\xd1\x05\x01')
-					]
+					CHAL.SNAM(b'\xae\xd1\x05\x01'),
+					],
 			)
 	advanced_data_regression.check(chal.unparse())
 

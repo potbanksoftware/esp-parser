@@ -250,7 +250,7 @@ class ACHR(Record):
 					b"XRDS",
 					b"XRGB",
 					b"XRGD",
-					b"XSCL"
+					b"XSCL",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			elif record_type in {b"SCHR", b"SCDA", b"SCTX", b"SCRO", b"SLSD", b"SCVR"}:

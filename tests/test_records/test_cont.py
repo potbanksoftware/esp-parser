@@ -25,8 +25,8 @@ def test_cont_record(advanced_data_regression: AdvancedDataRegressionFixture):
 					Item.CNTO(item=b'\\\xb0\x0c\x00', item_count=1),  # Doctor's Bag
 					Item.CNTO(item=b'iQ\x01\x00', item_count=3),  # Stimpak
 					Item.CNTO(item=b'\xa0x\x03\x00', item_count=10),  # Caps75Leveled
-					CONT.DATA(flags=0, weight=0.0)
-					]
+					CONT.DATA(flags=0, weight=0.0),
+					],
 			)
 	advanced_data_regression.check(cont.unparse())
 

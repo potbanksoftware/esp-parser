@@ -241,7 +241,7 @@ class RACE(Record):
 					b"UNAM",
 					b"VTCK",
 					b"XNAM",
-					b"YNAM"
+					b"YNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

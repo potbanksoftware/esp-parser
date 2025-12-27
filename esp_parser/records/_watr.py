@@ -125,7 +125,7 @@ class WATR(Record):
 					b"MNAM",
 					b"NNAM",
 					b"SNAM",
-					b"XNAM"
+					b"XNAM",
 					}:
 				yield getattr(cls, record_type.decode()).parse(raw_bytes)
 			else:

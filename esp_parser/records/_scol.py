@@ -69,6 +69,8 @@ class SCOL(Record):
 		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
 			Unpack bytes for the :class:`~.SCOL.DataItem`.
+
+			:param raw_bytes:
 			"""
 
 			return cls(*struct.unpack("<fffffff", raw_bytes.read(28)))

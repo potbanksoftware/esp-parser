@@ -101,6 +101,8 @@ class NAVM(Record):
 		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
 			Unpack bytes for the :class:`~.NAVM.NvvxVertex`.
+
+			:param raw_bytes:
 			"""
 
 			return cls(*struct.unpack("<fff", raw_bytes.read(12)))
@@ -168,6 +170,8 @@ class NAVM(Record):
 		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
 			Unpack bytes for the :class:`~.NAVM.NvtrTriangle`.
+
+			:param raw_bytes:
 			"""
 
 			return cls(*struct.unpack("<hhhhhhI", raw_bytes.read(16)))
@@ -265,6 +269,8 @@ class NAVM(Record):
 		def unpack(cls: Type[Self], raw_bytes: BytesIO) -> Self:
 			"""
 			Unpack bytes for the :class:`~.NAVM.NvtrTriangle`.
+
+			:param raw_bytes:
 			"""
 
 			return cls(*struct.unpack("<4sH2s", raw_bytes.read(8)))

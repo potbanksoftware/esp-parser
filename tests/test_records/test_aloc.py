@@ -27,8 +27,8 @@ def test_achr_record(advanced_data_regression: AdvancedDataRegressionFixture):
 					ALOC.NAM6(255),
 					ALOC.NAM7(10.0),
 					ALOC.LNAM(b'\xb1\xfa\x06\x01'),
-					ALOC.FNAM(b'\x00\x00\x00\x00')
-					]
+					ALOC.FNAM(b'\x00\x00\x00\x00'),
+					],
 			)
 	advanced_data_regression.check(aloc.unparse())
 
