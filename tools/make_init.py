@@ -115,8 +115,7 @@ records = [
 		# "WTHR", # Weather
 		]
 
-print(
-		'''\
+header = '''\
 #!/usr/bin/env python3
 #
 #  records.py
@@ -146,7 +145,7 @@ Models for different record types.
 #
 
 # this package'''
-		)
+print(header)
 
 for record in records:
 	if record == "PERK":

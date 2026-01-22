@@ -443,7 +443,7 @@ from esp_parser.subrecords import EDID, OBND, CTDA
 			record_type = raw_bytes.read(4)
 			if not record_type:
 				break
-	'''
+	''',
 			)
 
 	if "EDID" in subrecords:

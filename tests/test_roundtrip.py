@@ -10,11 +10,14 @@ from domdf_python_tools.paths import PathPlus
 import esp_parser
 
 
-@pytest.mark.parametrize("plugin", [
-		"BadassBadlandsArmour.esp",
-		"EmptyPlugin.esp",
-		"EmptyPlugin2.esp",
-		])
+@pytest.mark.parametrize(
+		"plugin",
+		[
+				"BadassBadlandsArmour.esp",
+				"EmptyPlugin.esp",
+				"EmptyPlugin2.esp",
+				],
+		)
 def test_roundtrip(plugin: str):
 	filename = PathPlus("tests/examples") / plugin
 

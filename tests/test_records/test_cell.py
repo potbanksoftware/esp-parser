@@ -69,7 +69,7 @@ def test_cell_record_xclc(advanced_data_regression: AdvancedDataRegressionFixtur
 					CELL.XCLR([b'\xe3<\x12\x00', b'&\xd2\x15\x00']),
 					CELL.XCAS(b'b=\x11\x00'),
 					CELL.XCMO(b'\xd4\xa6\x08\x00'),
-					]
+					],
 			)
 
 	advanced_data_regression.check(cell.unparse())

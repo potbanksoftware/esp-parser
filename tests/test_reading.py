@@ -12,11 +12,14 @@ import esp_parser
 from esp_parser.output import records_as_text, reformat
 
 
-@pytest.mark.parametrize("plugin", [
-		"BadassBadlandsArmour.esp",
-		"EmptyPlugin.esp",
-		"EmptyPlugin2.esp",
-		])
+@pytest.mark.parametrize(
+		"plugin",
+		[
+				"BadassBadlandsArmour.esp",
+				"EmptyPlugin.esp",
+				"EmptyPlugin2.esp",
+				],
+		)
 def test_read_plugins(plugin: str, advanced_file_regression: AdvancedFileRegressionFixture):
 	filename = PathPlus("tests/examples") / plugin
 

@@ -463,7 +463,7 @@ class WEAP(Record):
 				return cls(  # type: ignore[misc]  # false positive re: new_vegas=True being there twice (it isn't)
 					*struct.unpack(unpack_string, raw_bytes.read(size)),
 					new_vegas=True,
-					)
+				)
 			else:
 				assert size == 136
 

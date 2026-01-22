@@ -202,7 +202,7 @@ class CELL(Record):
 
 			name = self.__class__.__name__.encode()
 			size = len(self) * 4
-			packed = struct.pack(f"<H", size)
+			packed = struct.pack("<H", size)
 			return name + packed + b''.join(self)
 
 	class XCIM(FormIDRecord):

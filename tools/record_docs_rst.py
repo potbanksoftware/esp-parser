@@ -134,5 +134,5 @@ for record_type, summary in records:
 
 .. automodule:: esp_parser.records._{record_type.lower()}
 	:no-special-members:
-"""
+""",
 			)

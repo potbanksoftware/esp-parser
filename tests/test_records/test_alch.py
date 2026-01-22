@@ -35,7 +35,7 @@ def test_achr_record(advanced_data_regression: AdvancedDataRegressionFixture):
 							),
 					Effect.EFID(b'vF\x03\x01'),
 					Effect.EFIT(magnitude=0, area=0, duration=0, type=Effect.EfitTypeEnum.Self, actor_value=-1),
-					]
+					],
 			)
 
 	advanced_data_regression.check(alch.unparse())
