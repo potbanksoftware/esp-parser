@@ -101,7 +101,7 @@ def reformat(source: str, output_filename: PathLike) -> str:
 		(tmpdir / "formate.toml").write_text(formate_toml_content)
 		(tmpdir / ".style.yapf").write_text(style_yapf_content)
 
-		formate_config = load_toml("formate.toml")
+		formate_config = load_toml(tmpdir / "formate.toml")
 
 		with in_directory(tmpdir):
 			formate_hooks = parse_hooks(formate_config)
