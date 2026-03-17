@@ -35,7 +35,7 @@ from domdf_python_tools.paths import TemporaryPathPlus, in_directory
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.typing import PathLike
 from formate import call_hooks
-from formate.config import load_toml, parse_hooks
+from formate.config import get_hooks_for_filetype, load_toml, parse_hooks
 
 # this package
 from esp_parser import group, records, subrecords
@@ -105,6 +105,7 @@ def reformat(source: str, output_filename: PathLike) -> str:
 
 		with in_directory(tmpdir):
 			formate_hooks = parse_hooks(formate_config)
+			formate_hooks = get_hooks_for_filetype(".py", formate_hooks)
 			reformatted_source = StringList(call_hooks(formate_hooks, source, output_filename))
 
 	reformatted_source.blankline(ensure_single=True)
